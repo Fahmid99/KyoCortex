@@ -11,10 +11,17 @@ import {
 import Grid from "@mui/material/Grid2";
 import ReCAPTCHA from "react-google-recaptcha";
 import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
-
+import { useNavigate } from "react-router-dom";
 function LoginPage() {
+  const navigate = useNavigate();
+
   const handleCaptchaChange = (value) => {
     console.log("Captcha value:", value);
+  };
+
+  const handleSignInClick = () => {
+    // Perform sign-in logic here
+    navigate("/dashboard");
   };
 
   return (
@@ -24,15 +31,14 @@ function LoginPage() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-
         background:
-          "linear-gradient(20deg, rgba(0, 123, 255, .5) 0%, rgba(0, 123, 255, 0)",
+          "linear-gradient(20deg, #64b5f6 0%, rgba(0, 123, 255, 0) 100%)",
       }}
     >
       <Card
         sx={{
           padding: "2em",
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
         }}
       >
         <Grid
@@ -47,9 +53,9 @@ function LoginPage() {
                 variant="h5"
                 gutterBottom
                 color="#424242"
-                fontWeight={"400"}
+                fontWeight={"600"}
               >
-                Sign in to Abby
+                Sign in to KyoCortex
               </Typography>
             </Grid>
             <Grid item xs={12} margin="0.5em">
@@ -94,6 +100,7 @@ function LoginPage() {
                 variant="contained"
                 size="large"
                 sx={{ boxShadow: "none", width: "100%" }}
+                onClick={handleSignInClick}
               >
                 Sign In
               </Button>
@@ -110,7 +117,6 @@ function LoginPage() {
           <Link fontSize="14px">Create free account</Link>
         </Grid>
       </Card>
-      {/* <Typography>Create free account</Typography> */}
     </div>
   );
 }
