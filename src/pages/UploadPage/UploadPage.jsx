@@ -4,6 +4,8 @@ import Dropzone from "../../components/Dropzone";
 import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
 import UploadConfirmCard from "../../components/UploadConfirmCard";
 import documentService from "../../services/documentService";
+import { useNavigate } from "react-router-dom";
+
 function UploadPage() {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
@@ -11,16 +13,17 @@ function UploadPage() {
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("file", file);
     console.log(file);
     console.log(formData);
     setButtonLoading(true);
-    documentService.uploadDocument(formData);
-
+    await documentService.uploadDocument(formData);
     setButtonLoading(false);
+    navigate("/document-history");
   };
 
   const handleUploadSuccess = () => {

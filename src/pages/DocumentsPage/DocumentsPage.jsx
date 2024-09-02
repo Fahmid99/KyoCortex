@@ -95,7 +95,7 @@ function DocumentsPage() {
         component={Paper}
         sx={{
           margin: "2em",
-          paddingTop: "5em",
+          paddingTop: "2em",
           width: "80%",
           boxShadow: "none",
           border: "1px solid #E0E0E0",
@@ -107,7 +107,7 @@ function DocumentsPage() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "0 1em 1em 1em",
+            padding: "0 1em 0 1em",
           }}
         >
           <Typography variant="h6" sx={{ margin: "1em" }} gutterBottom>
@@ -149,13 +149,11 @@ function DocumentsPage() {
         </Table>
 
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Document Details</DialogTitle>
+          <DialogTitle>Document Analyze</DialogTitle>
           <DialogContent>
             {selectedDocument && (
               <>
-                <Typography>ID: {selectedDocument.id}</Typography>
-                <Typography>Name: {selectedDocument.name}</Typography>
-                <FormControl fullWidth sx={{ marginTop: 2 }}>
+                <FormControl fullWidth sx={{ marginTop: 1 }}>
                   <InputLabel id="select-engine-label">
                     Select Engine
                   </InputLabel>

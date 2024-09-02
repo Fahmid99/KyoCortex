@@ -18,14 +18,24 @@ const uploadDocument = async (formData) => {
 const getDocuments = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/files`);
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error("Error fetching data:", err);
   }
 };
 
+const getDocumentById = async (id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/files/${id}`);
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching document:", err);
+  }
+};
+
 export default {
   uploadDocument: uploadDocument,
   getDocuments: getDocuments,
+  getDocumentById: getDocumentById,
 };
