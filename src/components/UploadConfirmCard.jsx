@@ -2,6 +2,8 @@ import React from "react";
 import DocumentIcon from "../assets/document.png";
 import DocumentBeforeIcon from "../assets/documentbefore.png";
 import InfoIcon from "@mui/icons-material/Info";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
   Select,
   MenuItem,
@@ -16,6 +18,9 @@ function UploadProcessCard({
   selectedSkill,
   handleSkillChange,
   fileName,
+  handleFileUpload,
+  buttonloading,
+  setButtonLoading,
 }) {
   return (
     <Paper
@@ -63,13 +68,17 @@ function UploadProcessCard({
           <Typography>{fileName}</Typography>
         </Grid>
         <Grid item>
-          <Button
-            disabled={!selectedSkill}
+          <LoadingButton
+            disabled={!isUploaded}
             variant="contained"
             sx={{ boxShadow: "none" }}
+            onClick={handleFileUpload}
+            loading={buttonloading}
+            loadingPosition="end"
+            endIcon={<CloudUploadIcon/>}
           >
-            Review
-          </Button>
+            Upload
+          </LoadingButton>
         </Grid>
       </Grid>
     </Paper>

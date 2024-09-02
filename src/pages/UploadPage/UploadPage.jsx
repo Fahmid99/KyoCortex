@@ -3,12 +3,26 @@ import { Select, MenuItem, Button, Typography } from "@mui/material";
 import Dropzone from "../../components/Dropzone";
 import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
 import UploadConfirmCard from "../../components/UploadConfirmCard";
-
+import documentService from "../../services/documentService";
 function UploadPage() {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [showReviewButton, setShowReviewButton] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState();
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const handleFileUpload = () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(file);
+    console.log(formData);
+    setButtonLoading(true);
+    documentService.uploadDocument(formData);
+
+    setButtonLoading(false);
+  };
+
   const handleUploadSuccess = () => {
     setIsUploaded(true);
   };
@@ -32,12 +46,16 @@ function UploadPage() {
       <Dropzone
         onUploadSuccess={handleUploadSuccess}
         setFileName={setFileName}
+        setFile={setFile}
       />
       <UploadConfirmCard
         isUploaded={isUploaded}
         selectedSkill={selectedSkill}
         handleSkillChange={handleSkillChange}
         fileName={fileName}
+        handleFileUpload={handleFileUpload}
+        setButtonLoading={setButtonLoading}
+        buttonLoading={buttonLoading}
       />
     </div>
   );

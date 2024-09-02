@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import "./index.css";
 import Frame from "./pages/Frame.jsx/Frame";
 import theme from "./theme"; // Import the custom theme
+import DocumentsPage from "./pages/DocumentsPage/DocumentsPage";
+import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -35,6 +37,8 @@ function App() {
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/frame" element={<Frame />} />
+          <Route path="/document-history" element={<DocumentsPage />} />
+          <Route path="/selectskill" element={<AbbySelectSkillPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
