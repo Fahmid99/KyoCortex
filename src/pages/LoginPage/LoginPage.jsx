@@ -8,19 +8,19 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import ReCAPTCHA from "react-google-recaptcha";
 import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
 import { useNavigate } from "react-router-dom";
-function LoginPage() {
+
+function LoginPage({setIsLoggedIn}) {
   const navigate = useNavigate();
 
   const handleCaptchaChange = (value) => {
     console.log("Captcha value:", value);
   };
-
-  const handleSignInClick = () => {
-    // Perform sign-in logic here
+  const handleLoggedIn = () => {
+    setIsLoggedIn(true);
     navigate("/dashboard");
   };
 
@@ -100,7 +100,7 @@ function LoginPage() {
                 variant="contained"
                 size="large"
                 sx={{ boxShadow: "none", width: "100%" }}
-                onClick={handleSignInClick}
+                onClick={handleLoggedIn}
               >
                 Sign In
               </Button>

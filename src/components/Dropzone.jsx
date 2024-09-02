@@ -1,57 +1,47 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import BlueOpen from "../assets/blueopen.svg";
 import BlueClose from "../assets/blueclose.svg";
 import BlueContain from "../assets/bluecontain.svg";
-import {
-  Card,
-  Checkbox,
-  FormControl,
-  Link,
-  TextField,
-  Button,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Button, Divider } from "@mui/material";
 
-export default function Dropzone(props) {
+export default function Dropzone({ onUploadSuccess }) {
   const [icon, setIcon] = useState(BlueClose);
-  const { getRootProps, getInputProps, open, acceptedFiles, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
-    onDrop: () => setIcon(BlueContain),
+    onDrop: () => {
+      setIcon(BlueContain);
+      onUploadSuccess(); // Notify parent component of successful upload
+    },
   });
-
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
 
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
-        background: "#f9f9f9",
+        alignItems: "center",
+        background: "white",
+        padding: "30px",
+        borderRadius: "30px",
+        textAlign: "center",
+        cursor: "pointer",
+        transition: "background-color 0.3s, transform 0.3s",
+        transform: isDragActive ? "scale(1.05)" : "scale(1)",
+        border: "1px solid #e0e0e0",
       }}
     >
       <div
         {...getRootProps()}
         style={{
-          width: "80%",
-          maxWidth: "600px",
+          width: "400px",
+          minWidth: "100px",
           padding: "20px",
           border: "2px dashed #BEC8D4",
-          borderRadius: "10px",
+          borderRadius: "30px",
           background: isDragActive ? "#E3F2FD" : "#F2F6FC",
-          textAlign: "center",
-          cursor: "pointer",
-          transition: "background-color 0.3s, transform 0.3s",
-          transform: isDragActive ? "scale(1.05)" : "scale(1)",
+          margin: "auto",
         }}
       >
         <input {...getInputProps()} />
@@ -66,11 +56,16 @@ export default function Dropzone(props) {
             opacity: isDragActive ? 0.8 : 1,
           }}
         />
-        <p style={{ margin: "20px 0", fontSize: "16px", color: "#424242" }}>
-          Drag your documents, photos, or videos here to start uploading.
+        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500" }}>
+          Drag your documents, or
+        </p>
+        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500" }}>
+          files here to start analyzing.
         </p>
         <p style={{ margin: "20px 0", fontSize: "16px", color: "#424242" }}>
-          OR
+          <Divider sx={{ width: "40%", margin: "auto", textAlign: "center" }}>
+            OR
+          </Divider>
         </p>
         <Button
           type="button"
@@ -79,7 +74,7 @@ export default function Dropzone(props) {
             padding: "10px 20px",
             border: "none",
             borderRadius: "5px",
-            backgroundColor: "#4354F8",
+            backgroundColor: "#1976D2",
             color: "white",
             fontSize: "16px",
             cursor: "pointer",
@@ -88,14 +83,6 @@ export default function Dropzone(props) {
           Browse files
         </Button>
       </div>
-      <aside style={{ marginTop: "20px", width: "80%", maxWidth: "600px" }}>
-        <h4
-          style={{ marginBottom: "10px", fontSize: "18px", color: "#424242" }}
-        >
-          Files
-        </h4>
-        <ul style={{ listStyle: "none", padding: "0" }}>{files}</ul>
-      </aside>
     </div>
   );
 }
