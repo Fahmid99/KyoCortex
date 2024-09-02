@@ -5,14 +5,16 @@ import BlueClose from "../assets/blueclose.svg";
 import BlueContain from "../assets/bluecontain.svg";
 import { Button, Divider } from "@mui/material";
 
-export default function Dropzone({ onUploadSuccess }) {
+export default function Dropzone({ onUploadSuccess, setFileName }) {
   const [icon, setIcon] = useState(BlueClose);
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
-    onDrop: () => {
+    onDrop: (acceptedFiles) => {
       setIcon(BlueContain);
       onUploadSuccess(); // Notify parent component of successful upload
+
+      if (acceptedFiles.length > 0) setFileName(acceptedFiles[0].name);
     },
   });
 
