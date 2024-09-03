@@ -18,6 +18,8 @@ function UploadPage({ setOnUploadSuccess }) {
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("file", file);
+    const currentDate = new Date().toISOString();
+    formData.append("uploadDate", currentDate);
     console.log(file);
     console.log(formData);
     setButtonLoading(true);

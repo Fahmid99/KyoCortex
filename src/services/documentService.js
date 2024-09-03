@@ -5,9 +5,8 @@ const API_BASE_URL = "http://localhost:3000";
 const uploadDocument = async (formData) => {
   try {
     // Add the current date to the formData
-    const currentDate = new Date().toISOString();
-    formData.append("uploadDate", currentDate);
 
+    console.log(formData)
     const response = await axios.post(`${API_BASE_URL}/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

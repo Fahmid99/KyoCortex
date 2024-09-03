@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import documentService from "../../services/documentService";
-import DocumentsTable from "./components/DocumentsTable";
+import DocumentsTable from "../../components/DocumentsTable"
 
 function DocumentsPage({ setCurrentDocument }) {
   const [documents, setDocuments] = useState([]);
@@ -38,10 +38,20 @@ function DocumentsPage({ setCurrentDocument }) {
   };
 
   const handleConfirm = async () => {
-    const response = await documentService.getDocumentById(selectedDocument.id);
-    setCurrentDocument(response);
+    try {
+      const response = await documentService.getDocumentById(selectedDocument.id);
+      setCurrentDocument(response);
 
-    navigate("/selectskill");
+      if (selectedEngine === "ABBY") {
+        navigate(`/selectskill/${selectedDocument.id}`);
+      } else if (selectedEngine === "Azure Document Intelligence") {
+        navigate(`/docintel/`);
+      } else {
+        console.error("Unknown engine selected");
+      }
+    } catch (error) {
+      console.error("Error in handleConfirm:", error);
+    }
   };
 
   return (

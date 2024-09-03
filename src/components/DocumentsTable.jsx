@@ -45,6 +45,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   cursor: "pointer",
 }));
 
+const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true,
+  }).format(date);
+};
+
 function DocumentsTable({
   documents,
   selectedDocument,
@@ -130,7 +143,7 @@ function DocumentsTable({
               >
                 <TableCell>{document.id}</TableCell>
                 <TableCell>{document.name}</TableCell>
-                <TableCell>{document.uploadDate}</TableCell>
+                <TableCell>{formatDate(document.uploadDate)}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>

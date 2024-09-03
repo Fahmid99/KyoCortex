@@ -57,7 +57,7 @@ function UploadProcessCard({
         </Grid>
         <Grid item>
           {isUploaded ? (
-            <img src={DocumentIcon} style={{ width: "90px", height: "auto" }} />
+            <img src={DocumentIcon} loading="lazy" style={{ width: "90px", height: "auto" }} />
           ) : (
             <img
               src={DocumentBeforeIcon}

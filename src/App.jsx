@@ -11,6 +11,7 @@ import theme from "./theme"; // Import the custom theme
 import DocumentsPage from "./pages/DocumentsPage/DocumentsPage";
 import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage";
 import AlertMessage from "./components/AlertMessage"; // Correct import
+import DocIntelPage from "./pages/DocIntelPage/DocIntelPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -53,9 +54,10 @@ function App() {
             element={<DocumentsPage setCurrentDocument={setCurrentDocument} />}
           />
           <Route
-            path="/selectskill"
+            path="/selectskill/:id"
             element={<AbbySelectSkillPage currentDocument={currentDocument} />}
           />
+          <Route path="/docintel" element={<DocIntelPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
