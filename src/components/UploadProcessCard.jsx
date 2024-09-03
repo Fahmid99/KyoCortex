@@ -1,17 +1,20 @@
-import React from "react";
+import { useState } from "react";
 import DocumentIcon from "../assets/document.png";
-import DocumentBeforeIcon from "../assets/documentbefore.png";
+import AbbyLogo from "../assets/abbylogo.webp";
 import InfoIcon from "@mui/icons-material/Info";
-import {
-  Select,
-  MenuItem,
-  Button,
-  Typography,
-  Grid,
-  Paper,
-} from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { Select, MenuItem, Button, Typography, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function UploadProcessCard({ isUploaded, selectedSkill, handleSkillChange }) {
+function UploadProcessCard({ isUploaded, currentDocument }) {
+  const [selectedSkill, setSelectedSkill] = useState();
+  const [showReviewButton, setShowReviewButton] = useState(false);
+  const navigate = useNavigate(); 
+  const handleSkillChange = (event) => {
+    setSelectedSkill(event.target.value);
+    setShowReviewButton(true);
+  };
+
   return (
     <Paper
       elevation={3}
@@ -21,6 +24,7 @@ function UploadProcessCard({ isUploaded, selectedSkill, handleSkillChange }) {
         borderRadius: "10px",
         boxShadow: "none",
         border: "1px solid #e0e0e0",
+        width: "200px",
       }}
     >
       <Grid
@@ -36,25 +40,17 @@ function UploadProcessCard({ isUploaded, selectedSkill, handleSkillChange }) {
               <InfoIcon style={{ fontSize: 40, color: "#1976d2" }} />
             </Grid>
             <Grid item>
-              <Typography>Upload a file first</Typography>
+              <Typography>Select a skill</Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item>
-          {isUploaded ? (
-            <img src={DocumentIcon} style={{ width: "90px", height: "auto" }} />
-          ) : (
-            <img
-              src={DocumentBeforeIcon}
-              style={{ width: "90px", height: "auto" }}
-            />
-          )}
+          <img src={DocumentIcon} style={{ width: "90px", height: "auto" }} />
         </Grid>
         <Grid item>
           <Select
             value={selectedSkill}
             onChange={handleSkillChange}
-            disabled={!isUploaded}
             displayEmpty
             sx={{ minWidth: 200, background: "white" }}
           >
@@ -67,13 +63,32 @@ function UploadProcessCard({ isUploaded, selectedSkill, handleSkillChange }) {
           </Select>
         </Grid>
         <Grid item>
+          <Typography>{currentDocument.name}</Typography>
+        </Grid>
+        <Grid item>
           <Button
             disabled={!selectedSkill}
             variant="contained"
             sx={{ boxShadow: "none" }}
+            onClick={()=> {navigate("/frame")}}
           >
             Review
           </Button>
+        </Grid>
+        <Grid
+          display={"flex"}
+          flexDirection={"row"}
+          sx={{
+            position: "absolute",
+            bottom: "10px",
+            left: "10px",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ alignSelf: "center", fontWeight: "bold" }}>
+            Powered By
+          </Typography>
+          <img src={AbbyLogo} style={{ width: "100px" }} />
         </Grid>
       </Grid>
     </Paper>

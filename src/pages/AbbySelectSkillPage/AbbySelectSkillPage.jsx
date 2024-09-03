@@ -1,9 +1,9 @@
 import UploadProcessCard from "../../components/UploadProcessCard";
 
-function AbbySelectSkillPage() {
+function AbbySelectSkillPage({ currentDocument }) {
   return (
-    <div>
-      <UploadProcessCard />
+    <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+      <UploadProcessCard currentDocument={currentDocument} />
     </div>
   );
 }

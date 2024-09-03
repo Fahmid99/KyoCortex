@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Select, MenuItem, Button, Typography } from "@mui/material";
+import { Select, MenuItem, Button, Typography, Box } from "@mui/material";
 import Dropzone from "../../components/Dropzone";
 import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
 import UploadConfirmCard from "../../components/UploadConfirmCard";
 import documentService from "../../services/documentService";
 import { useNavigate } from "react-router-dom";
 
-function UploadPage() {
+function UploadPage({ setOnUploadSuccess }) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [showReviewButton, setShowReviewButton] = useState(false);
@@ -22,6 +22,8 @@ function UploadPage() {
     console.log(formData);
     setButtonLoading(true);
     await documentService.uploadDocument(formData);
+
+    setOnUploadSuccess(true);
     setButtonLoading(false);
     navigate("/document-history");
   };
@@ -30,36 +32,38 @@ function UploadPage() {
     setIsUploaded(true);
   };
 
-  const handleSkillChange = (event) => {
-    setSelectedSkill(event.target.value);
-    setShowReviewButton(true);
-  };
-
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
         justifyContent: "center",
+        alignItems: "center",
         height: `calc(100vh - 80px)`,
         background: "#eceff1",
       }}
     >
-      <Dropzone
-        onUploadSuccess={handleUploadSuccess}
-        setFileName={setFileName}
-        setFile={setFile}
-      />
-      <UploadConfirmCard
-        isUploaded={isUploaded}
-        selectedSkill={selectedSkill}
-        handleSkillChange={handleSkillChange}
-        fileName={fileName}
-        handleFileUpload={handleFileUpload}
-        setButtonLoading={setButtonLoading}
-        buttonLoading={buttonLoading}
-      />
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        maxWidth="800px" // Adjust this value as needed
+      >
+        <Dropzone
+          onUploadSuccess={handleUploadSuccess}
+          setFileName={setFileName}
+          setFile={setFile}
+        />
+        <UploadConfirmCard
+          isUploaded={isUploaded}
+          selectedSkill={selectedSkill}
+          fileName={fileName}
+          handleFileUpload={handleFileUpload}
+          setButtonLoading={setButtonLoading}
+          buttonLoading={buttonLoading}
+        />
+      </Box>
     </div>
   );
 }

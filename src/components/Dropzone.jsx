@@ -36,6 +36,7 @@ export default function Dropzone({ onUploadSuccess, setFileName, setFile }) {
         transition: "background-color 0.3s, transform 0.3s",
         transform: isDragActive ? "scale(1.05)" : "scale(1)",
         border: "1px solid #e0e0e0",
+        height:"auto",
       }}
     >
       <div
@@ -48,6 +49,7 @@ export default function Dropzone({ onUploadSuccess, setFileName, setFile }) {
           borderRadius: "30px",
           background: isDragActive ? "#E3F2FD" : "#F2F6FC",
           margin: "auto",
+          height:"auto",
         }}
       >
         <input {...getInputProps()} />

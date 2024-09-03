@@ -10,11 +10,15 @@ import Frame from "./pages/Frame.jsx/Frame";
 import theme from "./theme"; // Import the custom theme
 import DocumentsPage from "./pages/DocumentsPage/DocumentsPage";
 import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage";
+import AlertMessage from "./components/AlertMessage"; // Correct import
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
+
+  const [onUploadSuccess, setOnUploadSuccess] = useState(false);
+  const [currentDocument, setCurrentDocument] = useState();
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
@@ -24,6 +28,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         {isLoggedIn && <Navbar setIsLoggedIn={setIsLoggedIn} />}
+        <AlertMessage
+          onUploadSuccess={onUploadSuccess}
+          setOnUploadSuccess={setOnUploadSuccess}
+        />
         <Routes>
           <Route
             path="/"
@@ -34,11 +42,20 @@ function App() {
               />
             }
           />
-          <Route path="/upload" element={<UploadPage />} />
+          <Route
+            path="/upload"
+            element={<UploadPage setOnUploadSuccess={setOnUploadSuccess} />}
+          />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/frame" element={<Frame />} />
-          <Route path="/document-history" element={<DocumentsPage />} />
-          <Route path="/selectskill" element={<AbbySelectSkillPage />} />
+          <Route
+            path="/document-history"
+            element={<DocumentsPage setCurrentDocument={setCurrentDocument} />}
+          />
+          <Route
+            path="/selectskill"
+            element={<AbbySelectSkillPage currentDocument={currentDocument} />}
+          />
         </Routes>
       </Router>
     </ThemeProvider>

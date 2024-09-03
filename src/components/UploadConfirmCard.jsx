@@ -26,6 +26,7 @@ function UploadProcessCard({
     <Paper
       elevation={3}
       sx={{
+        height: "auto",
         padding: "2em",
         margin: "1em",
         borderRadius: "10px",
@@ -75,7 +76,7 @@ function UploadProcessCard({
             onClick={handleFileUpload}
             loading={buttonloading}
             loadingPosition="end"
-            endIcon={<CloudUploadIcon/>}
+            endIcon={<CloudUploadIcon />}
           >
             Upload
           </LoadingButton>
