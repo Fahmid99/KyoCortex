@@ -30,7 +30,7 @@ const ManualReview = () => {
     console.log(event.data);
     if (event.data.target === "parent") {
       if (event.data.eventName === "ManualReviewWasCompleted") {
-        window.location.href = "home.html";
+        window.location.href = "/dashboard";
       }
     }
   };
