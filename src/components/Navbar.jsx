@@ -57,14 +57,14 @@ function ResponsiveAppBar({ setIsLoggedIn }) {
             sx={{ fontSize: "2em", display: { xs: "none", md: "flex" }, mr: 1 }}
           />
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component="a"
             href="/dashboard"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "Inter",
+              fontFamily: "Poppins",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",

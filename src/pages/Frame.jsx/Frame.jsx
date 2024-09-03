@@ -6,8 +6,9 @@ const ManualReview = () => {
   useEffect(() => {
     const iframe = document.createElement("iframe");
     iframe.src = getUrl();
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
+    iframe.style.width = "calc(100vw)";
+    iframe.style.height = "calc(100vh - 75px)";
+    iframe.style.border = "0"
     try {
       document
         .getElementById("main")
@@ -41,10 +42,7 @@ const ManualReview = () => {
         minHeight: "100%",
         height: `calc(100vh - 70px)`,
         position: "relative",
-        margin: 0,
-        padding: 0,
 
-        padding: "20px",
         boxSizing: "border-box",
       }}
     ></div>
