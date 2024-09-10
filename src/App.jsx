@@ -12,6 +12,7 @@ import DocumentsPage from "./pages/DocumentsPage/DocumentsPage";
 import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage";
 import AlertMessage from "./components/AlertMessage"; // Correct import
 import DocIntelPage from "./pages/DocIntelPage/DocIntelPage";
+import AbbySignInPage from "./pages/AbbySignInPage/AbbySignInPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -58,6 +59,7 @@ function App() {
             element={<AbbySelectSkillPage currentDocument={currentDocument} />}
           />
           <Route path="/docintel" element={<DocIntelPage />} />
+          <Route path="/abbysignin" element={<AbbySignInPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

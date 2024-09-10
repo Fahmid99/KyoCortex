@@ -87,6 +87,6 @@ app.get("/files/:id/content", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(4001, () => {
+  console.log("Server is running on port 4001");
 });

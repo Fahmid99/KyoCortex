@@ -18,6 +18,7 @@
     "@mui/icons-material": "^6.0.1",
     "@mui/lab": "^6.0.0-beta.8",
     "@mui/material": "^6.0.1",
+    "abby-vantage-portal": "file:",
     "axios": "^1.7.7",
     "framer-motion": "^11.3.31",
     "react": "^18.3.1",
