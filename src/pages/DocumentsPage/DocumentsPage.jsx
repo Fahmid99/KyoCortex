@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import documentService from "../../services/documentService";
 import DocumentsTable from "../../components/DocumentsTable"
 
-function DocumentsPage({ setCurrentDocument }) {
+function DocumentsPage({ setCurrentDocument, analyzeDocument, getDocumentBase64, setScanType, scanType}) {
   const [documents, setDocuments] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [open, setOpen] = useState(false);
@@ -22,9 +22,11 @@ function DocumentsPage({ setCurrentDocument }) {
     fetchData();
   }, []);
 
-  const handleRowClick = (document) => {
+  const handleRowClick = async (document) => {
+    await getDocumentBase64(document.id);
     setSelectedDocument(document);
     console.log(document.id);
+    console.log(document)
     setOpen(true);
   };
 
@@ -45,7 +47,8 @@ function DocumentsPage({ setCurrentDocument }) {
       if (selectedEngine === "ABBY") {
         navigate(`/selectskill/${selectedDocument.id}`);
       } else if (selectedEngine === "Azure Document Intelligence") {
-        navigate(`/docintel/`);
+        await analyzeDocument();
+        navigate(`/docintel/${selectedDocument.id}`);
       } else {
         console.error("Unknown engine selected");
       }
@@ -65,6 +68,8 @@ function DocumentsPage({ setCurrentDocument }) {
         handleEngineChange={handleEngineChange}
         handleConfirm={handleConfirm}
         open={open}
+        setScanType={setScanType}
+        scanType={scanType}
       />
     </div>
   );

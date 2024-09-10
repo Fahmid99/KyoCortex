@@ -1,5 +1,5 @@
 {
-  "name": "abby-vantage-portal",
+  "name": "merged-project",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
+    "@azure/ai-form-recognizer": "^5.0.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fontsource/inter": "^5.0.20",
@@ -18,14 +20,27 @@
     "@mui/icons-material": "^6.0.1",
     "@mui/lab": "^6.0.0-beta.8",
     "@mui/material": "^6.0.1",
+    "@mui/x-date-pickers": "^7.12.1",
     "abby-vantage-portal": "file:",
     "axios": "^1.7.7",
+    "dayjs": "^1.11.12",
     "framer-motion": "^11.3.31",
+    "kyoscan": "file:",
+    "material": "^0.9.15",
+    "merged-project": "file:",
+    "npm-force-resolutions": "^0.0.10",
+    "pdfjs-dist": "^4.5.136",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
     "react-google-recaptcha": "^3.1.0",
-    "react-router-dom": "^6.26.1"
+    "react-pdf": "^9.1.0",
+    "react-router-dom": "^6.26.1",
+    "react-spinners": "^0.14.1",
+    "ui": "^0.2.4"
+  },
+  "resolutions": {
+    "pdfjs-dist": "4.5.136"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

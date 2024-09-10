@@ -23,11 +23,15 @@ function UploadPage({ setOnUploadSuccess }) {
     console.log(file);
     console.log(formData);
     setButtonLoading(true);
-    await documentService.uploadDocument(formData);
-
-    setOnUploadSuccess(true);
-    setButtonLoading(false);
-    navigate("/document-history");
+    try {
+      await documentService.uploadDocument(formData);
+      setOnUploadSuccess(true);
+      navigate("/document-history");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    } finally {
+      setButtonLoading(false);
+    }
   };
 
   const handleUploadSuccess = () => {

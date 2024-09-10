@@ -13,18 +13,53 @@ import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage
 import AlertMessage from "./components/AlertMessage"; // Correct import
 import DocIntelPage from "./pages/DocIntelPage/DocIntelPage";
 import AbbySignInPage from "./pages/AbbySignInPage/AbbySignInPage";
-
+import azureDocumentService from "./services/azureDocumentService";
+import Loader from "./components/AzureComponents/components/Loader";
 function App() {
+  const scanTypeValues = {
+    default: "prebuilt-document",
+    invoice: "prebuilt-invoice",
+    receipt: "prebuilt-receipt",
+    contract: "prebuilt-contract",
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
 
   const [onUploadSuccess, setOnUploadSuccess] = useState(false);
   const [currentDocument, setCurrentDocument] = useState();
+  const [loading, setLoading] = useState(false);
+  const [documentData, setDocumentData] = useState();
+  const [base64, setBase64] = useState();
+  const [scanType, setScanType] = useState(scanTypeValues.default);
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
+
+  const analyzeDocument = async () => {
+    setLoading(true);
+    // let obj = {
+    //   base64String: base64,
+    //   scanType,
+    // };
+    try {
+      // const response = await azureDocumentService.analyzeDocument(obj);
+      const response = await azureDocumentService.analyzeDocument();
+      setDocumentData(response);
+    } catch (error) {
+      console.error("Error analyzing document:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getDocumentBase64 = (id) => {
+    azureDocumentService.getDocumentBase64(id).then((base64Data) => {
+      setBase64(base64Data);
+    });
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -34,33 +69,61 @@ function App() {
           onUploadSuccess={onUploadSuccess}
           setOnUploadSuccess={setOnUploadSuccess}
         />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <LoginPage
-                setIsLoggedIn={setIsLoggedIn}
-                sx={{ alignSelf: "center", background: "red" }}
-              />
-            }
-          />
-          <Route
-            path="/upload"
-            element={<UploadPage setOnUploadSuccess={setOnUploadSuccess} />}
-          />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/frame" element={<Frame />} />
-          <Route
-            path="/document-history"
-            element={<DocumentsPage setCurrentDocument={setCurrentDocument} />}
-          />
-          <Route
-            path="/selectskill/:id"
-            element={<AbbySelectSkillPage currentDocument={currentDocument} />}
-          />
-          <Route path="/docintel" element={<DocIntelPage />} />
-          <Route path="/abbysignin" element={<AbbySignInPage />} />
-        </Routes>
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Loader />
+          </div>
+        ) : (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <LoginPage
+                  setIsLoggedIn={setIsLoggedIn}
+                  sx={{ alignSelf: "center", background: "red" }}
+                />
+              }
+            />
+            <Route
+              path="/upload"
+              element={<UploadPage setOnUploadSuccess={setOnUploadSuccess} />}
+            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/frame" element={<Frame />} />
+            <Route
+              path="/document-history"
+              element={
+                <DocumentsPage
+                  setCurrentDocument={setCurrentDocument}
+                  analyzeDocument={analyzeDocument}
+                  getDocumentBase64={getDocumentBase64}
+                  setScanType={setScanType}
+                  scanType={scanType}
+                />
+              }
+            />
+            <Route
+              path="/selectskill/:id"
+              element={
+                <AbbySelectSkillPage currentDocument={currentDocument} />
+              }
+            />
+            <Route
+              path="/docintel/:id"
+              element={
+                <DocIntelPage base64={base64} documentData={documentData} />
+              }
+            />
+            <Route path="/abbysignin" element={<AbbySignInPage />} />
+          </Routes>
+        )}
       </Router>
     </ThemeProvider>
   );

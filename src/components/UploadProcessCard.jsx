@@ -17,6 +17,7 @@ function UploadProcessCard({ isUploaded, currentDocument }) {
     setShowReviewButton(true);
   };
 
+  console.log(currentDocument)
   return (
     <Paper
       elevation={3}
@@ -84,7 +85,7 @@ function UploadProcessCard({ isUploaded, currentDocument }) {
           </Select>
         </Grid>
         <Grid item>
-          <Typography>{currentDocument.name}</Typography>
+          <Typography>{currentDocument.contents[0].path}</Typography>
         </Grid>
         <Grid item>
           <Button

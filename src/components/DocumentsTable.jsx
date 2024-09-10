@@ -58,6 +58,14 @@ const formatDate = (isoString) => {
   }).format(date);
 };
 
+const scanTypeValues = {
+  Default: "prebuilt-document",
+  Invoice: "prebuilt-invoice",
+  Receipt: "prebuilt-receipt",
+  Contract: "prebuilt-contract",
+  Id: "prebuilt-idDocument",
+};
+
 function DocumentsTable({
   documents,
   selectedDocument,
@@ -67,6 +75,8 @@ function DocumentsTable({
   handleEngineChange,
   handleConfirm,
   open,
+  setScanType,
+  scanType
 }) {
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
@@ -142,8 +152,10 @@ function DocumentsTable({
                 onClick={() => handleRowClick(document)}
               >
                 <TableCell>{document.id}</TableCell>
-                <TableCell>{document.name}</TableCell>
-                <TableCell>{formatDate(document.uploadDate)}</TableCell>
+                <TableCell>
+                  {document.contents ? document.contents[0].path : "unknown"}
+                </TableCell>
+                <TableCell>{formatDate(document.created)}</TableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -176,6 +188,24 @@ function DocumentsTable({
                       Azure Document Intelligence
                     </MenuItem>
                   </Select>
+                  <FormControl fullWidth sx={{ mt: 2 }}>
+                    <InputLabel id="scan-type-label">Scan Type</InputLabel>
+                    <Select
+                      labelId="scan-type-label"
+                      value={scanType}
+                      label="Scan Type"
+                      onChange={(e) => {
+                        setScanType(e.target.value);
+                        console.log(e.target.value);
+                      }}
+                    >
+                      {Object.keys(scanTypeValues).map((key) => (
+                        <MenuItem key={key} value={scanTypeValues[key]}>
+                          {key}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </FormControl>
               </>
             )}
