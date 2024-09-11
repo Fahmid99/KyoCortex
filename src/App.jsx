@@ -118,7 +118,7 @@ function App() {
             <Route
               path="/docintel/:id"
               element={
-                <DocIntelPage base64={base64} documentData={documentData} />
+                <DocIntelPage base64={base64} documentData={documentData} scanType={scanType} />
               }
             />
             <Route path="/abbysignin" element={<AbbySignInPage />} />

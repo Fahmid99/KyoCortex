@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Document, Page } from "react-pdf";
 
 function Pdf({
@@ -10,8 +10,11 @@ function Pdf({
   selectedKey,
   region,
   setAutoFormValues,
+  selectedKeyPolygon,
+  selectedValuePolygon,
 }) {
   const canvasRef = useRef(null);
+  console.log(selectedKeyPolygon);
 
   const convertInchesToPixels = (inches, dpi = 96) => inches * dpi;
   const widthInPixels = convertInchesToPixels(documentData.pageWidth);
@@ -45,6 +48,8 @@ function Pdf({
     canvasRef,
     region,
     fillStyle,
+    selectedKeyPolygon,
+    selectedValuePolygon,
     dpi = 96
   ) => {
     if (!canvasRef.current || !region) return;
@@ -54,7 +59,7 @@ function Pdf({
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const draw = (bounds, color) => {
+    const draw = (bounds, color, lineWidth = 3, fill = fillStyle) => {
       const convertedPolygon = convertPolygon(bounds, dpi);
       ctx.beginPath();
       convertedPolygon.forEach((point, index) => {
@@ -66,10 +71,16 @@ function Pdf({
       });
       ctx.closePath();
       ctx.strokeStyle = color;
-      ctx.fillStyle = fillStyle;
-      ctx.lineWidth = 4;
+      ctx.fillStyle = fill;
+      ctx.lineWidth = lineWidth;
       ctx.fill();
       ctx.stroke();
+    };
+
+    const highlightPolygon = (polygon, color) => {
+      if (polygon) {
+        draw(polygon, color, 6, "rgba(227, 242, 253, 0.3)"); // Thicker border and light blue background for highlighted polygons
+      }
     };
 
     if (
@@ -113,6 +124,10 @@ function Pdf({
         });
       });
     }
+
+    // Highlight selected polygons
+    highlightPolygon(selectedKeyPolygon, "#2979ff");
+    highlightPolygon(selectedValuePolygon, "#2979ff");
   };
 
   const handleCanvasClick = (event) => {
@@ -179,7 +194,9 @@ function Pdf({
     convertPolygon,
     canvasRef,
     region,
-    "rgba(255, 183, 77, 0.3)",
+    "rgba(255, 183, 77, 0.3)", // Default fill style
+    selectedKeyPolygon,
+    selectedValuePolygon,
     96
   );
 
@@ -199,14 +216,12 @@ function Pdf({
           height={heightInPixels}
           onClick={handleCanvasClick}
           renderMode="canvas"
-          
         />
       </Document>
       <canvas
         ref={canvasRef}
         width={widthInPixels}
         height={heightInPixels}
-     
         style={{
           position: "absolute",
           top: 0,

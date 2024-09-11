@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import Pdf from "./Pdf";
 import { pdfjs } from "react-pdf";
-
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import Card from "@mui/material/Card"; // Import Card component
-
 import PdfControls from "./PdfControls";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -26,13 +24,13 @@ const PdfViewer = ({
   convertInchesToPixels,
   region,
   setAutoFormValues,
+  selectedKeyPolygon,
+  selectedValuePolygon,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
   const containerRef = useRef(null);
-  const translateValue = ((1 - scale) / 2) * 100;
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,8 +68,6 @@ const PdfViewer = ({
     }
   };
 
-  console.log(documentData);
-
   return (
     <div
       ref={containerRef}
@@ -81,17 +77,24 @@ const PdfViewer = ({
         height: "100%",
         background: "#525659",
         position: "relative",
-    
       }}
     >
-      <PdfControls
-        pageNumber={pageNumber}
-        handlePageNumber={handlePageNumber}
-        numPages={numPages}
-        handleSubmit={handleSubmit}
-        handleZoomIn={handleZoomIn}
-        handleZoomOut={handleZoomOut}
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <PdfControls
+          pageNumber={pageNumber}
+          handlePageNumber={handlePageNumber}
+          numPages={numPages}
+          handleSubmit={handleSubmit}
+          handleZoomIn={handleZoomIn}
+          handleZoomOut={handleZoomOut}
+        />
+      </div>
       <div
         style={{
           display: "flex",
@@ -107,7 +110,7 @@ const PdfViewer = ({
             overflow: "visible",
             marginTop: "3em",
             transform: `scale(${scale})`,
-            transformOrigin: " top",
+            transformOrigin: "top",
             margin: "auto",
           }}
         >
@@ -126,6 +129,8 @@ const PdfViewer = ({
             region={region}
             setAutoFormValues={setAutoFormValues}
             scale={scale}
+            selectedKeyPolygon={selectedKeyPolygon}
+            selectedValuePolygon={selectedValuePolygon}
           />
         </Card>
       </div>

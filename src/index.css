@@ -12,3 +12,20 @@ html, body {
   background: #eceff1  !important;
 }
 
+.pdf-controls-container {
+
+  width: 100%;
+  background: #323639;
+  z-index: 1000;
+  display: flex;
+  justify-content: center; /* Center the controls container */
+}
+
+.pdf-controls {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+
+  width: 100%; 
+  max-width: 1200px; 
+}

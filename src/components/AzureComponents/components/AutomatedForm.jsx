@@ -1,5 +1,24 @@
-import { useEffect } from "react";
-import { TextField, Button, Grid, Typography, Divider } from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  TextField,
+  Button,
+  Typography,
+  Divider,
+  Card,
+  CardContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2"; // Importing Grid2 and renaming it to Grid
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -11,17 +30,25 @@ const AutomatedForm = ({
   setAutoFormValues,
   autoFormValues,
   setSelectedKey,
+  setSelectedKeyPolygon,
+  setSelectedValuePolygon,
 }) => {
+  const [bgColor, setBgColor] = useState("white");
+  const [selectedField, setSelectedField] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [tableData, setTableData] = useState([]);
+
   useEffect(() => {
     if (documentData) {
       const initialautoFormValues = {};
-      console.log(scanType)
       if (scanType !== "prebuilt-document") {
         documentData.documents[0].fields.forEach((field) => {
           initialautoFormValues[field.key] = {
             value: field.value || "",
             confidence: field.confidence || 0, // Assuming confidence is a property of field
             color: field.color,
+            keyPolygon: field.boundingRegions[0] ? field.boundingRegions[0].polygon : null, // Assuming polygon is a property of field
+            kind: field.kind, // Add kind to the initial values
           };
         });
       } else {
@@ -30,6 +57,9 @@ const AutomatedForm = ({
             value: pair.value || "",
             confidence: pair.confidence || 0, // Assuming confidence is a property of pair
             color: pair.color,
+            keyPolygon:  pair.keyBoundingRegions[0] ?  pair.keyBoundingRegions[0].polygon : null, // Assuming polygon is a property of pair
+            valuePolygon:  pair.valueBoundingRegions[0] ? pair.valueBoundingRegions[0].polygon : null,
+            kind: pair.kind, // Add kind to the initial values
           };
         });
       }
@@ -40,7 +70,6 @@ const AutomatedForm = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(e.target.value);
     setAutoFormValues((prevValues) => ({
       ...prevValues,
       [name]: {
@@ -59,13 +88,36 @@ const AutomatedForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", autoFormValues);
+    const formValues = Object.entries(autoFormValues).reduce((acc, [key, { value }]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+    console.log("Form submitted:", formValues);
   };
 
-  const handleClick = (name) => {
+  const handleCardClick = (name) => {
     setSelectedKey(name);
+    setSelectedKeyPolygon(autoFormValues[name].keyPolygon);
+    setSelectedValuePolygon(autoFormValues[name].valuePolygon);
+    setSelectedField(name);
     console.log("Selected key:", name);
-    console.log(autoFormValues);
+    console.log("Selected key polygon:", autoFormValues[name].keyPolygon);
+    console.log("Selected value polygon:", autoFormValues[name].valuePolygon);
+  };
+
+  const handleOpen = (data) => {
+    setTableData(data);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleTableChange = (rowIndex, key, value) => {
+    const updatedTableData = [...tableData];
+    updatedTableData[rowIndex].properties[key].content = value;
+    setTableData(updatedTableData);
   };
 
   return (
@@ -73,64 +125,102 @@ const AutomatedForm = ({
       style={{
         border: "1px solid #E7E7E8",
         borderTop: "none",
-        height: "auto", // Set height to fit the screen
         paddingBottom: "20px",
         background: "white",
       }}
     >
       <form onSubmit={handleSubmit}>
-        <Grid container>
-        
+        <Grid container spacing={0}>
           {Object.entries(autoFormValues).map(
-            ([key, { value, confidence, color }]) => (
-              <Grid item xs={12} key={key} sx={{ marginTop: "0.5em"  }}>
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <div
-                      style={{
-                        backgroundColor: color,
-                        width: "20px",
-                        height: "20px",
-                        margin: "5px",
-                        marginLeft: "10px",
-                      }}
-                    ></div>
-                  </Grid>
-                  <Grid item>
+            ([key, { value, confidence, color, keyPolygon, valuePolygon, kind }]) => (
+              <Grid size={12} key={key} sx={{}}>
+                <Card
+                  sx={{
+                    display: "flex",
+                    alignItems: "stretch", // Ensure the card stretches to fit its content
+                    boxShadow: "none",
+                    cursor: "pointer", // Add cursor pointer for better UX
+                    background: selectedField === key ? "#e3f2fd" : "white",
+                    border: selectedField === key && "2px solid #2979ff",
+                    borderRadius: "0px",
+                  }}
+                  onClick={() => handleCardClick(key)}
+                >
+                  <div
+                    style={{
+                      background: color,
+                      width: "10px", // Increased width for better visibility
+                      height: "auto", // Ensure the div stretches to fit the card's height
+                    }}
+                  ></div>
+                  <CardContent sx={{ flex: 1 }}>
                     <Typography
-                      style={{ marginLeft: "10px", fontWeight: "bold" }}
+                      style={{ fontWeight: "bold", marginBottom: "0.5em" }}
                     >
                       {key}
                     </Typography>
-                  </Grid>
-                </Grid>
-
-                {key.includes("date") ? (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label={key}
-                      value={value || null} // Ensure value is not undefined
-                      onChange={(date) => handleDateChange(key, date)}
-                      renderInput={(params) => (
-                        <TextField {...params} fullWidth />
-                      )}
-                    />
-                  </LocalizationProvider>
-                ) : (
-                  <>
-                    <div
-                      style={{
-                        margin: "5px",
-                        padding: "0.5em",
-                      }}
-                    >
+                    {kind === "array" ? (
+                      <>
+                        <Button variant="outlined" onClick={() => handleOpen(value)}>
+                          View Table
+                        </Button>
+                        <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                          <DialogTitle>{key}</DialogTitle>
+                          <DialogContent>
+                            <TableContainer >
+                              <Table>
+                                <TableHead>
+                                  <TableRow>
+                                    {Object.keys(value[0].properties).map((header) => (
+                                      <TableCell key={header}>{header}</TableCell>
+                                    ))}
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {tableData.map((row, rowIndex) => (
+                                    <TableRow key={rowIndex}>
+                                      {Object.entries(row.properties).map(([cellKey, cell], cellIndex) => (
+                                        <TableCell key={cellIndex}>
+                                          <TextField
+                                            value={cell.content}
+                                            onChange={(e) => handleTableChange(rowIndex, cellKey, e.target.value)}
+                                            fullWidth
+                                          />
+                                        </TableCell>
+                                      ))}
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleClose}>Close</Button>
+                          </DialogActions>
+                        </Dialog>
+                      </>
+                    ) : key.includes("date") ? (
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label={key}
+                          value={value || null} // Ensure value is not undefined
+                          onChange={(date) => handleDateChange(key, date)}
+                          renderInput={(params) => (
+                            <TextField {...params} fullWidth />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    ) : (
                       <TextField
                         name={key}
                         value={value || ""} // Ensure value is not undefined
                         onChange={handleChange}
                         fullWidth
-                        onClick={() => handleClick(key)}
-                        sx={{ background: "white" }}
+                        sx={{
+                          background: "white",
+                          marginBottom: "0.5em",
+                          borderRadius: 0,
+                        }} // Set borderRadius to 0
                         InputLabelProps={{
                           shrink: true,
                           style: {
@@ -139,16 +229,16 @@ const AutomatedForm = ({
                           },
                         }}
                       />
-                      <ConfidenceDisplay confidence={confidence} />
-                    </div>
-                    <Divider style={{ margin: "10px 0", width: "100%" }} />
-                  </>
-                )}
+                    )}
+                    <ConfidenceDisplay confidence={confidence} />
+                  </CardContent>
+                </Card>
+                <Divider />
               </Grid>
             )
           )}
 
-          <Grid item xs={12} container justifyContent="center">
+          <Grid size={12} container justifyContent="center">
             <Button type="submit" variant="contained">
               Submit
             </Button>

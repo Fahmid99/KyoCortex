@@ -5,7 +5,7 @@ import AutomatedForm from "./components/AutomatedForm";
 import PdfViewer from "./components/PdfViewer";
 import Toolbar from "./components/Toolbar";
 import ActionTab from "./components/ActionTab";
-
+import JsonDisplay from "./components/JsonDisplay";
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -24,11 +24,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 0, ...sx }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 0, ...sx }}>{children}</Box>}
     </div>
   );
 }
@@ -47,6 +43,8 @@ function DocumentViewer({
   const [formSelected, setFormSelected] = useState(false);
   const [selectedKey, setSelectedKey] = useState("");
   const [value, setValue] = useState(0);
+  const [selectedKeyPolygon, setSelectedKeyPolygon] = useState(null);
+  const [selectedValuePolygon, setSelectedValuePolygon] = useState(null);
 
   const [region, setRegion] = useState(
     documentData.documents.length
@@ -78,7 +76,7 @@ function DocumentViewer({
   }
 
   return (
-    <div>
+    <div style={{ height: "calc(100vh - 70px)" }}>
       <Grid container spacing={0} style={{ height: "100%" }}>
         <Grid item xs={6} style={{ height: "100%", overflow: "auto" }}>
           <PdfViewer
@@ -95,6 +93,8 @@ function DocumentViewer({
             setAutoFormValues={setAutoFormValues}
             setPageNumber={setPageNumber}
             pageNumber={pageNumber}
+            selectedKeyPolygon={selectedKeyPolygon}
+            selectedValuePolygon={selectedValuePolygon}
           />
         </Grid>
 
@@ -131,7 +131,7 @@ function DocumentViewer({
               <Tab sx={{ fontWeight: "bold" }} label="JSON" {...a11yProps(2)} />
             </Tabs>
           </div>
-          <div style={{ height: "calc(100% - 100px)", overflow: "auto" }}>
+          <div style={{ height: "calc(100% - 85px)", overflow: "auto" }}>
             <TabPanel value={value} index={0} sx={{ p: 0 }}>
               <AutomatedForm
                 documentData={documentData}
@@ -139,13 +139,15 @@ function DocumentViewer({
                 autoFormValues={autoFormValues}
                 setAutoFormValues={setAutoFormValues}
                 setSelectedKey={setSelectedKey}
+                setSelectedKeyPolygon={setSelectedKeyPolygon}
+                setSelectedValuePolygon={setSelectedValuePolygon}
               />
             </TabPanel>
             <TabPanel value={value} index={1} sx={{ p: 0 }}>
-              Item Two
+             { documentData.toString()}
             </TabPanel>
             <TabPanel value={value} index={2} sx={{ p: 0 }}>
-              Item Three
+            <JsonDisplay documentData={documentData} />
             </TabPanel>
           </div>
         </Grid>
@@ -153,6 +155,7 @@ function DocumentViewer({
           item
           xs={2.5}
           sx={{
+            height: "100%",
             background: "white",
             border: "1px solid #E7E7E8",
             borderTop: "0px",
@@ -178,6 +181,7 @@ function DocumentViewer({
               Actions and tools
             </Typography>
           </div>
+          <Divider />
           <Toolbar
             setRegion={setRegion}
             region={region}

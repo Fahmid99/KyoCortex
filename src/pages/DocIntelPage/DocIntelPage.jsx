@@ -5,7 +5,7 @@ import axios from "axios";
 import DocumentViewer from "../../components/AzureComponents/DocumentViewer";
 import azureDocumentService from "../../services/azureDocumentService";
 
-function DocIntelPage({ base64, documentData }) {
+function DocIntelPage({ base64, documentData, scanType }) {
   const initialFormValues = {
     title: { label: "Title", value: "" },
     vendorname: { label: "Vendor Name", value: "" },
@@ -29,7 +29,7 @@ function DocIntelPage({ base64, documentData }) {
   const [loading, setLoading] = useState(true); // Initialize loading state to true
 
   const [formValues, setFormValues] = useState(initialFormValues);
-  const [scanType, setScanType] = useState(scanTypeValues.default);
+
   const [formType, setFormType] = useState(formTypeValues.custom);
   const [autoFormValues, setAutoFormValues] = useState({});
   const [pageNumber, setPageNumber] = useState(0);
