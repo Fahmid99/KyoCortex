@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import documentService from "../../services/documentService";
-import DocumentsTable from "../../components/DocumentsTable"
+import DocumentsTable from "../../components/DocumentsTable";
 
-function DocumentsPage({ setCurrentDocument, analyzeDocument, getDocumentBase64, setScanType, scanType}) {
+function DocumentsPage({
+  setCurrentDocument,
+  analyzeDocument,
+  getDocumentBase64,
+  setScanType,
+  scanType,
+  selectedDocument,
+  setSelectedDocument,
+}) {
   const [documents, setDocuments] = useState([]);
-  const [selectedDocument, setSelectedDocument] = useState(null);
+
   const [open, setOpen] = useState(false);
   const [selectedEngine, setSelectedEngine] = useState("");
   const navigate = useNavigate();
@@ -26,7 +34,7 @@ function DocumentsPage({ setCurrentDocument, analyzeDocument, getDocumentBase64,
     await getDocumentBase64(document.id);
     setSelectedDocument(document);
     console.log(document.id);
-    console.log(document)
+    console.log(document);
     setOpen(true);
   };
 
@@ -41,7 +49,9 @@ function DocumentsPage({ setCurrentDocument, analyzeDocument, getDocumentBase64,
 
   const handleConfirm = async () => {
     try {
-      const response = await documentService.getDocumentById(selectedDocument.id);
+      const response = await documentService.getDocumentById(
+        selectedDocument.id
+      );
       setCurrentDocument(response);
 
       if (selectedEngine === "ABBY") {

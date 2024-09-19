@@ -12,16 +12,37 @@ import Grid from "@mui/material/Grid";
 import ReCAPTCHA from "react-google-recaptcha";
 import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import keimService from "../../services/keimService";
 
-function LoginPage({setIsLoggedIn}) {
+function LoginPage({ setIsLoggedIn, setIsAdmin }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleCaptchaChange = (value) => {
     console.log("Captcha value:", value);
   };
-  const handleLoggedIn = () => {
-    setIsLoggedIn(true);
-    navigate("/dashboard");
+
+  const checkIfAdmin = (data) => {
+    for (const role of data.effectiveroles) {
+      if (role.name.includes("Admin")) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  const handleLoggedIn = async () => {
+    try {
+      const response = await keimService.signInKeim(username, password);
+      console.log(response.user);
+      setIsAdmin(checkIfAdmin(response.user));
+      navigate("/dashboard"); // Navigate only if sign-in is successful
+      setIsLoggedIn(true);
+    } catch (err) {
+      console.error("There was an error signing in: ", err);
+    }
   };
 
   return (
@@ -64,6 +85,7 @@ function LoginPage({setIsLoggedIn}) {
                 label="Email or username"
                 variant="standard"
                 fullWidth
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} margin="0.5em">
@@ -73,6 +95,7 @@ function LoginPage({setIsLoggedIn}) {
                 type="password"
                 variant="standard"
                 fullWidth
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid

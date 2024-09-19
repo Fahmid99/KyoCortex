@@ -43,7 +43,7 @@ function Pdf({
     return isInside;
   };
 
-  const useDrawBoundingRegions = (
+  const drawBoundingRegions = (
     convertPolygon,
     canvasRef,
     region,
@@ -113,14 +113,18 @@ function Pdf({
     } else {
       region.forEach((regions) => {
         regions.valueBoundingRegions.forEach((bound) => {
-          const bounds = bound.polygon;
-          draw(bounds, regions.color);
+          if (bound.pageNumber === pageNumber) {
+            const bounds = bound.polygon;
+            draw(bounds, regions.color);
+          }
         });
       });
       region.forEach((regions) => {
         regions.keyBoundingRegions.forEach((bound) => {
-          const bounds = bound.polygon;
-          draw(bounds, regions.color);
+          if (bound.pageNumber === pageNumber) {
+            const bounds = bound.polygon;
+            draw(bounds, regions.color);
+          }
         });
       });
     }
@@ -167,19 +171,21 @@ function Pdf({
     } else {
       documentData.keyValuePairs.forEach((regions) => {
         regions.valueBoundingRegions.forEach((bound) => {
-          const convertedPolygon = convertPolygon(bound.polygon, dpi);
+          if (bound.pageNumber === pageNumber) {
+            const convertedPolygon = convertPolygon(bound.polygon, dpi);
 
-          if (isPointInPolygon({ x, y }, convertedPolygon)) {
-            console.log(regions.value);
-            setAutoFormValues((prevValues) => ({
-              ...prevValues,
-              [selectedKey]: {
-                ...prevValues[selectedKey],
-                value: regions.value,
-              },
-            }));
-            alert(`Clicked on region with key: ${regions.value}`);
-            clickedInRegion = true;
+            if (isPointInPolygon({ x, y }, convertedPolygon)) {
+              console.log(regions.value);
+              setAutoFormValues((prevValues) => ({
+                ...prevValues,
+                [selectedKey]: {
+                  ...prevValues[selectedKey],
+                  value: regions.value,
+                },
+              }));
+              alert(`Clicked on region with key: ${regions.value}`);
+              clickedInRegion = true;
+            }
           }
         });
       });
@@ -190,15 +196,17 @@ function Pdf({
     }
   };
 
-  useDrawBoundingRegions(
-    convertPolygon,
-    canvasRef,
-    region,
-    "rgba(255, 183, 77, 0.3)", // Default fill style
-    selectedKeyPolygon,
-    selectedValuePolygon,
-    96
-  );
+  useEffect(() => {
+    drawBoundingRegions(
+      convertPolygon,
+      canvasRef,
+      region,
+      "rgba(255, 183, 77, 0.3)", // Default fill style
+      selectedKeyPolygon,
+      selectedValuePolygon,
+      96
+    );
+  }, [pageNumber, region, selectedKeyPolygon, selectedValuePolygon]);
 
   return (
     <div
@@ -206,7 +214,7 @@ function Pdf({
         position: "relative",
         width: `${widthInPixels}px`,
         height: `${heightInPixels}px`,
-        overflow: "auto",
+      
       }}
     >
       <Document file={base64String} onLoadSuccess={onDocumentLoadSuccess}>

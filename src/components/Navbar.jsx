@@ -15,10 +15,10 @@ import AdbIcon from "@mui/icons-material/Adb";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Dashboard", "Upload", "Document History"];
+const pages = ["Dashboard", "Upload", "Document History", "Configuration", "Upload Test", "DashboardTest"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar({ setIsLoggedIn }) {
+function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -49,7 +49,13 @@ function ResponsiveAppBar({ setIsLoggedIn }) {
   return (
     <AppBar
       position="static"
-      sx={{ boxShadow: "none", background: "white", color: "#1976d2", fontFamily: "Inter", borderBottom: "1px solid #e0e0e0" }}
+      sx={{
+        boxShadow: "none",
+        background: "white",
+        color: "#1976d2",
+        fontFamily: "Inter",
+        borderBottom: "1px solid #e0e0e0",
+      }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -103,7 +109,11 @@ function ResponsiveAppBar({ setIsLoggedIn }) {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                  <Typography sx={{ textAlign: "center", textTransform: "none" }}>{page}</Typography>
+                  <Typography
+                    sx={{ textAlign: "center", textTransform: "none" }}
+                  >
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -129,19 +139,29 @@ function ResponsiveAppBar({ setIsLoggedIn }) {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
+            (page !== "Configuration" || isAdmin) && (
               <Button
                 key={page}
                 onClick={() => handleCloseNavMenu(page)}
-                sx={{ my: 2, color: "black", display: "block", textTransform: "none" }}
+                sx={{
+                  my: 2,
+                  color: "black",
+                  display: "block",
+                  textTransform: "none",
+                }}
               >
                 {page}
-              </Button>
+              </Button>)
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{background:"#1976d2"}} alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  sx={{ background: "#1976d2" }}
+                  alt="Remy Sharp"
+                  src="/static/images/avatar/2.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -165,7 +185,9 @@ function ResponsiveAppBar({ setIsLoggedIn }) {
                   key={setting}
                   onClick={() => handleCloseUserMenu(setting)}
                 >
-                  <Typography sx={{ textAlign: "center", textTransform: "none" }}>
+                  <Typography
+                    sx={{ textAlign: "center", textTransform: "none" }}
+                  >
                     {setting}
                   </Typography>
                 </MenuItem>

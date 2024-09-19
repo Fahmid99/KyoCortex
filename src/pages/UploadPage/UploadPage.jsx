@@ -5,6 +5,8 @@ import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
 import UploadConfirmCard from "../../components/UploadConfirmCard";
 import documentService from "../../services/documentService";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function UploadPage({ setOnUploadSuccess }) {
   const [isUploaded, setIsUploaded] = useState(false);
@@ -14,6 +16,17 @@ function UploadPage({ setOnUploadSuccess }) {
   const [file, setFile] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const navigate = useNavigate();
+  const notify = () => toast.success(' Upload Sucessful!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+
+    });;
 
   const handleFileUpload = async () => {
     const formData = new FormData();
@@ -26,6 +39,7 @@ function UploadPage({ setOnUploadSuccess }) {
     try {
       await documentService.uploadDocument(formData);
       setOnUploadSuccess(true);
+     // Call notify here
       navigate("/document-history");
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -33,9 +47,13 @@ function UploadPage({ setOnUploadSuccess }) {
       setButtonLoading(false);
     }
   };
+  
+  
 
   const handleUploadSuccess = () => {
     setIsUploaded(true);
+    notify(); 
+  
   };
 
   return (
@@ -70,6 +88,19 @@ function UploadPage({ setOnUploadSuccess }) {
           buttonLoading={buttonLoading}
         />
       </Box>
+      <ToastContainer
+position="top-right"
+autoClose={3000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+
+/> {/* Add this line */}
     </div>
   );
 }

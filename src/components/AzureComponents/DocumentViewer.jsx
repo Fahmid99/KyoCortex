@@ -39,6 +39,8 @@ function DocumentViewer({
   setAutoFormValues,
   pageNumber,
   setPageNumber,
+  submitData,
+  handleSubmit,
 }) {
   const [formSelected, setFormSelected] = useState(false);
   const [selectedKey, setSelectedKey] = useState("");
@@ -78,7 +80,7 @@ function DocumentViewer({
   return (
     <div style={{ height: "calc(100vh - 70px)" }}>
       <Grid container spacing={0} style={{ height: "100%" }}>
-        <Grid item xs={6} style={{ height: "100%", overflow: "auto" }}>
+        <Grid item xs={6.5} style={{ height: "100%", overflow: "auto" }}>
           <PdfViewer
             base64String={base64}
             documentData={documentData}
@@ -98,7 +100,7 @@ function DocumentViewer({
           />
         </Grid>
 
-        <Grid item xs={3.5} style={{ height: "100%", background: "white" }}>
+        <Grid item xs={3} style={{ height: "100%", background: "white" }}>
           <div
             style={{
               background: "white",
@@ -141,13 +143,17 @@ function DocumentViewer({
                 setSelectedKey={setSelectedKey}
                 setSelectedKeyPolygon={setSelectedKeyPolygon}
                 setSelectedValuePolygon={setSelectedValuePolygon}
+                handleSubmit={handleSubmit}
+                pageNumber={pageNumber}
               />
             </TabPanel>
             <TabPanel value={value} index={1} sx={{ p: 0 }}>
-             { documentData.toString()}
+              {documentData.keyValuePairs.map((keyValuePair) => (
+                <p key={keyValuePair.key}>{keyValuePair.key}</p>
+              ))}
             </TabPanel>
             <TabPanel value={value} index={2} sx={{ p: 0 }}>
-            <JsonDisplay documentData={documentData} />
+              <JsonDisplay documentData={documentData} />
             </TabPanel>
           </div>
         </Grid>
@@ -186,6 +192,7 @@ function DocumentViewer({
             setRegion={setRegion}
             region={region}
             documentData={documentData}
+            handleSubmit={handleSubmit}
           />
           <ActionTab />
         </Grid>

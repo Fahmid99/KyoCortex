@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Checkbox,
@@ -13,15 +13,28 @@ import Grid from "@mui/material/Grid";
 import ReCAPTCHA from "react-google-recaptcha";
 import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
 import { useNavigate } from "react-router-dom";
+import documentService from "../../services/documentService";
 
 function AbbySignInPage() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleCaptchaChange = (value) => {
     console.log("Captcha value:", value);
   };
-  const handleLoggedIn = () => {
-    //setIsLoggedIn(true);
-    navigate("/dashboard");
+console.log("dwqd:")
+  const handleLoggedIn = async () => {
+    try {
+      console.log("Button clicked");
+      console.log("Username:", username);
+      console.log("Password:", password);
+      await documentService.signInKeim(username, password);
+      console.log("Sign-in successful");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
   };
 
   return (
@@ -64,6 +77,8 @@ function AbbySignInPage() {
                 label="Email or username"
                 variant="standard"
                 fullWidth
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} margin="0.5em">
@@ -73,6 +88,8 @@ function AbbySignInPage() {
                 type="password"
                 variant="standard"
                 fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid

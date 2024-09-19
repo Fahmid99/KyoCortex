@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import {
   TextField,
   Button,
@@ -17,7 +18,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Box,
 } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import Grid from "@mui/material/Grid2"; // Importing Grid2 and renaming it to Grid
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,6 +35,8 @@ const AutomatedForm = ({
   setSelectedKey,
   setSelectedKeyPolygon,
   setSelectedValuePolygon,
+  handleSubmit,
+  pageNumber
 }) => {
   const [bgColor, setBgColor] = useState("white");
   const [selectedField, setSelectedField] = useState(null);
@@ -47,7 +52,9 @@ const AutomatedForm = ({
             value: field.value || "",
             confidence: field.confidence || 0, // Assuming confidence is a property of field
             color: field.color,
-            keyPolygon: field.boundingRegions[0] ? field.boundingRegions[0].polygon : null, // Assuming polygon is a property of field
+            keyPolygon: field.boundingRegions[0]
+              ? field.boundingRegions[0].polygon
+              : null, // Assuming polygon is a property of field
             kind: field.kind, // Add kind to the initial values
           };
         });
@@ -57,8 +64,12 @@ const AutomatedForm = ({
             value: pair.value || "",
             confidence: pair.confidence || 0, // Assuming confidence is a property of pair
             color: pair.color,
-            keyPolygon:  pair.keyBoundingRegions[0] ?  pair.keyBoundingRegions[0].polygon : null, // Assuming polygon is a property of pair
-            valuePolygon:  pair.valueBoundingRegions[0] ? pair.valueBoundingRegions[0].polygon : null,
+            keyPolygon: pair.keyBoundingRegions[0]
+              ? pair.keyBoundingRegions[0].polygon
+              : null, // Assuming polygon is a property of pair
+            valuePolygon: pair.valueBoundingRegions[0]
+              ? pair.valueBoundingRegions[0].polygon
+              : null,
             kind: pair.kind, // Add kind to the initial values
           };
         });
@@ -86,14 +97,17 @@ const AutomatedForm = ({
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formValues = Object.entries(autoFormValues).reduce((acc, [key, { value }]) => {
-      acc[key] = value;
-      return acc;
-    }, {});
-    console.log("Form submitted:", formValues);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const formValues = Object.entries(autoFormValues).reduce(
+  //     (acc, [key, { value }]) => {
+  //       acc[key] = value;
+  //       return acc;
+  //     },
+  //     {}
+  //   );
+  //   console.log("Form submitted:", formValues);
+  // };
 
   const handleCardClick = (name) => {
     setSelectedKey(name);
@@ -125,14 +139,17 @@ const AutomatedForm = ({
       style={{
         border: "1px solid #E7E7E8",
         borderTop: "none",
-        paddingBottom: "20px",
+
         background: "white",
       }}
     >
       <form onSubmit={handleSubmit}>
         <Grid container spacing={0}>
           {Object.entries(autoFormValues).map(
-            ([key, { value, confidence, color, keyPolygon, valuePolygon, kind }]) => (
+            ([
+              key,
+              { value, confidence, color, keyPolygon, valuePolygon, kind },
+            ]) => (
               <Grid size={12} key={key} sx={{}}>
                 <Card
                   sx={{
@@ -155,39 +172,60 @@ const AutomatedForm = ({
                   ></div>
                   <CardContent sx={{ flex: 1 }}>
                     <Typography
-                      style={{ fontWeight: "bold", marginBottom: "0.5em" }}
+                      style={{ fontWeight: "600", marginBottom: "1em" }}
                     >
                       {key}
                     </Typography>
+
                     {kind === "array" ? (
                       <>
-                        <Button variant="outlined" onClick={() => handleOpen(value)}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleOpen(value)}
+                        >
                           View Table
                         </Button>
-                        <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+                        <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          maxWidth="lg"
+                          fullWidth
+                        >
                           <DialogTitle>{key}</DialogTitle>
                           <DialogContent>
-                            <TableContainer >
+                            <TableContainer>
                               <Table>
                                 <TableHead>
                                   <TableRow>
-                                    {Object.keys(value[0].properties).map((header) => (
-                                      <TableCell key={header}>{header}</TableCell>
-                                    ))}
+                                    {Object.keys(value[0].properties).map(
+                                      (header) => (
+                                        <TableCell key={header}>
+                                          {header}
+                                        </TableCell>
+                                      )
+                                    )}
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
                                   {tableData.map((row, rowIndex) => (
                                     <TableRow key={rowIndex}>
-                                      {Object.entries(row.properties).map(([cellKey, cell], cellIndex) => (
-                                        <TableCell key={cellIndex}>
-                                          <TextField
-                                            value={cell.content}
-                                            onChange={(e) => handleTableChange(rowIndex, cellKey, e.target.value)}
-                                            fullWidth
-                                          />
-                                        </TableCell>
-                                      ))}
+                                      {Object.entries(row.properties).map(
+                                        ([cellKey, cell], cellIndex) => (
+                                          <TableCell key={cellIndex}>
+                                            <TextField
+                                              value={cell.content === "<undefined>" ? "" : cell.content}
+                                              onChange={(e) =>
+                                                handleTableChange(
+                                                  rowIndex,
+                                                  cellKey,
+                                                  e.target.value
+                                                )
+                                              }
+                                              fullWidth
+                                            />
+                                          </TableCell>
+                                        )
+                                      )}
                                     </TableRow>
                                   ))}
                                 </TableBody>
@@ -199,50 +237,42 @@ const AutomatedForm = ({
                           </DialogActions>
                         </Dialog>
                       </>
-                    ) : key.includes("date") ? (
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          label={key}
-                          value={value || null} // Ensure value is not undefined
-                          onChange={(date) => handleDateChange(key, date)}
-                          renderInput={(params) => (
-                            <TextField {...params} fullWidth />
-                          )}
-                        />
-                      </LocalizationProvider>
+                      
                     ) : (
+                      //: key.includes("date") ? (
+                      //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      //     <DatePicker
+                      //       label={key}
+                      //       value={value || null} // Ensure value is not undefined
+                      //       onChange={(date) => handleDateChange(key, date)}
+                      //       renderInput={(params) => (
+                      //         <TextField {...params} fullWidth />
+                      //       )}
+                      //     />
+                      //   </LocalizationProvider>
+                      //   )
                       <TextField
                         name={key}
-                        value={value || ""} // Ensure value is not undefined
+                        value={value ===  "<undefined>" ? "" : value} // Ensure value is not undefined
                         onChange={handleChange}
                         fullWidth
                         sx={{
                           background: "white",
                           marginBottom: "0.5em",
-                          borderRadius: 0,
+                          borderRadius: "0px",
                         }} // Set borderRadius to 0
-                        InputLabelProps={{
-                          shrink: true,
-                          style: {
-                            fontWeight: "bold",
-                            color: "black",
-                          },
-                        }}
+                        InputProps={{ sx: { borderRadius: 0 } }}
                       />
                     )}
-                    <ConfidenceDisplay confidence={confidence} />
+                    <Box>
+                      <ConfidenceDisplay confidence={confidence} />
+                    </Box>
                   </CardContent>
                 </Card>
                 <Divider />
               </Grid>
             )
           )}
-
-          <Grid size={12} container justifyContent="center">
-            <Button type="submit" variant="contained">
-              Submit
-            </Button>
-          </Grid>
         </Grid>
       </form>
     </div>

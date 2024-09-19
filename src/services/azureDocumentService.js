@@ -21,11 +21,21 @@ const getDocumentBase64 = async (id) => {
   }
 };
 
+const getDocumentBase64V2 = async (id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vendordocument/${id}`);
+    console.log(response.data.base64)
+    return response.data.base64;
+  } catch (err) {
+    console.error("Error fetching base64:", err);
+  }
+};
+
 const analyzeDocument = async (obj) => {
   try {
-    // const response = await axios.post(`${API_BASE_URL}/analyze`, obj);
+    const response = await axios.post(`${API_BASE_URL}/analyze`, obj);
 
-     const response = await axios.get(`${API_BASE_URL}/invoicedata`);
+    //  const response = await axios.get(`${API_BASE_URL}/invoicedata`);
     console.log(response.data);
     return response.data;
   } catch (err) {
@@ -37,4 +47,5 @@ export default {
   getDocuments: getDocuments,
   getDocumentBase64: getDocumentBase64,
   analyzeDocument: analyzeDocument,
+  getDocumentBase64V2:getDocumentBase64V2,
 };

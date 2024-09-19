@@ -20,7 +20,7 @@
     "@mui/icons-material": "^6.0.1",
     "@mui/lab": "^6.0.0-beta.8",
     "@mui/material": "^6.0.1",
-    "@mui/x-date-pickers": "^7.12.1",
+    "@mui/x-date-pickers": "^7.16.0",
     "abby-vantage-portal": "file:",
     "axios": "^1.7.7",
     "dayjs": "^1.11.12",
@@ -38,6 +38,7 @@
     "react-pdf": "^9.1.0",
     "react-router-dom": "^6.26.1",
     "react-spinners": "^0.14.1",
+    "react-toastify": "^10.0.5",
     "ui": "^0.2.4"
   },
   "resolutions": {

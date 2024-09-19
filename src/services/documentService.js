@@ -11,7 +11,6 @@ const getDocuments = async () => {
   }
 };
 
-
 const uploadDocument = async (formData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/uploadTray`, formData, {
@@ -25,7 +24,6 @@ const uploadDocument = async (formData) => {
     throw error;
   }
 };
-
 
 // const getDocuments = async () => {
 //   try {
@@ -46,10 +44,18 @@ const getDocumentById = async (id) => {
   }
 };
 
-
+const getUser = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/getuser`);
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching user:", err);
+  }
+};
 
 export default {
   uploadDocument: uploadDocument,
   getDocuments: getDocuments,
   getDocumentById: getDocumentById,
+  getUser: getUser,
 };
