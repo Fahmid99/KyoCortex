@@ -49,7 +49,7 @@ function DashboardTest({
           const base64Data = await getDocumentBase64V2(response.id);
 
           setBase64(base64Data);
-          await analyzeDocument(base64Data);
+          //await analyzeDocument(base64Data);
           //  navigate(`/docintel/${response.id}`);
         } else {
           console.error("Missing processId or activityId in URL");
