@@ -1,7 +1,5 @@
 import axios from "axios";
 import FormData from "form-data";
-const username = "root";
-const password = "optimal";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -71,10 +69,7 @@ export const getDocument = async (req, res) => {
 };
 
 // Get Vendors
-export const getVendors = async (req, res) =>{
-  console.log(`Username: ${process.env.KEIMUSERNAME}`);
-  console.log(`Password: ${process.env.PASSWORD}`);
-
+export const getVendors = async (req, res) => {
   try {
     const response = await axios.get(
       "http://10.170.193.9/rest-ws/service/result/query?type=vendor&offset=0&limit=-1",
@@ -93,7 +88,7 @@ export const getVendors = async (req, res) =>{
     console.error("Error getting vendors:", error);
     res.status(500).send("Error getting vendors");
   }
-}
+};
 // Get File Types
 export const getFileTypes = async (req, res) => {
   const { parentId } = req.query;
@@ -206,7 +201,7 @@ export const submitData = async (req, res) => {
     console.error("Error submitting data:", error);
     res.status(500).send("Error submitting data");
   }
-}
+};
 
 // End Process
 export const endProcess = async (req, res) => {
@@ -233,4 +228,4 @@ export const endProcess = async (req, res) => {
     console.error("Error ending process:", error);
     res.status(500).send("Error ending process");
   }
-}
+};
