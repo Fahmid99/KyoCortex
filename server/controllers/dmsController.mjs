@@ -35,36 +35,36 @@ export const getDocument = async (req, res) => {
   const processId = req.query.processId;
   const activityId = req.query.activityId;
   let objectId = null;
-
   try {
-    const response = await axios.get(
-      `http://10.170.193.9/rest-ws/service/bpm/process/${processId}/activity/${activityId}/datafield`,
+    const response = await fetch(
+      `http://10.170.193.9/rest-ws/service/bpm/process/${processId}/activity/${activityId}/datafield
+`,
       {
-        headers: { Authorization: auth },
+        headers: {
+          Authorization: auth,
+        },
       }
     );
-    objectId = response.data.data.objectId;
+    const data = await response.json();
+    objectId = data.data.objectId;
   } catch (error) {
     console.error("Error fetching document:", error);
-    return res.status(500).send("Error fetching document");
   }
-
   try {
-    const response = await axios.get(
-      `http://10.170.193.9/rest-ws/service/dms/${objectId}?type=sysobject&version=-1&content=true&fields=true`,
+    const response = await fetch(
+      `http://10.170.193.9/rest-ws/service/dms/${objectId}?type=sysobject&version=-1&content=true&fields=true&typemeta=false&datameta=true&form=false&audit=false&versions=false&views=false&additionalvisibility=false&qname=false&contenttext=false&recyclebin=false&contextfolder=false&attachmentinfo=false&storageinfo=false&storageinfodetails=false&extendedinfo=false&nullvalues=true
+`,
       {
-        headers: { Authorization: auth },
+        headers: {
+          Authorization: auth,
+        },
       }
     );
-    const result = {
-      id: objectId,
-      type: response.data.type,
-      formFields: response.data.data,
-    };
+    const data = await response.json();
+    const result = { id: objectId, type: data.type, formFields: data.data };
     res.json(result);
   } catch (error) {
     console.error("Error fetching document:", error);
-    res.status(500).send("Error fetching document");
   }
 };
 
@@ -227,5 +227,30 @@ export const endProcess = async (req, res) => {
   } catch (error) {
     console.error("Error ending process:", error);
     res.status(500).send("Error ending process");
+  }
+};
+
+export const signIn = async (req, res) => {
+  const username = req.query.username;
+  const password = req.query.password;
+
+  try {
+    const response = await fetch(
+      `http://10.170.193.9/rest-ws/service/user?section=web&favorites=true&privileges=true&roles=true&deputies=true&substitutesOf=true`,
+      {
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(`${username}:${password}`).toString("base64"),
+        },
+      }
+    );
+
+    // Handle the response as needed
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Error signing in:", err);
+    res.status(500).send("Error signing in");
   }
 };
