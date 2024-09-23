@@ -12,6 +12,8 @@ function PdfControls({
   handleZoomIn,
   handleZoomOut,
 }) {
+
+  console.log(pageNumber)
   return (
     <div className="pdf-controls-container">
       <div className="pdf-controls">

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Grid, Typography, Divider, Tabs, Tab, Box } from "@mui/material";
 
 import AutomatedForm from "./components/AutomatedForm";
@@ -37,8 +37,7 @@ function DocumentViewer({
   scanType,
   autoFormValues,
   setAutoFormValues,
-  pageNumber,
-  setPageNumber,
+
   submitData,
   handleSubmit,
 }) {
@@ -47,12 +46,21 @@ function DocumentViewer({
   const [value, setValue] = useState(0);
   const [selectedKeyPolygon, setSelectedKeyPolygon] = useState(null);
   const [selectedValuePolygon, setSelectedValuePolygon] = useState(null);
-
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const [region, setRegion] = useState(
     documentData.documents.length
       ? documentData.documents
       : documentData.keyValuePairs
   );
+  const [selectedButton, setSelectedButton] = useState(null);
+
+  console.log(selectedButton)
+  useEffect(() => {
+    if (selectedButton === "words") {
+      console.log(region);
+    }
+  }, []);
 
   const canvasRef = useRef(null);
 
@@ -78,7 +86,7 @@ function DocumentViewer({
   }
 
   return (
-    <div style={{ height: "calc(100vh - 70px)" }}>
+    <div style={{ height: "calc(100vh)" }}>
       <Grid container spacing={0} style={{ height: "100%" }}>
         <Grid item xs={6.5} style={{ height: "100%", overflow: "auto" }}>
           <PdfViewer
@@ -127,7 +135,7 @@ function DocumentViewer({
               />
               <Tab
                 sx={{ fontWeight: "bold" }}
-                label="Key Value Pairs"
+                label="Mapping"
                 {...a11yProps(1)}
               />
               <Tab sx={{ fontWeight: "bold" }} label="JSON" {...a11yProps(2)} />
@@ -145,6 +153,8 @@ function DocumentViewer({
                 setSelectedValuePolygon={setSelectedValuePolygon}
                 handleSubmit={handleSubmit}
                 pageNumber={pageNumber}
+                setSelectedValue={setSelectedValue}
+                setPageNumber={setPageNumber}
               />
             </TabPanel>
             <TabPanel value={value} index={1} sx={{ p: 0 }}>
@@ -178,21 +188,25 @@ function DocumentViewer({
               height: "64px", // Adjust height to match the Fields section
               display: "flex",
               alignItems: "center",
+              boxShadow: "10px",
             }}
           >
-            <Typography
-              variant="h7"
-              style={{ color: "#757575", fontWeight: "bold" }}
-            >
-              Actions and tools
+            <Typography variant="h8" style={{ color: "#757575" }}>
+              ACTIONS AND TOOLS
             </Typography>
           </div>
-          <Divider />
+
           <Toolbar
             setRegion={setRegion}
             region={region}
             documentData={documentData}
             handleSubmit={handleSubmit}
+            selectedKey={selectedKey}
+            value={value}
+            selectedValue={selectedValue}
+            pageNumber={pageNumber}
+            setSelectedButton={setSelectedButton}
+            selectedButton={selectedButton}
           />
           <ActionTab />
         </Grid>

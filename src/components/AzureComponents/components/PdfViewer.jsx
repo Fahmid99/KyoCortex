@@ -26,9 +26,11 @@ const PdfViewer = ({
   setAutoFormValues,
   selectedKeyPolygon,
   selectedValuePolygon,
+  pageNumber,
+  setPageNumber
 }) => {
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+ 
   const [scale, setScale] = useState(1);
   const containerRef = useRef(null);
 
@@ -66,6 +68,7 @@ const PdfViewer = ({
     } else {
       setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, numPages));
     }
+    
   };
 
   return (

@@ -1,5 +1,13 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Document, Page } from "react-pdf";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 
 function Pdf({
   base64String,
@@ -73,65 +81,93 @@ function Pdf({
       ctx.strokeStyle = color;
       ctx.fillStyle = fill;
       ctx.lineWidth = lineWidth;
+
       ctx.fill();
       ctx.stroke();
     };
 
     const highlightPolygon = (polygon, color) => {
       if (polygon) {
-        draw(polygon, color, 6, "rgba(227, 242, 253, 0.3)"); // Thicker border and light blue background for highlighted polygons
+        draw(polygon, color, 4, "rgba(227, 242, 253, 0.3)"); // Thicker border and light blue background for highlighted polygons
       }
     };
 
-    if (
-      region === documentData.pages[0].words ||
-      region === documentData.pages[0].lines
-    ) {
-      region.forEach((word) => {
-        const bounds = word.polygon;
-        if (bounds) {
-          draw(bounds, "#ffa726");
-        }
-      });
-    } else if (region === documentData.paragraphs) {
-      region.forEach((regions) => {
-        regions.boundingRegions.forEach((bound) => {
-          const bounds = bound.polygon;
-          draw(bounds, regions.color);
+    // Draw the selected view
+    if (region && Array.isArray(region) && pageNumber !== 3) {
+      if (
+        region === documentData.pages[pageNumber - 1].words ||
+        region === documentData.pages[pageNumber - 1].lines
+      ) {
+        region.forEach((word) => {
+          const bounds = word.polygon;
+          if (bounds) {
+            draw(bounds, "#ffa726");
+          }
         });
-      });
-    } else if (region === documentData.documents) {
-      console.log(region);
-      region[0].fields.forEach((field) => {
-        if (field.boundingRegions) {
-          field.boundingRegions.forEach((bound) => {
+      } else if (region === documentData.paragraphs) {
+        region.forEach((regions) => {
+          regions.boundingRegions.forEach((bound) => {
             const bounds = bound.polygon;
-            draw(bounds, field.color);
+            draw(bounds, selectedKeyPolygon ? "#ffa726" : regions.color);
           });
-        }
-      });
-    } else {
-      region.forEach((regions) => {
-        regions.valueBoundingRegions.forEach((bound) => {
-          if (bound.pageNumber === pageNumber) {
-            const bounds = bound.polygon;
-            draw(bounds, regions.color);
+        });
+      } else if (region === documentData.documents) {
+        region[0].fields.forEach((field) => {
+          if (field.boundingRegions) {
+            field.boundingRegions.forEach((bound) => {
+              const bounds = bound.polygon;
+              draw(bounds, selectedKeyPolygon ? "#ffa726" : field.color);
+            });
           }
         });
-      });
-      region.forEach((regions) => {
-        regions.keyBoundingRegions.forEach((bound) => {
-          if (bound.pageNumber === pageNumber) {
-            const bounds = bound.polygon;
-            draw(bounds, regions.color);
-          }
+      } else {
+        region.forEach((regions) => {
+          regions.valueBoundingRegions.forEach((bound) => {
+            if (bound.pageNumber === pageNumber) {
+              const bounds = bound.polygon;
+              draw(bounds, selectedKeyPolygon ? "#ffa726" : regions.color);
+            }
+          });
+          regions.keyBoundingRegions.forEach((bound) => {
+            if (bound.pageNumber === pageNumber) {
+              const bounds = bound.polygon;
+              draw(bounds, selectedKeyPolygon ? "#ffa726" : regions.color);
+            }
+          });
         });
-      });
+      }
     }
 
     // Highlight selected polygons
     highlightPolygon(selectedKeyPolygon, "#2979ff");
     highlightPolygon(selectedValuePolygon, "#2979ff");
+  };
+
+  const [open, setOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState("");
+  const [newValue, setNewValue] = useState("");
+  const [oldValue, setOldValue] = useState("");
+
+  const handleClickOpen = (newVal, oldVal) => {
+    setNewValue(newVal);
+    setOldValue(oldVal);
+    setDialogContent(`New Value: ${newVal}`);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    setAutoFormValues((prevValues) => ({
+      ...prevValues,
+      [selectedKey]: {
+        ...prevValues[selectedKey],
+        value: newValue,
+      },
+    }));
+    setOpen(false);
   };
 
   const handleCanvasClick = (event) => {
@@ -147,52 +183,45 @@ function Pdf({
     const dpi = 96;
     let clickedInRegion = false;
 
-    if (
-      region === documentData.pages[0].words ||
-      region === documentData.pages[0].lines
-    ) {
-      region.forEach((region) => {
-        const convertedPolygon = convertPolygon(region.polygon, dpi);
+    if (region && Array.isArray(region)) {
+      if (
+        region === documentData.pages[pageNumber - 1].words ||
+        region === documentData.pages[pageNumber - 1].lines
+      ) {
+        region.forEach((region) => {
+          const convertedPolygon = convertPolygon(region.polygon, dpi);
 
-        if (isPointInPolygon({ x, y }, convertedPolygon)) {
-          console.log(region.content);
-          setAutoFormValues((prevValues) => ({
-            ...prevValues,
-            [selectedKey]: {
-              ...prevValues[selectedKey],
-              value: region.content,
-            },
-          }));
-
-          alert(`Clicked on region with lines: ${region.content}`);
-          clickedInRegion = true;
-        }
-      });
-    } else {
-      documentData.keyValuePairs.forEach((regions) => {
-        regions.valueBoundingRegions.forEach((bound) => {
-          if (bound.pageNumber === pageNumber) {
-            const convertedPolygon = convertPolygon(bound.polygon, dpi);
-
-            if (isPointInPolygon({ x, y }, convertedPolygon)) {
-              console.log(regions.value);
-              setAutoFormValues((prevValues) => ({
-                ...prevValues,
-                [selectedKey]: {
-                  ...prevValues[selectedKey],
-                  value: regions.value,
-                },
-              }));
-              alert(`Clicked on region with key: ${regions.value}`);
-              clickedInRegion = true;
-            }
+          if (isPointInPolygon({ x, y }, convertedPolygon)) {
+            console.log(region.content);
+            handleClickOpen(
+              region.content,
+              documentData[selectedKey]?.value || ""
+            );
+            clickedInRegion = true;
           }
         });
-      });
+      } else {
+        documentData.keyValuePairs.forEach((regions) => {
+          regions.valueBoundingRegions.forEach((bound) => {
+            if (bound.pageNumber === pageNumber) {
+              const convertedPolygon = convertPolygon(bound.polygon, dpi);
+
+              if (isPointInPolygon({ x, y }, convertedPolygon)) {
+                console.log(regions.value);
+                handleClickOpen(
+                  regions.value,
+                  documentData[selectedKey]?.value || ""
+                );
+                clickedInRegion = true;
+              }
+            }
+          });
+        });
+      }
     }
 
     if (!clickedInRegion) {
-      alert("Clicked outside any region");
+      handleClickOpen("", "Clicked outside any region");
     }
   };
 
@@ -208,13 +237,24 @@ function Pdf({
     );
   }, [pageNumber, region, selectedKeyPolygon, selectedValuePolygon]);
 
+  useEffect(() => {
+    drawBoundingRegions(
+      convertPolygon,
+      canvasRef,
+      region,
+      "rgba(255, 183, 77, 0.3)", // Default fill style
+      selectedKeyPolygon,
+      selectedValuePolygon,
+      96
+    );
+  }, [pageNumber]);
+
   return (
     <div
       style={{
         position: "relative",
         width: `${widthInPixels}px`,
         height: `${heightInPixels}px`,
-      
       }}
     >
       <Document file={base64String} onLoadSuccess={onDocumentLoadSuccess}>
@@ -236,6 +276,29 @@ function Pdf({
           left: 0,
         }}
       />
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to replace?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {dialogContent}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} color="primary">
+            Confirm
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

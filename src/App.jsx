@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import UploadPage from "./pages/UploadPage/UploadPage";
@@ -17,6 +22,7 @@ import AbbySignInPage from "./pages/AbbySignInPage/AbbySignInPage";
 import azureDocumentService from "./services/azureDocumentService";
 import Loader from "./components/AzureComponents/components/Loader";
 import UploadPageTest from "./pages/UploadPageTest/UploadPageTest";
+import Cookies from "js-cookie";
 
 function App() {
   const scanTypeValues = {
@@ -26,9 +32,9 @@ function App() {
     contracttemplate: "prebuilt-contract",
   };
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
-  );
+  // const [isLoggedIn, setIsLoggedIn] = useState(
+  //   localStorage.getItem("isLoggedIn") === "true"
+  // );
 
   const [onUploadSuccess, setOnUploadSuccess] = useState(false);
   const [currentDocument, setCurrentDocument] = useState();
@@ -41,11 +47,13 @@ function App() {
   const [user, setUser] = useState();
   const [docId, setDocId] = useState();
   const [docFormFields, setDocFormFields] = useState();
-  const [processId, setProcessId] = useState(); 
-
+  const [processId, setProcessId] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Cookies.get("isLoggedIn") === "true"
+  );
 
   useEffect(() => {
-    localStorage.setItem("isLoggedIn", isLoggedIn);
+    Cookies.set("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
   const analyzeDocument = async () => {
@@ -82,9 +90,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        {isLoggedIn && (
-          <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} /> 
-        )}
+        {/* {isLoggedIn && (
+          <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} />
+        )} */}
         {/* <AlertMessage
           onUploadSuccess={onUploadSuccess}
           setOnUploadSuccess={setOnUploadSuccess}
@@ -105,78 +113,116 @@ function App() {
             <Route
               path="/"
               element={
-                <LoginPage
-                  setIsLoggedIn={setIsLoggedIn}
-                  setIsAdmin={setIsAdmin}
-                  sx={{ alignSelf: "center", background: "red" }}
-                />
+                isLoggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <LoginPage
+                    setIsLoggedIn={setIsLoggedIn}
+                    setIsAdmin={setIsAdmin}
+                  />
+                )
               }
             />
             <Route
               path="/upload"
-              element={<UploadPage setOnUploadSuccess={setOnUploadSuccess} />}
+              element={
+                isLoggedIn ? (
+                  <UploadPage setOnUploadSuccess={setOnUploadSuccess} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
             <Route
               path="/upload-test"
               element={
-                <UploadPageTest setOnUploadSuccess={setOnUploadSuccess} />
+                isLoggedIn ? (
+                  <UploadPageTest setOnUploadSuccess={setOnUploadSuccess} />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />}
+            />
             <Route
               path="/dashboardtest"
               element={
-                <DashboardTest
-                  setCurrentDocument={setCurrentDocument}
-                  analyzeDocument={analyzeDocument}
-                  getDocumentBase64V2={getDocumentBase64V2}
-                  setScanType={setScanType}
-                  scanType={scanType}
-                  selectedDocument={selectedDocument}
-                  setSelectedDocument={setSelectedDocument}
-                  scanTypeValues={scanTypeValues}
-                  setDocId={setDocId}
-                  setDocFormFields={setDocFormFields}
-                  setProcessId={setProcessId}
-                />
+                isLoggedIn ? (
+                  <DashboardTest
+                    setCurrentDocument={setCurrentDocument}
+                    analyzeDocument={analyzeDocument}
+                    getDocumentBase64V2={getDocumentBase64V2}
+                    setScanType={setScanType}
+                    scanType={scanType}
+                    selectedDocument={selectedDocument}
+                    setSelectedDocument={setSelectedDocument}
+                    scanTypeValues={scanTypeValues}
+                    setDocId={setDocId}
+                    setDocFormFields={setDocFormFields}
+                    setProcessId={setProcessId}
+                  />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
-            <Route path="/frame" element={<Frame />} />
+            <Route
+              path="/frame"
+              element={isLoggedIn ? <Frame /> : <Navigate to="/" />}
+            />
             <Route
               path="/document-history"
               element={
-                <DocumentsPage
-                  setCurrentDocument={setCurrentDocument}
-                  analyzeDocument={analyzeDocument}
-                  getDocumentBase64={getDocumentBase64}
-                  setScanType={setScanType}
-                  scanType={scanType}
-                  selectedDocument={selectedDocument}
-                  setSelectedDocument={setSelectedDocument}
-                />
+                isLoggedIn ? (
+                  <DocumentsPage
+                    setCurrentDocument={setCurrentDocument}
+                    analyzeDocument={analyzeDocument}
+                    getDocumentBase64={getDocumentBase64}
+                    setScanType={setScanType}
+                    scanType={scanType}
+                    selectedDocument={selectedDocument}
+                    setSelectedDocument={setSelectedDocument}
+                  />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
             <Route
               path="/selectskill/:id"
               element={
-                <AbbySelectSkillPage currentDocument={currentDocument} />
+                isLoggedIn ? (
+                  <AbbySelectSkillPage currentDocument={currentDocument} />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
             <Route
               path="/docintel/:id"
               element={
-                <DocIntelPage
-                  base64={base64}
-                  documentData={documentData}
-                  scanType={scanType}
-                  selectedDocument={selectedDocument}
-                  docId={docId}
-                  docFormFields={docFormFields}
-                  processId={processId}
-                />
+                isLoggedIn ? (
+                  <DocIntelPage
+                    base64={base64}
+                    documentData={documentData}
+                    scanType={scanType}
+                    selectedDocument={selectedDocument}
+                    docId={docId}
+                    docFormFields={docFormFields}
+                    processId={processId}
+                  />
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
-            <Route path="/abbysignin" element={<AbbySignInPage />} />
+            <Route
+              path="/abbysignin"
+              element={isLoggedIn ? <AbbySignInPage /> : <Navigate to="/" />}
+            />
           </Routes>
         )}
       </Router>

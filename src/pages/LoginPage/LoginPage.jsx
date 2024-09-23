@@ -38,7 +38,7 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
       const response = await keimService.signInKeim(username, password);
       console.log(response.user);
       setIsAdmin(checkIfAdmin(response.user));
-      navigate("/dashboard-test"); // Navigate only if sign-in is successful
+      navigate("/dashboardtest"); // Navigate only if sign-in is successful
       setIsLoggedIn(true);
     } catch (err) {
       console.error("There was an error signing in: ", err);

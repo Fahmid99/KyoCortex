@@ -33,10 +33,12 @@ const AutomatedForm = ({
   setAutoFormValues,
   autoFormValues,
   setSelectedKey,
+  setSelectedValue,
   setSelectedKeyPolygon,
   setSelectedValuePolygon,
   handleSubmit,
-  pageNumber
+  pageNumber,
+  setPageNumber,
 }) => {
   const [bgColor, setBgColor] = useState("white");
   const [selectedField, setSelectedField] = useState(null);
@@ -70,7 +72,9 @@ const AutomatedForm = ({
             valuePolygon: pair.valueBoundingRegions[0]
               ? pair.valueBoundingRegions[0].polygon
               : null,
+
             kind: pair.kind, // Add kind to the initial values
+            pageNumber: pair.pageNumber,
           };
         });
       }
@@ -79,6 +83,7 @@ const AutomatedForm = ({
     }
   }, [documentData, scanType]);
 
+  console.log(autoFormValues);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAutoFormValues((prevValues) => ({
@@ -97,26 +102,23 @@ const AutomatedForm = ({
     }));
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const formValues = Object.entries(autoFormValues).reduce(
-  //     (acc, [key, { value }]) => {
-  //       acc[key] = value;
-  //       return acc;
-  //     },
-  //     {}
-  //   );
-  //   console.log("Form submitted:", formValues);
-  // };
-
-  const handleCardClick = (name) => {
-    setSelectedKey(name);
-    setSelectedKeyPolygon(autoFormValues[name].keyPolygon);
-    setSelectedValuePolygon(autoFormValues[name].valuePolygon);
-    setSelectedField(name);
-    console.log("Selected key:", name);
-    console.log("Selected key polygon:", autoFormValues[name].keyPolygon);
-    console.log("Selected value polygon:", autoFormValues[name].valuePolygon);
+  const handleCardClick = (name, pageNumber) => {
+    setPageNumber(pageNumber);
+    if (selectedField === name) {
+      // Deselect if the same field is clicked again
+      setSelectedKey(null);
+      setSelectedValue(null);
+      setSelectedKeyPolygon(null);
+      setSelectedValuePolygon(null);
+      setSelectedField(null);
+    } else {
+      // Select the new field
+      setSelectedKey(name);
+      setSelectedValue(autoFormValues[name].value);
+      setSelectedKeyPolygon(autoFormValues[name].keyPolygon);
+      setSelectedValuePolygon(autoFormValues[name].valuePolygon);
+      setSelectedField(name);
+    }
   };
 
   const handleOpen = (data) => {
@@ -139,7 +141,6 @@ const AutomatedForm = ({
       style={{
         border: "1px solid #E7E7E8",
         borderTop: "none",
-
         background: "white",
       }}
     >
@@ -148,7 +149,15 @@ const AutomatedForm = ({
           {Object.entries(autoFormValues).map(
             ([
               key,
-              { value, confidence, color, keyPolygon, valuePolygon, kind },
+              {
+                value,
+                confidence,
+                color,
+                keyPolygon,
+                valuePolygon,
+                kind,
+                pageNumber,
+              },
             ]) => (
               <Grid size={12} key={key} sx={{}}>
                 <Card
@@ -158,10 +167,10 @@ const AutomatedForm = ({
                     boxShadow: "none",
                     cursor: "pointer", // Add cursor pointer for better UX
                     background: selectedField === key ? "#e3f2fd" : "white",
-                    border: selectedField === key && "2px solid #2979ff",
+                    border: selectedField === key && "1px solid #2196f3",
                     borderRadius: "0px",
                   }}
-                  onClick={() => handleCardClick(key)}
+                  onClick={() => handleCardClick(key, pageNumber)}
                 >
                   <div
                     style={{
@@ -173,8 +182,18 @@ const AutomatedForm = ({
                   <CardContent sx={{ flex: 1 }}>
                     <Typography
                       style={{ fontWeight: "600", marginBottom: "1em" }}
+                      display={"flex"}
                     >
-                      {key}
+                      {key}{" "}
+                      <Box
+                        sx={{
+                          background: "#eeeeee",
+                          marginLeft: "0.5em",
+                          padding: "0.1em",
+                        }}
+                      >
+                        # {pageNumber}
+                      </Box>
                     </Typography>
 
                     {kind === "array" ? (
@@ -213,7 +232,11 @@ const AutomatedForm = ({
                                         ([cellKey, cell], cellIndex) => (
                                           <TableCell key={cellIndex}>
                                             <TextField
-                                              value={cell.content === "<undefined>" ? "" : cell.content}
+                                              value={
+                                                cell.content === "<undefined>"
+                                                  ? ""
+                                                  : cell.content
+                                              }
                                               onChange={(e) =>
                                                 handleTableChange(
                                                   rowIndex,
@@ -237,23 +260,10 @@ const AutomatedForm = ({
                           </DialogActions>
                         </Dialog>
                       </>
-                      
                     ) : (
-                      //: key.includes("date") ? (
-                      //   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      //     <DatePicker
-                      //       label={key}
-                      //       value={value || null} // Ensure value is not undefined
-                      //       onChange={(date) => handleDateChange(key, date)}
-                      //       renderInput={(params) => (
-                      //         <TextField {...params} fullWidth />
-                      //       )}
-                      //     />
-                      //   </LocalizationProvider>
-                      //   )
                       <TextField
                         name={key}
-                        value={value ===  "<undefined>" ? "" : value} // Ensure value is not undefined
+                        value={value === "<undefined>" ? "" : value} // Ensure value is not undefined
                         onChange={handleChange}
                         fullWidth
                         sx={{
