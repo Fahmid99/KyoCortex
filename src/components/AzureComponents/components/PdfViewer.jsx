@@ -27,10 +27,12 @@ const PdfViewer = ({
   selectedKeyPolygon,
   selectedValuePolygon,
   pageNumber,
-  setPageNumber
+  setPageNumber,
+  selectedButton,
+  setRegion,
 }) => {
   const [numPages, setNumPages] = useState(null);
- 
+
   const [scale, setScale] = useState(1);
   const containerRef = useRef(null);
 
@@ -68,7 +70,14 @@ const PdfViewer = ({
     } else {
       setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, numPages));
     }
-    
+
+      
+
+    // if (selectedButton === "keyValuePairs") {
+      
+    //   setRegion(documentData.pages[pageNumber - 1].words)
+    // }
+  
   };
 
   return (

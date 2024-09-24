@@ -120,7 +120,7 @@ function Pdf({
             });
           }
         });
-      } else {
+      } else if  (region === documentData.keyValuePairs) {
         region.forEach((regions) => {
           regions.valueBoundingRegions.forEach((bound) => {
             if (bound.pageNumber === pageNumber) {
@@ -136,6 +136,9 @@ function Pdf({
           });
         });
       }
+    } else {
+      // Clear the region if none of the conditions are met
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     // Highlight selected polygons
@@ -183,6 +186,7 @@ function Pdf({
     const dpi = 96;
     let clickedInRegion = false;
 
+    console.log(selectedKey);
     if (region && Array.isArray(region)) {
       if (
         region === documentData.pages[pageNumber - 1].words ||

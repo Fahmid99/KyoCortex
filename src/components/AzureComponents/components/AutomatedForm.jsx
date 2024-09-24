@@ -190,6 +190,9 @@ const AutomatedForm = ({
                           background: "#eeeeee",
                           marginLeft: "0.5em",
                           padding: "0.1em",
+                          paddingRight:"0.4em",
+                          paddingLeft:"0.4em",
+                          borderRadius:"4px"
                         }}
                       >
                         # {pageNumber}

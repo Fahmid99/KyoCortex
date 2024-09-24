@@ -55,12 +55,15 @@ function DocumentViewer({
   );
   const [selectedButton, setSelectedButton] = useState(null);
 
-  console.log(selectedButton)
   useEffect(() => {
-    if (selectedButton === "words") {
-      console.log(region);
+    if (selectedButton === "words" && pageNumber !== 3) {
+      setRegion(documentData.pages[pageNumber - 1].words);
+    } else if (selectedButton === "lines" && pageNumber !== 3) {
+      setRegion(documentData.pages[pageNumber - 1].lines);
     }
-  }, []);
+  }, [pageNumber, selectedButton, documentData]);
+
+  console.log(selectedButton);
 
   const canvasRef = useRef(null);
 
@@ -105,6 +108,8 @@ function DocumentViewer({
             pageNumber={pageNumber}
             selectedKeyPolygon={selectedKeyPolygon}
             selectedValuePolygon={selectedValuePolygon}
+            selectedButton={selectedButton}
+            setRegion={setRegion}
           />
         </Grid>
 
@@ -191,7 +196,14 @@ function DocumentViewer({
               boxShadow: "10px",
             }}
           >
-            <Typography variant="h8" style={{ color: "#757575" }}>
+            <Typography
+              variant="h8"
+              style={{
+                color: "#757575",
+                fontFamily: "manrope",
+                fontWeight: "bold",
+              }}
+            >
               ACTIONS AND TOOLS
             </Typography>
           </div>

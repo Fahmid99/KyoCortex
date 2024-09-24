@@ -90,13 +90,13 @@ function DashboardTest({
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center", 
         height: "100vh",
         flexDirection: "column",
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <Button onClick={handleClick}>Start Analyze</Button>
+        <Button onClick={handleClick} sx={{fontSize:"20px"}}> Start Analyze</Button>
       </div>
     </div>
   );

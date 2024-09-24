@@ -27,10 +27,8 @@ function Toolbar({
   selectedValue,
   pageNumber,
   selectedButton,
-  setSelectedButton
+  setSelectedButton,
 }) {
-
-
   const handleButtonClick = (buttonName, regionData) => {
     setSelectedButton(buttonName);
     setRegion(regionData);
@@ -41,7 +39,7 @@ function Toolbar({
       <Grid container spacing={2}>
         <Grid size={12} sx={{ margin: "1em 0 0 0" }}>
           <Typography variant="h6" marginLeft="0.5em">
-            Selection Tools
+            Selection Mode
           </Typography>
           <Divider sx={{ width: "100%", my: 1 }} />
           <Box
@@ -60,11 +58,12 @@ function Toolbar({
             >
               <Button
                 size="small"
-                onClick={() => handleButtonClick("onClickIndex", null)}
+                
+                // onClick={() => handleButtonClick("onClickIndex", null)}
                 sx={{
                   backgroundColor:
-                    selectedButton === "onClickIndex" ? "#2196f3" : "white",
-                  color: selectedButton === "onClickIndex" ? "white" : "black",
+                    selectedButton === "onClickIndex" ? "white" : "#2196f3",
+                  color: selectedButton === "onClickIndex" ? "black" : "white",
                   padding: "0.5em",
                 }}
               >
@@ -78,6 +77,7 @@ function Toolbar({
               <Button
                 size="small"
                 onClick={() => handleButtonClick("dragAndIndex", null)}
+                disabled
                 sx={{
                   backgroundColor:
                     selectedButton === "dragAndIndex" ? "#2196f3" : "white",
@@ -93,35 +93,39 @@ function Toolbar({
               </Button>
             </ButtonGroup>
           </Box>
-          <Box mt={2}>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Current Selected</TableCell>
-                    <TableCell>Value</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Selection Tool</TableCell>
-                    <TableCell>{selectedKey}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Region</TableCell>
-                    <TableCell sx={{ color: "#2196f3" }}>
-                      {selectedValue}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
+          <Stack direction="column" alignItems="center">
+            <Box mt={2}>
+              <TableContainer
+                sx={{ border: "1px solid #eeeeee", maxWidth:"350px"}}
+              >
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Current Selected</TableCell>
+                      <TableCell>Value</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Key</TableCell>
+                      <TableCell>{selectedKey}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Value</TableCell>
+                      <TableCell sx={{ color: "#2196f3" }}>
+                        {selectedValue}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Stack>
         </Grid>
 
         <Grid size={12} sx={{ margin: "1em 0 0 0" }}>
           <Typography variant="h6" marginLeft="0.5em">
-            Highlight View
+            View Mode
           </Typography>
           <Divider sx={{ width: "100%", my: 1 }} />
           <Box
@@ -142,7 +146,10 @@ function Toolbar({
             >
               <Button
                 onClick={() =>
-                  handleButtonClick("words", documentData.pages[pageNumber - 1].words)
+                  handleButtonClick(
+                    "words",
+                    documentData.pages[pageNumber - 1].words
+                  )
                 }
                 sx={{
                   backgroundColor:
@@ -154,7 +161,10 @@ function Toolbar({
               </Button>
               <Button
                 onClick={() =>
-                  handleButtonClick("lines", documentData.pages[pageNumber - 1].lines)
+                  handleButtonClick(
+                    "lines",
+                    documentData.pages[pageNumber - 1].lines
+                  )
                 }
                 sx={{
                   backgroundColor:
@@ -222,7 +232,12 @@ function Toolbar({
             <Button
               variant="contained"
               size="large"
-              sx={{ borderRadius: "0", boxShadow: "none", background:"#2196f3"}}
+              
+              sx={{
+                borderRadius: "0",
+                boxShadow: "none",
+                background: "#2196f3",
+              }}
               onClick={handleSubmit}
             >
               Submit Data

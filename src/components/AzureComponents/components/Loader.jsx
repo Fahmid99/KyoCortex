@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import HashLoader from "react-spinners/HashLoader";
 
 function Loader() {
@@ -10,9 +11,14 @@ function Loader() {
           alignItems: "center",
         }}
       >
-        <h2 className="breathing-gradient" style={{ padding: "10px" }}>
+        <Typography
+          variant="h5"
+          fontWeight={"bold"}
+          className="breathing-gradient"
+          sx={{ padding: "10px", fontFamily: "manrope" , marginBottom:"10px" }}
+        >
           Analyzing Document
-        </h2>
+        </Typography>
         <HashLoader color="#DB0D23" />
       </div>
     </div>
