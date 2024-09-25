@@ -10,6 +10,7 @@ import {
   submitData,
   endProcess,
   signIn,
+  getAllTypes
 } from "../controllers/dmsController.mjs"; // Adjust the path as needed
 
 const router = express.Router();
@@ -23,5 +24,6 @@ router.post("/createObj", upload.single("file"), createObj);
 router.put("/submit/:id", submitData);
 router.post("/endprocess", endProcess);
 router.get("/signinkeim", signIn);
+router.get("/alltypes", getAllTypes);
 
 export default router;

@@ -41,6 +41,17 @@ const getFileTypes = async (parentId) => {
   }
 };
 
+const getAllTypes = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/alltypes`);
+    console.log(response.data)
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching file types:", err);
+    throw err;
+  }
+};
+
 const uploadNewFile = async (parentId, fileType, formData) => {
   try {
     const response = await axios.post(
@@ -114,4 +125,5 @@ export default {
   getDocumentByProcessId: getDocumentByProcessId,
   submitData: submitData,
   endProcess: endProcess,
+  getAllTypes: getAllTypes,
 };

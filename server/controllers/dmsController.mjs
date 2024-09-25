@@ -113,6 +113,28 @@ export const getFileTypes = async (req, res) => {
   }
 };
 
+// Get All Types
+
+export const getAllTypes = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `http://10.170.193.9/rest-ws/service/system/type/list?elements=false&baseparameter=false&embedcs=false&basetypes=false`,
+      {
+        headers: { Authorization: auth },
+      }
+    );
+    const result = response.data.map((type) => ({
+      technicalName: type.name,
+      label: type.label,
+      id: type.id,
+    }));
+    res.json(result);
+  } catch (error) {
+    console.error("Error getting  types:", error);
+    res.status(500).send("Error getting  types");
+  }
+};
+
 // Create Object
 export const createObj = async (req, res) => {
   const parentId = req.query.parentId;
@@ -177,6 +199,7 @@ export const createObj = async (req, res) => {
 // Submit Data
 export const submitData = async (req, res) => {
   const { id } = req.params;
+  
 
   try {
     const response = await axios.put(

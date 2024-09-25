@@ -1,0 +1,93 @@
+[
+    {
+        "type": "prebuilt-document",
+        "id": "5947838C4E6C4FD197FB31ED9E3270D6",
+        "model": "Document Model",
+        "keyGeneration": true,
+        "mapping": [],
+        "technicalName": "vendorrequestdocument",
+        "label": "Vendor Request"
+    },
+    {
+        "type": "prebuilt-invoice",
+        "id": "E620818D8374426CAA126A9C82F4D966",
+        "model": "Invoice Model",
+        "keyGeneration": true,
+        "mapping": [
+            {
+                "key": "invoiceId",
+                "mappedToKey": "totaltax"
+            },
+            {
+                "key": "invoiceDate",
+                "mappedToKey": "subtotal"
+            },
+            {
+                "key": "totalAmount",
+                "mappedToKey": "invoicetotal"
+            }
+        ],
+        "technicalName": "invoicetemplate",
+        "label": "Invoice Template"
+    },
+    {
+        "technicalName": "sysdmscontenttemplate",
+        "label": "Template",
+        "id": "8416AA44D5C048498B1A724F4F64A205",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "supplier",
+        "label": "Supplier",
+        "id": "ABE1CF7FD0324683A900EBEFBCBE9D8A",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "suppliercontract",
+        "label": "Supplier Contract",
+        "id": "F6CD077A70C0446BA4593EE95FBAAEBB",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "oneoff",
+        "label": "One Off",
+        "id": "3E18D30F800E41EC8C37A469B34E55D3",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "event",
+        "label": "event",
+        "id": "8D7630E8A6C2484697A64D470187B858",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "vendor",
+        "label": "Vendor",
+        "id": "CE48DFB6C74E476F8FEEDD0BAFFF2F00",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "receipttemplate",
+        "label": "Receipt Template",
+        "id": "FA6EC0BD4948493398C4B1A6156ADEE8",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "kestoticket",
+        "label": "Kesto Ticket",
+        "id": "53849FECB606464D8F52CE26502422DA",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "ticketcategory",
+        "label": "Ticket Category",
+        "id": "9097F33552674F93BAEE751FEB7DA6FE",
+        "keyGeneration": false
+    },
+    {
+        "technicalName": "hardwareticket",
+        "label": "hardwareTicket",
+        "id": "8DF3894EE97C458D951D956D26EC9DE9",
+        "keyGeneration": false
+    }
+]

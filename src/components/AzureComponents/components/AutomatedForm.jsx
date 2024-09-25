@@ -58,6 +58,8 @@ const AutomatedForm = ({
               ? field.boundingRegions[0].polygon
               : null, // Assuming polygon is a property of field
             kind: field.kind, // Add kind to the initial values
+            
+
           };
         });
       } else {

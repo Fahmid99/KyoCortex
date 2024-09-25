@@ -23,6 +23,8 @@ import azureDocumentService from "./services/azureDocumentService";
 import Loader from "./components/AzureComponents/components/Loader";
 import UploadPageTest from "./pages/UploadPageTest/UploadPageTest";
 import Cookies from "js-cookie";
+import AdminConfigPage from "./pages/AdminConfigPage/AdminConfigPage";
+import EditMapping from "./pages/AdminConfigPage/components/EditMapping";
 
 function App() {
   const scanTypeValues = {
@@ -48,6 +50,8 @@ function App() {
   const [docId, setDocId] = useState();
   const [docFormFields, setDocFormFields] = useState();
   const [processId, setProcessId] = useState();
+  const [configData, setConfigData] = useState([]);
+  const [selectedConfig, setSelectedConfig] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(
     Cookies.get("isLoggedIn") === "true"
   );
@@ -222,6 +226,30 @@ function App() {
             <Route
               path="/abbysignin"
               element={isLoggedIn ? <AbbySignInPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/configuration"
+              element={
+                isLoggedIn ? (
+                  <AdminConfigPage
+                    configData={configData}
+                    setConfigData={setConfigData}
+                    setSelectedConfig={setSelectedConfig}
+                  />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+            <Route
+              path="/editMapping/:id"
+              element={
+                isLoggedIn ? (
+                  <EditMapping selectedConfig={selectedConfig} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
           </Routes>
         )}
