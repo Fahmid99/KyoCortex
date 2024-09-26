@@ -88,3 +88,14 @@ export const updateMapping = async (req, res) => {
     res.status(500).send("Error updating mapping");
   }
 };
+
+export const convertFileToBase64 = async (req, res) => {
+  const file = req.file; // Assuming you're using multer to handle file uploads
+  try {
+    const base64String = file.buffer.toString("base64");
+    return res.json({ base64String });
+  } catch (error) {
+    console.error("Error converting file to base64:", error);
+    return res.status(500).json({ error: 'An unexpected error occurred' });
+  }
+};

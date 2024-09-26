@@ -4,7 +4,144 @@
         "id": "5947838C4E6C4FD197FB31ED9E3270D6",
         "model": "Document Model",
         "keyGeneration": true,
-        "mapping": [],
+        "mapping": [
+            {
+                "key": "Vendor Name",
+                "mappedToKey": "vendorname"
+            },
+            {
+                "key": "Trading As",
+                "mappedToKey": "suburb"
+            },
+            {
+                "key": "Street Address",
+                "mappedToKey": "streetaddress"
+            },
+            {
+                "key": "Suburb",
+                "mappedToKey": "suburb"
+            },
+            {
+                "key": "State / Region",
+                "mappedToKey": "stateregion"
+            },
+            {
+                "key": "Post Code",
+                "mappedToKey": "postcode"
+            },
+            {
+                "key": "Telephone",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Facsimile",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Postal Address",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Suburb",
+                "mappedToKey": ""
+            },
+            {
+                "key": "State / Region",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Post Code",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Country",
+                "mappedToKey": ""
+            },
+            {
+                "key": "E-mail Address",
+                "mappedToKey": ""
+            },
+            {
+                "key": "ACN / Company No.",
+                "mappedToKey": ""
+            },
+            {
+                "key": "ABN / NZBN",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Bank",
+                "mappedToKey": ""
+            },
+            {
+                "key": "BSB",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Account Name",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Account Number",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Estimated Monthly Purchases",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Credit Limit Required",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Last Updated:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Any references or testimonials",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Other Considerations",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Vendor being Replaced",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Reason for Creation",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Reason for Termination",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Proposer",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Manager",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Authoriser",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            }
+        ],
         "technicalName": "vendorrequestdocument",
         "label": "Vendor Request"
     },
@@ -34,7 +171,145 @@
         "technicalName": "sysdmscontenttemplate",
         "label": "Template",
         "id": "8416AA44D5C048498B1A724F4F64A205",
-        "keyGeneration": false
+        "keyGeneration": true,
+        "mapping": [
+            {
+                "key": "Vendor Name",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Trading As",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Street Address",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Suburb",
+                "mappedToKey": ""
+            },
+            {
+                "key": "State / Region",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Post Code",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Telephone",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Facsimile",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Postal Address",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Suburb",
+                "mappedToKey": ""
+            },
+            {
+                "key": "State / Region",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Post Code",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Country",
+                "mappedToKey": ""
+            },
+            {
+                "key": "E-mail Address",
+                "mappedToKey": ""
+            },
+            {
+                "key": "ACN / Company No.",
+                "mappedToKey": ""
+            },
+            {
+                "key": "ABN / NZBN",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Bank",
+                "mappedToKey": ""
+            },
+            {
+                "key": "BSB",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Account Name",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Account Number",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Estimated Monthly Purchases",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Credit Limit Required",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Last Updated:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Any references or testimonials",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Other Considerations",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Vendor being Replaced",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Reason for Creation",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Reason for Termination",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Proposer",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Manager",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Authoriser",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Date",
+                "mappedToKey": ""
+            }
+        ]
     },
     {
         "technicalName": "supplier",

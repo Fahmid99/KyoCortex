@@ -104,6 +104,8 @@ function UploadPage({ setOnUploadSuccess }) {
         setButtonLoading(false);
       }
     };
+
+    
   const handleUploadSuccess = () => {
     setIsUploaded(true);
     setOpenModal(true); // Open the modal on upload success

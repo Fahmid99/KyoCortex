@@ -37,11 +37,12 @@ function EditMapping({ selectedConfig }) {
 
   const handleSubmit = async () => {
     const mappedToKeys = mappingData.map((mapping) => mapping.mappedToKey);
-    const hasDuplicates = new Set(mappedToKeys).size !== mappedToKeys.length;
+    //const hasDuplicates = new Set(mappedToKeys).size !== mappedToKeys.length;
   
-    if (hasDuplicates) {
-      setError("Duplicate mappedToKey values are not allowed.");
-    } else {
+  //  if (hasDuplicates) {
+      //setError("Duplicate mappedToKey values are not allowed.");
+      setError("");
+   // } else {
       setError("");
       const mapping = mappingData.map((item) => ({
         key: item.key,
@@ -56,7 +57,7 @@ function EditMapping({ selectedConfig }) {
         console.error("Error updating mapping:", error);
         setError("Failed to update mapping. Please try again.");
       }
-    }
+    //}
   };
   
   return (

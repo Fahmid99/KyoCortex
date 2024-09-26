@@ -25,7 +25,8 @@ import UploadPageTest from "./pages/UploadPageTest/UploadPageTest";
 import Cookies from "js-cookie";
 import AdminConfigPage from "./pages/AdminConfigPage/AdminConfigPage";
 import EditMapping from "./pages/AdminConfigPage/components/EditMapping";
-
+import UploadSample from "./pages/AdminConfigPage/components/UploadSample";
+import configService from "./services/configService";
 function App() {
   const scanTypeValues = {
     default: "prebuilt-document",
@@ -246,6 +247,16 @@ function App() {
               element={
                 isLoggedIn ? (
                   <EditMapping selectedConfig={selectedConfig} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+            <Route
+              path="/generateInitialKeys/:id"
+              element={
+                isLoggedIn ? (
+                  <UploadSample selectedConfig={selectedConfig} />
                 ) : (
                   <Navigate to="/" />
                 )

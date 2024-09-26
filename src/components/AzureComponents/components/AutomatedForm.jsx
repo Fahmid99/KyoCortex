@@ -26,6 +26,7 @@ import Grid from "@mui/material/Grid2"; // Importing Grid2 and renaming it to Gr
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ConfidenceDisplay from "./ConfidenceDisplay"; // Assuming you have this component
+import configService from "../../../services/configService";
 
 const AutomatedForm = ({
   documentData,
@@ -44,6 +45,8 @@ const AutomatedForm = ({
   const [selectedField, setSelectedField] = useState(null);
   const [open, setOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
+
+
 
   useEffect(() => {
     if (documentData) {
@@ -64,6 +67,7 @@ const AutomatedForm = ({
         });
       } else {
         documentData.keyValuePairs.forEach((pair) => {
+          if (pair.key ) 
           initialautoFormValues[pair.key] = {
             value: pair.value || "",
             confidence: pair.confidence || 0, // Assuming confidence is a property of pair
