@@ -40,16 +40,44 @@ const AutomatedForm = ({
   handleSubmit,
   pageNumber,
   setPageNumber,
+  docType
 }) => {
   const [bgColor, setBgColor] = useState("white");
   const [selectedField, setSelectedField] = useState(null);
   const [open, setOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
-
-
+  const [formFields, setFormFields] = useState({});
+  const [formFieldsLoaded, setFormFieldsLoaded] = useState(false); // New state variable
 
   useEffect(() => {
-    if (documentData) {
+    const getFormFields = async () => {
+      const response = await configService.getConfig();
+      const selectedConfig = response.filter(
+        (config) => config.technicalName === docType
+      );
+
+      const filteredFormFields = selectedConfig[0].mapping.filter(
+        (obj) => obj.mappedToKey !== ""
+      );
+
+      const formFieldsObject = filteredFormFields.reduce((acc, field) => {
+        acc[field.key] = {
+          name: field.key,
+          mappedToKey: field.mappedToKey,
+        };
+        return acc;
+      }, {});
+
+      setFormFields(formFieldsObject);
+      setFormFieldsLoaded(true); // Set form fields as loaded
+    };
+    getFormFields();
+  }, []);
+
+  console.log(formFields);
+
+  useEffect(() => {
+    if (documentData && formFieldsLoaded) { // Check if form fields are loaded
       const initialautoFormValues = {};
       if (scanType !== "prebuilt-document") {
         documentData.documents[0].fields.forEach((field) => {
@@ -61,33 +89,32 @@ const AutomatedForm = ({
               ? field.boundingRegions[0].polygon
               : null, // Assuming polygon is a property of field
             kind: field.kind, // Add kind to the initial values
-            
-
           };
         });
       } else {
         documentData.keyValuePairs.forEach((pair) => {
-          if (pair.key ) 
-          initialautoFormValues[pair.key] = {
-            value: pair.value || "",
-            confidence: pair.confidence || 0, // Assuming confidence is a property of pair
-            color: pair.color,
-            keyPolygon: pair.keyBoundingRegions[0]
-              ? pair.keyBoundingRegions[0].polygon
-              : null, // Assuming polygon is a property of pair
-            valuePolygon: pair.valueBoundingRegions[0]
-              ? pair.valueBoundingRegions[0].polygon
-              : null,
-
-            kind: pair.kind, // Add kind to the initial values
-            pageNumber: pair.pageNumber,
-          };
+          if (pair.key in formFields) {
+            initialautoFormValues[pair.key] = {
+              value: pair.value || "",
+              confidence: pair.confidence || 0, // Assuming confidence is a property of pair
+              color: pair.color,
+              keyPolygon: pair.keyBoundingRegions[0]
+                ? pair.keyBoundingRegions[0].polygon
+                : null, // Assuming polygon is a property of pair
+              valuePolygon: pair.valueBoundingRegions[0]
+                ? pair.valueBoundingRegions[0].polygon
+                : null,
+              kind: pair.kind, // Add kind to the initial values
+              pageNumber: pair.pageNumber,
+              technicalName: formFields[pair.key].mappedToKey,
+            };
+          }
         });
       }
 
       setAutoFormValues(initialautoFormValues);
     }
-  }, [documentData, scanType]);
+  }, [documentData, scanType, formFieldsLoaded]); // Add formFieldsLoaded as a dependency
 
   console.log(autoFormValues);
   const handleChange = (e) => {
@@ -196,9 +223,9 @@ const AutomatedForm = ({
                           background: "#eeeeee",
                           marginLeft: "0.5em",
                           padding: "0.1em",
-                          paddingRight:"0.4em",
-                          paddingLeft:"0.4em",
-                          borderRadius:"4px"
+                          paddingRight: "0.4em",
+                          paddingLeft: "0.4em",
+                          borderRadius: "4px",
                         }}
                       >
                         # {pageNumber}

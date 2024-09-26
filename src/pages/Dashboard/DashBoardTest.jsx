@@ -17,6 +17,7 @@ function DashboardTest({
   setDocId,
   setDocFormFields,
   setProcessId,
+  setDocType,
 }) {
   const [documentId, setDocumentId] = useState(null);
   const [base64, setBase64] = useState("");
@@ -38,6 +39,8 @@ function DashboardTest({
           );
           setDocumentId(response.id);
           setDocId(response.id);
+          setDocType(response.type);
+
           await setDocFormFields(response.formFields);
           console.log(response.formFields);
           if (!response.type.includes("template")) {
@@ -90,13 +93,16 @@ function DashboardTest({
       style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center", 
+        alignItems: "center",
         height: "100vh",
         flexDirection: "column",
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <Button onClick={handleClick} sx={{fontSize:"20px"}}> Start Analyze</Button>
+        <Button onClick={handleClick} sx={{ fontSize: "20px" }}>
+          {" "}
+          Start Analyze
+        </Button>
       </div>
     </div>
   );

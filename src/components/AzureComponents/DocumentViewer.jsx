@@ -37,7 +37,7 @@ function DocumentViewer({
   scanType,
   autoFormValues,
   setAutoFormValues,
-
+  docType,
   submitData,
   handleSubmit,
 }) {
@@ -160,6 +160,7 @@ function DocumentViewer({
                 pageNumber={pageNumber}
                 setSelectedValue={setSelectedValue}
                 setPageNumber={setPageNumber}
+                docType={docType}
               />
             </TabPanel>
             <TabPanel value={value} index={1} sx={{ p: 0 }}>

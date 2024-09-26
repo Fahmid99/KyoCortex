@@ -53,6 +53,7 @@ function App() {
   const [processId, setProcessId] = useState();
   const [configData, setConfigData] = useState([]);
   const [selectedConfig, setSelectedConfig] = useState();
+  const [docType, setDocType] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(
     Cookies.get("isLoggedIn") === "true"
   );
@@ -168,6 +169,7 @@ function App() {
                     setDocId={setDocId}
                     setDocFormFields={setDocFormFields}
                     setProcessId={setProcessId}
+                    setDocType={setDocType}
                   />
                 ) : (
                   <Navigate to="/" />
@@ -218,6 +220,7 @@ function App() {
                     docId={docId}
                     docFormFields={docFormFields}
                     processId={processId}
+                    docType={docType}
                   />
                 ) : (
                   <Navigate to="/" />

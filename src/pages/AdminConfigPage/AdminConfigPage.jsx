@@ -36,6 +36,8 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
     getConfig();
   }, []);
 
+  console.log(configData)
+
   const handleEdit = (id, status, type) => {
     console.log(event.target.value)
     setSelectedConfig(type);

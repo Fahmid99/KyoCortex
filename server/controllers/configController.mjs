@@ -8,11 +8,17 @@ const auth =
   Buffer.from(`${process.env.KEIMUSERNAME}:${process.env.PASSWORD}`).toString(
     "base64"
   );
-
 export const getMergedData = async (req, res) => {
   try {
-    // Read the JSON file
-    const jsonData = JSON.parse(fs.readFileSync("data.json", "utf8"));
+    let jsonData = [];
+
+    // Check if the file exists and is not empty
+    if (
+      fs.existsSync("data.json") &&
+      fs.readFileSync("data.json", "utf8").trim()
+    ) {
+      jsonData = JSON.parse(fs.readFileSync("data.json", "utf8"));
+    }
 
     // Fetch the types from the external API
     const response = await axios.get(
@@ -78,9 +84,8 @@ export const updateMapping = async (req, res) => {
   try {
     const data = JSON.parse(fs.readFileSync("data.json", "utf8"));
     const index = data.findIndex((item) => item.id === id);
-    console.log(data[1]);
-    console.log(index);
     data[index].mapping = mapping;
+    data[index]
     fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");
     res.json({ message: "Mapping updated successfully" });
   } catch (error) {
@@ -89,6 +94,8 @@ export const updateMapping = async (req, res) => {
   }
 };
 
+
+
 export const convertFileToBase64 = async (req, res) => {
   const file = req.file; // Assuming you're using multer to handle file uploads
   try {
@@ -96,6 +103,6 @@ export const convertFileToBase64 = async (req, res) => {
     return res.json({ base64String });
   } catch (error) {
     console.error("Error converting file to base64:", error);
-    return res.status(500).json({ error: 'An unexpected error occurred' });
+    return res.status(500).json({ error: "An unexpected error occurred" });
   }
 };

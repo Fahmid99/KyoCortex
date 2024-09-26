@@ -15,6 +15,7 @@ function DocIntelPage({
   docId,
   docFormFields,
   processId,
+  docType,
 }) {
   const initialFormValues = {
     title: { label: "Title", value: "" },
@@ -97,17 +98,15 @@ function DocIntelPage({
     e.preventDefault();
     const itemsArray = [];
     console.log(autoFormValues);
-    const formValues = Object.entries(autoFormValues).reduce(
-      (acc, [key, { value }]) => {
-        // Remove spaces and special characters from keys
-        const lowerKey = key
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .replace(/[^a-z0-9]/gi, "");
 
-        if (lowerKey === "invoicedate") {
-          acc[lowerKey] = stringToDate(value);
-        } else if (lowerKey === "items" && Array.isArray(value)) {
+    const formValues = Object.entries(autoFormValues).reduce(
+      (acc, [key, { value, technicalName }]) => {
+        // Use technicalName instead of lowerKey
+        const keyName = technicalName || key;
+
+        if (keyName === "invoiceDate") {
+          acc[keyName] = stringToDate(value);
+        } else if (keyName === "items" && Array.isArray(value)) {
           // Iterate over the items array and transform each item dynamically
           value.forEach((item) => {
             const transformedItem = {};
@@ -116,24 +115,24 @@ function DocIntelPage({
             // Get the keys of the properties object
             const propertyKeys = Object.keys(properties);
             propertyKeys.forEach((propKey) => {
-              transformedItem[propKey.toLowerCase()] =
-                properties[propKey].value;
+              transformedItem[propKey] = properties[propKey].value;
             });
 
             itemsArray.push(transformedItem);
           });
-          acc[lowerKey] = itemsArray;
+          acc[keyName] = itemsArray;
         } else {
-          acc[lowerKey] = value;
+          acc[keyName] = value;
         }
 
         return acc;
       },
       {}
     );
+
     await submitData(docId, formValues);
 
-   // window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
+     window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
 
     console.log("Form submitted:", formValues);
   };
@@ -152,6 +151,7 @@ function DocIntelPage({
         setPageNumber={setPageNumber}
         pageNumber={pageNumber}
         handleSubmit={handleSubmit}
+        docType={docType}
       />
       <ToastContainer
         position="top-right"

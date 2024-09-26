@@ -38,28 +38,36 @@ function EditMapping({ selectedConfig }) {
   const handleSubmit = async () => {
     const mappedToKeys = mappingData.map((mapping) => mapping.mappedToKey);
     //const hasDuplicates = new Set(mappedToKeys).size !== mappedToKeys.length;
-  
-  //  if (hasDuplicates) {
-      //setError("Duplicate mappedToKey values are not allowed.");
-      setError("");
-   // } else {
-      setError("");
-      const mapping = mappingData.map((item) => ({
-        key: item.key,
-        mappedToKey: item.mappedToKey
-      }));
-      try {
-        const response = await configService.updateMapping(mapping, selectedConfig.id);
-        console.log("Mapping array:", mapping);
-        console.log("Update response:", response);
-        // You can now use the mapping array as needed
-      } catch (error) {
-        console.error("Error updating mapping:", error);
-        setError("Failed to update mapping. Please try again.");
-      }
+
+    //  if (hasDuplicates) {
+    //setError("Duplicate mappedToKey values are not allowed.");
+    setError("");
+    // } else {
+    setError("");
+    const mapping = mappingData.map((item) => ({
+      key: item.key,
+      mappedToKey: item.mappedToKey,
+    }));
+
+    const obj = {
+      mapping,
+      model: "prebuilt-document",
+    };
+    try {
+      const response = await configService.updateMapping(
+        mapping,
+        selectedConfig.id
+      );
+      console.log("Mapping array:", mapping);
+      console.log("Update response:", response);
+      // You can now use the mapping array as needed
+    } catch (error) {
+      console.error("Error updating mapping:", error);
+      setError("Failed to update mapping. Please try again.");
+    }
     //}
   };
-  
+
   return (
     <>
       <TableContainer component={Paper}>
