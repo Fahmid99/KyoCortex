@@ -22,11 +22,11 @@ export const getFormFields = async (name) => {
   }
 };
 
-export const updateMapping = async (mappingObj, id) => {
+export const updateMapping = async (obj, id) => {
   try {
     const response = await axios.put(
       `${API_BASE_URL}/updatemapping`,
-      { mapping: mappingObj }, // This is the body
+      { obj: obj }, // This is the body
       { params: { id } } // This is the query parameter
     );
     return response.data;
@@ -35,14 +35,17 @@ export const updateMapping = async (mappingObj, id) => {
   }
 };
 
-
 export const convertFileToBase64 = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/convertbase64`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axios.post(
+      `${API_BASE_URL}/convertbase64`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return response.data;
   } catch (err) {
     console.error("Error getting base64:", err);

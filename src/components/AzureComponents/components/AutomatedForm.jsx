@@ -40,7 +40,7 @@ const AutomatedForm = ({
   handleSubmit,
   pageNumber,
   setPageNumber,
-  docType
+  docType,
 }) => {
   const [bgColor, setBgColor] = useState("white");
   const [selectedField, setSelectedField] = useState(null);
@@ -77,19 +77,23 @@ const AutomatedForm = ({
   console.log(formFields);
 
   useEffect(() => {
-    if (documentData && formFieldsLoaded) { // Check if form fields are loaded
+    if (documentData && formFieldsLoaded) {
+      // Check if form fields are loaded
       const initialautoFormValues = {};
       if (scanType !== "prebuilt-document") {
         documentData.documents[0].fields.forEach((field) => {
-          initialautoFormValues[field.key] = {
-            value: field.value || "",
-            confidence: field.confidence || 0, // Assuming confidence is a property of field
-            color: field.color,
-            keyPolygon: field.boundingRegions[0]
-              ? field.boundingRegions[0].polygon
-              : null, // Assuming polygon is a property of field
-            kind: field.kind, // Add kind to the initial values
-          };
+          if (field.key in formFields) {
+            initialautoFormValues[field.key] = {
+              value: field.value || "",
+              confidence: field.confidence || 0, // Assuming confidence is a property of field
+              color: field.color,
+              keyPolygon: field.boundingRegions[0]
+                ? field.boundingRegions[0].polygon
+                : null, // Assuming polygon is a property of field
+              kind: field.kind, // Add kind to the initial values
+              technicalName: formFields[field.key].mappedToKey,
+            };
+          }
         });
       } else {
         documentData.keyValuePairs.forEach((pair) => {

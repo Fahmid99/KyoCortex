@@ -55,7 +55,7 @@ function EditMapping({ selectedConfig }) {
     };
     try {
       const response = await configService.updateMapping(
-        mapping,
+        obj,
         selectedConfig.id
       );
       console.log("Mapping array:", mapping);

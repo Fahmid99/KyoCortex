@@ -2,53 +2,134 @@
     {
         "technicalName": "sysdmscontenttemplate",
         "label": "Template",
-        "id": "8416AA44D5C048498B1A724F4F64A205"
+        "id": "8416AA44D5C048498B1A724F4F64A205",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "supplier",
         "label": "Supplier",
-        "id": "ABE1CF7FD0324683A900EBEFBCBE9D8A"
+        "id": "ABE1CF7FD0324683A900EBEFBCBE9D8A",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "suppliercontract",
         "label": "Supplier Contract",
-        "id": "F6CD077A70C0446BA4593EE95FBAAEBB"
+        "id": "F6CD077A70C0446BA4593EE95FBAAEBB",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "oneoff",
         "label": "One Off",
-        "id": "3E18D30F800E41EC8C37A469B34E55D3"
+        "id": "3E18D30F800E41EC8C37A469B34E55D3",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "event",
         "label": "event",
-        "id": "8D7630E8A6C2484697A64D470187B858"
+        "id": "8D7630E8A6C2484697A64D470187B858",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "invoicetemplate",
         "label": "Invoice Template",
-        "id": "E620818D8374426CAA126A9C82F4D966"
+        "id": "E620818D8374426CAA126A9C82F4D966",
+        "keyGeneration": true,
+        "model": "prebuilt-document",
+        "mapping": [
+            {
+                "key": "BillingAddress",
+                "mappedToKey": "vendoraddress"
+            },
+            {
+                "key": "BillingAddressRecipient",
+                "mappedToKey": "vendoraddressrecipient"
+            },
+            {
+                "key": "CustomerId",
+                "mappedToKey": "customername"
+            },
+            {
+                "key": "CustomerName",
+                "mappedToKey": "customername"
+            },
+            {
+                "key": "InvoiceDate",
+                "mappedToKey": "invoicedate"
+            },
+            {
+                "key": "InvoiceId",
+                "mappedToKey": "invoiceid"
+            },
+            {
+                "key": "InvoiceTotal",
+                "mappedToKey": "invoicetotal"
+            },
+            {
+                "key": "Items",
+                "mappedToKey": "items"
+            },
+            {
+                "key": "ShippingAddress",
+                "mappedToKey": "customeraddress"
+            },
+            {
+                "key": "ShippingAddressRecipient",
+                "mappedToKey": "customeraddressrecipient"
+            },
+            {
+                "key": "SubTotal",
+                "mappedToKey": "subtotal"
+            },
+            {
+                "key": "TotalTax",
+                "mappedToKey": "totaltax"
+            },
+            {
+                "key": "VendorAddress",
+                "mappedToKey": "vendoraddress"
+            },
+            {
+                "key": "VendorAddressRecipient",
+                "mappedToKey": "vendoraddressrecipient"
+            },
+            {
+                "key": "VendorName",
+                "mappedToKey": "vendorname"
+            }
+        ]
     },
     {
         "technicalName": "vendorrequestdocument",
         "label": "Vendor Request",
         "id": "5947838C4E6C4FD197FB31ED9E3270D6",
+        "model": "prebuilt-document",
+        "keyGeneration": true,
         "mapping": [
             {
                 "key": "Vendor Name",
-                "mappedToKey": ""
+                "mappedToKey": "vendorname"
             },
             {
                 "key": "Trading As",
-                "mappedToKey": ""
+                "mappedToKey": "tradingas"
             },
             {
                 "key": "Street Address",
-                "mappedToKey": ""
+                "mappedToKey": "streetaddress"
             },
             {
                 "key": "Suburb",
-                "mappedToKey": ""
+                "mappedToKey": "suburb"
             },
             {
                 "key": "State / Region",
@@ -175,26 +256,78 @@
     {
         "technicalName": "vendor",
         "label": "Vendor",
-        "id": "CE48DFB6C74E476F8FEEDD0BAFFF2F00"
+        "id": "CE48DFB6C74E476F8FEEDD0BAFFF2F00",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "receipttemplate",
         "label": "Receipt Template",
-        "id": "FA6EC0BD4948493398C4B1A6156ADEE8"
+        "id": "FA6EC0BD4948493398C4B1A6156ADEE8",
+        "keyGeneration": true,
+        "model": "prebuilt-document",
+        "mapping": [
+            {
+                "key": "Items",
+                "mappedToKey": "items"
+            },
+            {
+                "key": "MerchantAddress",
+                "mappedToKey": ""
+            },
+            {
+                "key": "MerchantName",
+                "mappedToKey": "vendorname"
+            },
+            {
+                "key": "MerchantPhoneNumber",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Subtotal",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Tip",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Total",
+                "mappedToKey": "totalamount"
+            },
+            {
+                "key": "TransactionDate",
+                "mappedToKey": ""
+            },
+            {
+                "key": "TransactionTime",
+                "mappedToKey": ""
+            }
+        ]
     },
     {
         "technicalName": "kestoticket",
         "label": "Kesto Ticket",
-        "id": "53849FECB606464D8F52CE26502422DA"
+        "id": "53849FECB606464D8F52CE26502422DA",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "ticketcategory",
         "label": "Ticket Category",
-        "id": "9097F33552674F93BAEE751FEB7DA6FE"
+        "id": "9097F33552674F93BAEE751FEB7DA6FE",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     },
     {
         "technicalName": "hardwareticket",
         "label": "hardwareTicket",
-        "id": "8DF3894EE97C458D951D956D26EC9DE9"
+        "id": "8DF3894EE97C458D951D956D26EC9DE9",
+        "keyGeneration": false,
+        "model": "prebuilt-document",
+        "mapping": []
     }
 ]

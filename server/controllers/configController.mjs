@@ -32,6 +32,9 @@ export const getMergedData = async (req, res) => {
       technicalName: type.name,
       label: type.label,
       id: type.id,
+      // keyGeneration: false,
+      // model: "prebuilt-document",
+      // mapping: [],
     }));
 
     // Merge the data based on matching IDs
@@ -79,22 +82,34 @@ export const getConfigFormFields = async (req, res) => {
 
 export const updateMapping = async (req, res) => {
   const { id } = req.query;
-  const { mapping } = req.body;
+  const { mapping, keyGeneration, model } = req.body.obj;
 
   try {
     const data = JSON.parse(fs.readFileSync("data.json", "utf8"));
     const index = data.findIndex((item) => item.id === id);
-    data[index].mapping = mapping;
-    data[index]
-    fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");
-    res.json({ message: "Mapping updated successfully" });
+
+    if (index !== -1) {
+      // Ensure existing properties are preserved
+      data[index] = {
+        ...data[index],
+        mapping: mapping || data[index].mapping, // Preserve existing mapping if not provided
+        keyGeneration:
+          keyGeneration !== undefined
+            ? keyGeneration
+            : data[index].keyGeneration, // Preserve existing keyGeneration if not provided
+        model: model,
+      };
+
+      fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");
+      res.json({ message: "Mapping updated successfully" });
+    } else {
+      res.status(404).send("Item not found");
+    }
   } catch (error) {
     console.error("Error updating mapping:", error);
     res.status(500).send("Error updating mapping");
   }
 };
-
-
 
 export const convertFileToBase64 = async (req, res) => {
   const file = req.file; // Assuming you're using multer to handle file uploads

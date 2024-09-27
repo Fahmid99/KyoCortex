@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Select, MenuItem, Button, Typography, Box } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Button,
+  Typography,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import Dropzone from "../../../components/Dropzone";
 import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
 import UploadConfirmCard from "../../../components/UploadConfirmCard";
@@ -17,6 +28,8 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
   const [file, setFile] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [keys, setKeys] = useState();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [scanType, setScanType] = useState("prebuilt-document");
   const navigate = useNavigate();
   const notify = () =>
     toast.success(" Upload Sucessful!", {
@@ -31,14 +44,12 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
     });
 
   const analyzeDocument = async (base64) => {
-    // setLoading(true);
     let obj = {
       base64String: base64,
-      scanType: "prebuilt-document",
+      scanType: scanType,
     };
     try {
       const response = await azureDocumentService.analyzeDocument(obj);
-      // const response = await azureDocumentService.analyzeDocument();
       updateMapping(response, selectedConfig.id);
       setKeys(response);
     } catch (error) {
@@ -47,12 +58,24 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
   };
 
   const updateMapping = async (obj, id) => {
-    const mapping = obj.keyValuePairs.map((item) => ({
+    const azureArray =
+      obj.keyValuePairs.length > 0
+        ? obj.keyValuePairs
+        : obj.documents[0].fields;
+
+    const mapping = azureArray.map((item) => ({
       key: item.key,
       mappedToKey: "",
     }));
+
+    const resultObj = {
+      mapping: mapping,
+      keyGeneration: true,
+      model: scanType,
+    };
+
     try {
-      const response = await configService.updateMapping(mapping, id);
+      const response = await configService.updateMapping(resultObj, id);
       console.log(response);
     } catch (error) {
       console.error("Error mapping data:", error);
@@ -60,23 +83,25 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
   };
 
   const handleFileUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", file);
-    console.log(file);
-    console.log(formData);
-    setButtonLoading(true);
-    try {
-      const response = await configService.convertFileToBase64(formData); // Pass formData instead of file
-      console.log(response);
-      const base64String = response.base64String; // Extract the base64 string from the response
+    setOpenDialog(true);
+  };
 
-      await analyzeDocument(base64String); // Pass the base64 string to analyzeDocument
-      // Call notify here
-      // navigate("/document-history");
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    } finally {
-      setButtonLoading(false);
+  const handleDialogClose = async (confirm) => {
+    setOpenDialog(false);
+    if (confirm) {
+      const formData = new FormData();
+      formData.append("file", file);
+      setButtonLoading(true);
+      try {
+        const response = await configService.convertFileToBase64(formData);
+        const base64String = response.base64String;
+        await analyzeDocument(base64String);
+        notify();
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setButtonLoading(false);
+      }
     }
   };
 
@@ -84,6 +109,7 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
     setIsUploaded(true);
     notify();
   };
+
   return (
     <div
       style={{
@@ -100,7 +126,7 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
         justifyContent="center"
         alignItems="center"
         width="100%"
-        maxWidth="800px" // Adjust this value as needed
+        maxWidth="800px"
       >
         <Dropzone
           onUploadSuccess={handleUploadSuccess}
@@ -116,6 +142,34 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
           buttonLoading={buttonLoading}
         />
       </Box>
+      <Dialog open={openDialog} onClose={() => handleDialogClose(false)}>
+        <DialogTitle>Select Scan Type</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please select the scan type for the document.
+          </DialogContentText>
+          <Select
+            value={scanType}
+            onChange={(e) => setScanType(e.target.value)}
+            fullWidth
+          >
+            <MenuItem value="prebuilt-document">Prebuilt Document</MenuItem>
+            <MenuItem value="prebuilt-invoice">Prebuilt Invoice</MenuItem>
+            <MenuItem value="prebuilt-receipt">Prebuilt Receipt</MenuItem>
+            <MenuItem value="prebuilt-businessCard">
+              Prebuilt Business Card
+            </MenuItem>
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleDialogClose(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => handleDialogClose(true)} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -127,8 +181,7 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
         draggable
         pauseOnHover
         theme="light"
-      />{" "}
-      {/* Add this line */}
+      />
     </div>
   );
 }
