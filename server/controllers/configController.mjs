@@ -97,7 +97,7 @@ export const updateMapping = async (req, res) => {
           keyGeneration !== undefined
             ? keyGeneration
             : data[index].keyGeneration, // Preserve existing keyGeneration if not provided
-        model: model,
+        model: model !== undefined ? model : data[index].model,
       };
 
       fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf8");

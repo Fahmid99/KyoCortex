@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import keimService from "../../services/keimService";
 import configService from "../../services/configService";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +10,13 @@ import {
   TableRow,
   Paper,
   Button,
+  Typography,
+  Divider,
+  Box,
+  TablePagination,
+  TextField,
+  TableSortLabel,
+  Chip,
 } from "@mui/material";
 
 function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
@@ -21,6 +27,11 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
     contracttemplate: "prebuilt-contract",
   };
   const navigate = useNavigate();
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     const getConfig = async () => {
@@ -34,12 +45,9 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
     };
 
     getConfig();
-  }, []);
-
-  console.log(configData)
+  }, [setConfigData]);
 
   const handleEdit = (id, status, type) => {
-    console.log(event.target.value)
     setSelectedConfig(type);
     if (status) {
       navigate(`/editMapping/${id}`);
@@ -48,46 +56,138 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
     }
   };
 
-  console.log(configData);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSort = () => {
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  const filteredData = configData
+    .filter((type) =>
+      type.label.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.keyGeneration === b.keyGeneration
+          ? 0
+          : a.keyGeneration
+          ? -1
+          : 1;
+      } else {
+        return a.keyGeneration === b.keyGeneration
+          ? 0
+          : a.keyGeneration
+          ? 1
+          : -1;
+      }
+    });
 
   return (
-    <>
-      <TableContainer component={Paper}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+    >
+      <Typography variant="h5" gutterBottom align="left" sx={{ width: "80%" }}>
+        Admin Configuration Page
+      </Typography>
+      <Typography
+        fontWeight={"400"}
+        marginBottom={"2em"}
+        gutterBottom
+        align="left"
+        sx={{ width: "80%" }}
+      >
+        Configure all documents and folder types from KEIM
+      </Typography>
+
+      <Divider sx={{ width: "80%", marginBottom: 2 }} />
+      <TextField
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        sx={{ marginBottom: 2, width: "80%" }}
+      />
+      <TableContainer component={Paper} sx={{ width: "80%", height: "auto" }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ background: "#f9f9f9" }}>
             <TableRow>
-              <TableCell>Type</TableCell>
-              <TableCell>Model</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell align="left">Type</TableCell>
+              <TableCell align="left">Model</TableCell>
+              <TableCell align="left">
+                <TableSortLabel
+                  active
+                  direction={sortOrder}
+                  onClick={handleSort}
+                >
+                  Status
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {configData.map((type) => (
-              <TableRow key={type.technicalName}>
-                <TableCell>{type.label}</TableCell>
-                <TableCell>{type.model}</TableCell>
-                <TableCell>
-                  {type.keyGeneration
-                    ? "Ready for Use"
-                    : "Configuration Required"}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="outlined"
-                    onClick={() =>
-                      handleEdit(type.id, type.keyGeneration, type)
-                    }
-                  >
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {filteredData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((type) => (
+                <TableRow key={type.technicalName}>
+                  <TableCell align="left">{type.label}</TableCell>
+                  <TableCell align="left">{type.model}</TableCell>
+                  <TableCell align="left">
+                    <Chip
+                      label={
+                        type.keyGeneration
+                          ? "Ready for Use"
+                          : "Configuration Required"
+                      }
+                      sx={{
+                        backgroundColor: type.keyGeneration
+                          ? "green"
+                          : "#ffb74d",
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell align="left">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        handleEdit(type.id, type.keyGeneration, type)
+                      }
+                    >
+                      {type.keyGeneration ? "Edit" : "Configure"}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[6, 12, 24]}
+          component="div"
+          count={filteredData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
-    </>
+    </Box>
   );
 }
 

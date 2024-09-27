@@ -96,9 +96,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        {/* {isLoggedIn && (
+      {isLoggedIn && !location.pathname.startsWith("/docintel") &&  !location.pathname.startsWith("/dashboardtest") && (
           <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} />
-        )} */}
+        )}
         {/* <AlertMessage
           onUploadSuccess={onUploadSuccess}
           setOnUploadSuccess={setOnUploadSuccess}
@@ -249,7 +249,7 @@ function App() {
               path="/editMapping/:id"
               element={
                 isLoggedIn ? (
-                  <EditMapping selectedConfig={selectedConfig} />
+                  <EditMapping selectedConfig={selectedConfig} setSelectedConfig={setSelectedConfig} />
                 ) : (
                   <Navigate to="/" />
                 )
@@ -259,7 +259,7 @@ function App() {
               path="/generateInitialKeys/:id"
               element={
                 isLoggedIn ? (
-                  <UploadSample selectedConfig={selectedConfig} />
+                  <UploadSample selectedConfig={selectedConfig} setSelectedConfig={setSelectedConfig} />
                 ) : (
                   <Navigate to="/" />
                 )

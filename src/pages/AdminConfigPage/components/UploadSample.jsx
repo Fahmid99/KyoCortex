@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  CircularProgress,
 } from "@mui/material";
 import Dropzone from "../../../components/Dropzone";
 import InfoIcon from "@mui/icons-material/Info"; // Importing an icon
@@ -20,7 +21,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import azureDocumentService from "../../../services/azureDocumentService";
 
-function UploadSample({ setOnUploadSuccess, selectedConfig }) {
+function UploadSample({
+  setOnUploadSuccess,
+  selectedConfig,
+  setSelectedConfig,
+}) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [showReviewButton, setShowReviewButton] = useState(false);
@@ -30,6 +35,7 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
   const [keys, setKeys] = useState();
   const [openDialog, setOpenDialog] = useState(false);
   const [scanType, setScanType] = useState("prebuilt-document");
+  const [loading, setLoading] = useState(false); // New loading state
   const navigate = useNavigate();
   const notify = () =>
     toast.success(" Upload Sucessful!", {
@@ -44,6 +50,7 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
     });
 
   const analyzeDocument = async (base64) => {
+    setLoading(true); // Set loading to true
     let obj = {
       base64String: base64,
       scanType: scanType,
@@ -54,6 +61,9 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
       setKeys(response);
     } catch (error) {
       console.error("Error analyzing document:", error);
+    } finally {
+      setLoading(false); // Set loading to false
+      navigate(`/configuration`, {});
     }
   };
 
@@ -120,6 +130,24 @@ function UploadSample({ setOnUploadSuccess, selectedConfig }) {
         background: "#eceff1",
       }}
     >
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </div>
+      )}
       <Box
         display="flex"
         flexDirection="row"

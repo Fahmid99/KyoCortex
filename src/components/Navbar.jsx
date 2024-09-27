@@ -1,6 +1,7 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import { Badge } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -11,68 +12,50 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import { useNavigate } from "react-router-dom";
+import AdbIcon from "@mui/icons-material/LocalHospital";
+import { NavLink } from "react-router-dom";
 
-const pages = ["Dashboard", "Upload", "Document History", "Configuration", "Upload Test", "DashboardTest"];
+const pages = [
+  { name: "Dashboard", path: "/dashboard" },
+  { name: "Configuration", path: "/configuration" },
+  { name: "Upload", path: "/upload-test" },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
+function Navbar({ invoices }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (page) => {
+  const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    navigate(`/${page.toLowerCase().replace(" ", "-")}`);
   };
 
-  const handleCloseUserMenu = (setting) => {
+  const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    if (setting === "Logout") {
-      setIsLoggedIn(false);
-      navigate("/");
-    } else {
-      navigate(`/${setting.toLowerCase()}`);
-    }
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        boxShadow: "none",
-        background: "white",
-        color: "#1976d2",
-        fontFamily: "Inter",
-        borderBottom: "1px solid #e0e0e0",
-      }}
-    >
+    <AppBar color="secondary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <PsychologyIcon
-            sx={{ fontSize: "2em", display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             component="a"
-            href="/dashboard"
+            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "Poppins",
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -104,15 +87,27 @@ function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
                 horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
-              onClose={() => setAnchorElNav(null)}
+              onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography
-                    sx={{ textAlign: "center", textTransform: "none" }}
+                    component={NavLink}
+                    to={page.path}
+                    sx={{
+                      textAlign: "center",
+                      textDecoration: "none",
+                      color: "inherit",
+                      textTransform: "none", // Change textTransform to none
+                    }}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive
+                        ? "rgb(64, 64, 64)"
+                        : "transparent",
+                    })}
                   >
-                    {page}
+                    {page.name}
                   </Typography>
                 </MenuItem>
               ))}
@@ -128,9 +123,8 @@ function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "Inter",
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -139,28 +133,45 @@ function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-            (page !== "Configuration" || isAdmin) && (
               <Button
-                key={page}
-                onClick={() => handleCloseNavMenu(page)}
+                key={page.name}
+                component={NavLink}
+                to={page.path}
+                onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "black",
+                  color: "white",
                   display: "block",
-                  textTransform: "none",
+                  padding: "0.5em 1.5em 0.5em 1.5em",
+                  textTransform: "none", // Change textTransform to none
+                  fontWeight: "600",
+                  "&:hover": {
+                    backgroundColor: "rgb(64, 64, 64)",
+                  },
                 }}
+                style={({ isActive }) => ({
+                  backgroundColor: isActive ? "rgb(64, 64, 64)" : "transparent",
+                  color: isActive ? "white" : "rgb(211, 211, 211)",
+                })}
               >
-                {page}
-              </Button>)
+                {page.name}
+                {/* {invoices.length && page.name === "Invoices" && (
+                  <Badge
+                    badgeContent={invoices.length}
+                    color="primary"
+                    sx={{ ml: "1em" }}
+                  />
+                )} */}
+              </Button>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  sx={{ background: "#1976d2" }}
                   alt="Remy Sharp"
                   src="/static/images/avatar/2.jpg"
+                  sx={{ background: "#3B6DF1" }}
                 />
               </IconButton>
             </Tooltip>
@@ -178,16 +189,11 @@ function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
                 horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
-              onClose={() => setAnchorElUser(null)}
+              onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={() => handleCloseUserMenu(setting)}
-                >
-                  <Typography
-                    sx={{ textAlign: "center", textTransform: "none" }}
-                  >
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: "center" }}>
                     {setting}
                   </Typography>
                 </MenuItem>
@@ -200,4 +206,4 @@ function ResponsiveAppBar({ setIsLoggedIn, isAdmin }) {
   );
 }
 
-export default ResponsiveAppBar;
+export default Navbar;

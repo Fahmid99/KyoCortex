@@ -11,20 +11,30 @@ import {
   MenuItem,
   Button,
   Typography,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 import configService from "../../../services/configService";
-
-function EditMapping({ selectedConfig }) {
+import { useNavigate } from "react-router-dom";
+function EditMapping({ selectedConfig, setSelectedConfig }) {
   const [formFields, setFormFields] = useState([]);
   const [mappingData, setMappingData] = useState(selectedConfig.mapping);
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState(true); // New loading state
+  const navigate = useNavigate();
   useEffect(() => {
     const getFormFields = async () => {
-      const response = await configService.getFormFields(
-        selectedConfig.technicalName
-      );
-      setFormFields(response);
+      try {
+        const response = await configService.getFormFields(
+          selectedConfig.technicalName
+        );
+        console.log(response);
+        setFormFields(response);
+      } catch (error) {
+        console.error("Error fetching form fields:", error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
+      }
     };
     getFormFields();
   }, [selectedConfig]);
@@ -50,9 +60,9 @@ function EditMapping({ selectedConfig }) {
     }));
 
     const obj = {
-      mapping,
-      model: "prebuilt-document",
+      mapping: mapping,
     };
+
     try {
       const response = await configService.updateMapping(
         obj,
@@ -64,49 +74,66 @@ function EditMapping({ selectedConfig }) {
     } catch (error) {
       console.error("Error updating mapping:", error);
       setError("Failed to update mapping. Please try again.");
+    } finally {
+      navigate(`/configuration`);
     }
     //}
   };
 
+  console.log(selectedConfig);
+
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Key</TableCell>
-              <TableCell>Map to</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {mappingData.map((mapping, index) => (
-              <TableRow key={index}>
-                <TableCell>{mapping.key}</TableCell>
-                <TableCell>
-                  <Select
-                    value={mapping.mappedToKey || ""}
-                    onChange={(event) => handleMappingChange(index, event)}
-                    displayEmpty
-                  >
-                    <MenuItem value="" disabled>
-                      Select a field
-                    </MenuItem>
-                    {formFields.map((field, idx) => (
-                      <MenuItem key={idx} value={field}>
-                        {field}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {error && <Typography color="error">{error}</Typography>}
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Key</TableCell>
+                  <TableCell>Map to</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {mappingData.map((mapping, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{mapping.key}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={mapping.mappedToKey || ""}
+                        onChange={(event) => handleMappingChange(index, event)}
+                        displayEmpty
+                      >
+                        <MenuItem value="" disabled>
+                          Select a field
+                        </MenuItem>
+                        {formFields.map((field, idx) => (
+                          <MenuItem key={idx} value={field}>
+                            {field}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {error && <Typography color="error">{error}</Typography>}
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </>
+      )}
     </>
   );
 }
