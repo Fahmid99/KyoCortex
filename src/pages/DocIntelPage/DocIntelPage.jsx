@@ -100,31 +100,36 @@ function DocIntelPage({
     console.log(autoFormValues);
 
     const formValues = Object.entries(autoFormValues).reduce(
-      (acc, [key, { value, technicalName }]) => {
+      (acc, [key, { value, technicalName, kind }]) => {
         // Use technicalName instead of lowerKey
         const keyName = technicalName || key;
-
-        if (keyName === "invoiceDate") {
+    
+        if (kind === "date") {
           acc[keyName] = stringToDate(value);
+          console.log("date worked");
         } else if (keyName === "items" && Array.isArray(value)) {
           // Iterate over the items array and transform each item dynamically
           value.forEach((item) => {
             const transformedItem = {};
             const properties = item.properties;
-
+    
             // Get the keys of the properties object
             const propertyKeys = Object.keys(properties);
             propertyKeys.forEach((propKey) => {
-              transformedItem[propKey] = properties[propKey].value;
+              if (typeof properties[propKey].value === "object") {
+                transformedItem[propKey] = properties[propKey].value.amount;
+              } else {
+                transformedItem[propKey] = properties[propKey].value;
+              }
             });
-
+    
             itemsArray.push(transformedItem);
           });
           acc[keyName] = itemsArray;
         } else {
           acc[keyName] = value;
         }
-
+    
         return acc;
       },
       {}

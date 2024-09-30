@@ -141,6 +141,9 @@ const AutomatedForm = ({
   };
 
   const handleCardClick = (name, pageNumber) => {
+    if (autoFormValues[name].kind === "array") {
+      return;
+    }
     setPageNumber(pageNumber);
     if (selectedField === name) {
       // Deselect if the same field is clicked again
@@ -159,16 +162,15 @@ const AutomatedForm = ({
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleOpen = (data) => {
     setTableData(data);
     setOpen(true);
   };
 
- 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleTableChange = (rowIndex, key, value) => {
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex].properties[key].content = value;
