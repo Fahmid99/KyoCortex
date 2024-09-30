@@ -41,6 +41,7 @@
     "react-router-dom": "^6.26.1",
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
+    "string-similarity": "^4.0.4",
     "ui": "^0.2.4"
   },
   "resolutions": {

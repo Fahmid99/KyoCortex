@@ -159,15 +159,16 @@ const AutomatedForm = ({
     }
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleOpen = (data) => {
     setTableData(data);
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+ 
   const handleTableChange = (rowIndex, key, value) => {
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex].properties[key].content = value;

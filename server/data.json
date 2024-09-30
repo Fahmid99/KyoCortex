@@ -47,7 +47,7 @@
             },
             {
                 "key": "InvoiceDate",
-                "mappedToKey": ""
+                "mappedToKey": "invoicedate"
             },
             {
                 "key": "InvoiceId",
@@ -59,7 +59,7 @@
             },
             {
                 "key": "Items",
-                "mappedToKey": ""
+                "mappedToKey": "items"
             },
             {
                 "key": "ShippingAddress",
@@ -136,15 +136,15 @@
             },
             {
                 "key": "Suburb",
-                "mappedToKey": "suburb"
+                "mappedToKey": ""
             },
             {
                 "key": "State / Region",
-                "mappedToKey": "stateregion"
+                "mappedToKey": ""
             },
             {
                 "key": "Post Code",
-                "mappedToKey": "postcode"
+                "mappedToKey": ""
             },
             {
                 "key": "Country",
@@ -160,7 +160,7 @@
             },
             {
                 "key": "ABN / NZBN",
-                "mappedToKey": "abnnzbn"
+                "mappedToKey": ""
             },
             {
                 "key": "Bank",
@@ -172,11 +172,11 @@
             },
             {
                 "key": "Account Name",
-                "mappedToKey": ""
+                "mappedToKey": "accountname"
             },
             {
                 "key": "Account Number",
-                "mappedToKey": ""
+                "mappedToKey": "accountnumber"
             },
             {
                 "key": "Estimated Monthly Purchases",
@@ -184,7 +184,7 @@
             },
             {
                 "key": "Credit Limit Required",
-                "mappedToKey": ""
+                "mappedToKey": "creditlimitrequired"
             },
             {
                 "key": "Last Updated:",
@@ -192,7 +192,7 @@
             },
             {
                 "key": "Any references or testimonials",
-                "mappedToKey": ""
+                "mappedToKey": "estimatedmonthlypurchases"
             },
             {
                 "key": "Other Considerations",
@@ -241,7 +241,87 @@
     {
         "technicalName": "vendor",
         "label": "Vendor",
-        "id": "CE48DFB6C74E476F8FEEDD0BAFFF2F00"
+        "id": "CE48DFB6C74E476F8FEEDD0BAFFF2F00",
+        "mapping": [
+            {
+                "key": "QUARTERLY REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934",
+                "mappedToKey": ""
+            },
+            {
+                "key": "For the Quarterly Period Ended",
+                "mappedToKey": ""
+            },
+            {
+                "key": "TRANSITION REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Transition Period From",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Commission File Number",
+                "mappedToKey": ""
+            },
+            {
+                "key": "(STATE",
+                "mappedToKey": ""
+            },
+            {
+                "key": "(I.R.S. ID)",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Securities registered pursuant to Section 12(g) of the Act:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Yes",
+                "mappedToKey": ""
+            },
+            {
+                "key": "No",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Yes",
+                "mappedToKey": ""
+            },
+            {
+                "key": "No",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Large accelerated filer",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Accelerated filer",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Non-accelerated filer",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Emerging growth company",
+                "mappedToKey": ""
+            },
+            {
+                "key": "If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act.",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Yes",
+                "mappedToKey": ""
+            },
+            {
+                "key": "No",
+                "mappedToKey": ""
+            }
+        ],
+        "keyGeneration": true,
+        "model": "prebuilt-document"
     },
     {
         "technicalName": "receipttemplate",

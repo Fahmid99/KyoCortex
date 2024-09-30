@@ -9,7 +9,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #eceff1  !important;
+  /* background: #eceff1  !important; */
 }
 
 .pdf-controls-container {

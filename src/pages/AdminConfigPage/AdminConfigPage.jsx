@@ -99,7 +99,14 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      height="100vh"
+      height="calc(100vh - 120px)"
+      sx={{
+        paddingTop: {
+          xs: "56px", // smaller screens
+          sm: "70px", // medium screens
+          md: "", // larger screens
+        },
+      }}
     >
       <Typography variant="h5" gutterBottom align="left" sx={{ width: "80%" }}>
         Admin Configuration Page
@@ -114,9 +121,8 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
         Configure all documents and folder types from KEIM
       </Typography>
 
-      <Divider sx={{ width: "80%", marginBottom: 2 }} />
       <TextField
-        label="Search"
+        label="Search by type"
         variant="outlined"
         value={searchTerm}
         onChange={handleSearchChange}
@@ -156,9 +162,9 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
                       }
                       sx={{
                         backgroundColor: type.keyGeneration
-                          ? "green"
-                          : "#ffb74d",
-                        color: "white",
+                          ? "#c5e1a5"
+                          : "#ffe0b2",
+                        color: type.keyGeneration ? "#558b2f" : "#ef6c00",
                         fontWeight: "bold",
                       }}
                     />
@@ -166,6 +172,13 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
                   <TableCell align="left">
                     <Button
                       variant="outlined"
+                      sx={{
+                        borderWidth: 2,
+                        borderColor: "#1e88e5",
+                        fontWeight: "800",
+                        color: "#1976d2",
+                        minWidth: "120px",
+                      }} // Adjust the value to make the border thicker
                       onClick={() =>
                         handleEdit(type.id, type.keyGeneration, type)
                       }

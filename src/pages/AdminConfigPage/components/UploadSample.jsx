@@ -121,14 +121,14 @@ function UploadSample({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: `calc(100vh - 80px)`,
-        background: "#eceff1",
-      }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      backgroundColor="#eceff1"
+      
     >
       {loading && (
         <div
@@ -148,6 +148,20 @@ function UploadSample({
           <CircularProgress color="inherit" />
         </div>
       )}
+      <Box width="80%"  paddingBottom="3em" >
+      <Typography variant="h5" gutterBottom align="left" sx={{ width: "80%" }}>
+        Upload Sample Document
+      </Typography>
+      <Typography
+        fontWeight={"400"}
+        marginBottom={"2em"}
+        gutterBottom
+        align="left"
+        sx={{ width: "80%" }}
+      >
+        Upload a sample document to generate initial keys for this layout.
+      </Typography>
+      </Box>
       <Box
         display="flex"
         flexDirection="row"
@@ -155,6 +169,7 @@ function UploadSample({
         alignItems="center"
         width="100%"
         maxWidth="800px"
+        paddingBottom="8em"
       >
         <Dropzone
           onUploadSuccess={handleUploadSuccess}
@@ -210,7 +225,7 @@ function UploadSample({
         pauseOnHover
         theme="light"
       />
-    </div>
+    </Box>
   );
 }
 
