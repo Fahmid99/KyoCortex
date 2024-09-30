@@ -170,16 +170,16 @@
         "id": "E620818D8374426CAA126A9C82F4D966",
         "mapping": [
             {
+                "key": "AmountDue",
+                "mappedToKey": "amountdue"
+            },
+            {
                 "key": "BillingAddress",
                 "mappedToKey": "customeraddress"
             },
             {
                 "key": "BillingAddressRecipient",
                 "mappedToKey": "customeraddressrecipient"
-            },
-            {
-                "key": "CustomerId",
-                "mappedToKey": ""
             },
             {
                 "key": "CustomerName",
@@ -202,6 +202,14 @@
                 "mappedToKey": "items"
             },
             {
+                "key": "PaymentTerm",
+                "mappedToKey": ""
+            },
+            {
+                "key": "RemittanceAddressRecipient",
+                "mappedToKey": ""
+            },
+            {
                 "key": "ShippingAddress",
                 "mappedToKey": ""
             },
@@ -212,6 +220,10 @@
             {
                 "key": "SubTotal",
                 "mappedToKey": "subtotal"
+            },
+            {
+                "key": "TotalDiscount",
+                "mappedToKey": ""
             },
             {
                 "key": "TotalTax",

@@ -23,6 +23,7 @@ import KeyIcon from "@mui/icons-material/Key";
 import ClearIcon from "@mui/icons-material/Clear";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import WarningMessage from "./WarningMessage";
 
 function EditMapping({ selectedConfig, setSelectedConfig }) {
   const [formFields, setFormFields] = useState([]);
@@ -299,6 +300,7 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
                 </Button>
               </Box>
             </Box>
+         
             {hasDuplicates && (
               <Box width="90%" sx={{ marginTop: "1em" }}>
                 <Alert severity="warning" color="warning">
@@ -372,6 +374,7 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
             >
               {autoMappedCount} keys have been automatically mapped.
             </Typography>
+          
           </>
         )}
       </Box>

@@ -127,7 +127,7 @@ function UploadPage({ setOnUploadSuccess }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: `calc(100vh - 80px)`,
+        height: `calc(100vh)`,
         background: "#eceff1",
       }}
     >

@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import WarningIcon from "@mui/icons-material/Warning";
-function WarningMessage() {
+function WarningMessage({ message }) {
   return (
     <Box
       display="flex"
@@ -15,7 +15,7 @@ function WarningMessage() {
     >
       <WarningIcon sx={{ color: "#e53935", marginRight: "5px" }} />
       <Typography variant="caption" color="#d50000" fontWeight="bold">
-        The sample document has duplicate keys. Please review carefully.
+        {message}
       </Typography>
     </Box>
   );
