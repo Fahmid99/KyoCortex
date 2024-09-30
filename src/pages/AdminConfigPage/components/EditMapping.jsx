@@ -254,9 +254,14 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
                   sx={{
                     marginRight: "1em",
                     borderWidth: 2,
-                    borderColor: "black",
+                    borderColor: "#1565c0",
+                    color: "#1565c0",
                     fontWeight: "800",
                     fontSize: { xs: "0.75em", sm: "12px" },
+                    "&:hover": {
+                      backgroundColor: "rgba(21, 101, 192, 0.1)",
+                      borderColor: "#1565c0",
+                    },
                   }}
                 >
                   <AutoAwesomeMotionIcon sx={{ marginRight: "0.3em" }} />
@@ -361,7 +366,10 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
               </Table>
             </TableContainer>
             {error && <Typography color="error">{error}</Typography>}
-            <Typography color="green" sx={{ marginTop: "1em", paddingBottom:"1em" }}>
+            <Typography
+              color="green"
+              sx={{ marginTop: "1em", paddingBottom: "1em" }}
+            >
               {autoMappedCount} keys have been automatically mapped.
             </Typography>
           </>

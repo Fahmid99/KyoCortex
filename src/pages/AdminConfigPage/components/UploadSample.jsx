@@ -105,6 +105,7 @@ function UploadSample({
       try {
         const response = await configService.convertFileToBase64(formData);
         const base64String = response.base64String;
+        console.log(base64String)
         await analyzeDocument(base64String);
         notify();
       } catch (error) {

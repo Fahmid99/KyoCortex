@@ -178,11 +178,16 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
                         fontWeight: "800",
                         color: "#1976d2",
                         minWidth: "120px",
+                        "&:hover": {
+                          backgroundColor: "rgba(21, 101, 192, 0.1)",
+                        
+                        },
                       }} // Adjust the value to make the border thicker
                       onClick={() =>
                         handleEdit(type.id, type.keyGeneration, type)
                       }
                     >
+                      
                       {type.keyGeneration ? "Edit" : "Configure"}
                     </Button>
                   </TableCell>
