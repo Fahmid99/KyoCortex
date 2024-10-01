@@ -12,27 +12,19 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 const PdfViewer = ({
-  handleSubmit,
   base64String,
   documentData,
-  formValues,
   selectedKey,
   setSelectedKey,
   setFormValues,
-  convertPolygon,
-  canvasRef,
-  convertInchesToPixels,
   region,
   setAutoFormValues,
   selectedKeyPolygon,
   selectedValuePolygon,
   pageNumber,
   setPageNumber,
-  selectedButton,
-  setRegion,
 }) => {
   const [numPages, setNumPages] = useState(null);
-
   const [scale, setScale] = useState(1);
   const containerRef = useRef(null);
 
@@ -71,13 +63,10 @@ const PdfViewer = ({
       setPageNumber((prevPageNumber) => Math.min(prevPageNumber + 1, numPages));
     }
 
-      
-
     // if (selectedButton === "keyValuePairs") {
-      
+
     //   setRegion(documentData.pages[pageNumber - 1].words)
     // }
-  
   };
 
   return (
@@ -102,7 +91,6 @@ const PdfViewer = ({
           pageNumber={pageNumber}
           handlePageNumber={handlePageNumber}
           numPages={numPages}
-          handleSubmit={handleSubmit}
           handleZoomIn={handleZoomIn}
           handleZoomOut={handleZoomOut}
         />
@@ -130,17 +118,13 @@ const PdfViewer = ({
             base64String={base64String}
             onDocumentLoadSuccess={onDocumentLoadSuccess}
             pageNumber={pageNumber}
+            scale={scale}
             documentData={documentData}
-            formValues={formValues}
             selectedKey={selectedKey}
             setSelectedKey={setSelectedKey}
             setFormValues={setFormValues}
-            convertPolygon={convertPolygon}
-            canvasRef={canvasRef}
-            convertInchesToPixels={convertInchesToPixels}
             region={region}
             setAutoFormValues={setAutoFormValues}
-            scale={scale}
             selectedKeyPolygon={selectedKeyPolygon}
             selectedValuePolygon={selectedValuePolygon}
           />

@@ -175,11 +175,11 @@
             },
             {
                 "key": "BillingAddress",
-                "mappedToKey": "customeraddress"
+                "mappedToKey": ""
             },
             {
                 "key": "BillingAddressRecipient",
-                "mappedToKey": "customeraddressrecipient"
+                "mappedToKey": ""
             },
             {
                 "key": "CustomerName",
