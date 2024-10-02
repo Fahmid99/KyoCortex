@@ -300,7 +300,7 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
                 </Button>
               </Box>
             </Box>
-         
+
             {hasDuplicates && (
               <Box width="90%" sx={{ marginTop: "1em" }}>
                 <Alert severity="warning" color="warning">
@@ -348,11 +348,14 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
                       <TableCell>{mapping.key}</TableCell>
                       <TableCell>
                         <Select
+                      
+                          size="small"
                           value={mapping.mappedToKey || ""}
                           onChange={(event) =>
                             handleMappingChange(index, event)
                           }
                           displayEmpty
+                          sx={{width:"200px"}}
                         >
                           <MenuItem value="">None</MenuItem>
                           {formFields.map((field, idx) => (
@@ -374,7 +377,6 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
             >
               {autoMappedCount} keys have been automatically mapped.
             </Typography>
-          
           </>
         )}
       </Box>
