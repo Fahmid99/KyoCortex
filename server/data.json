@@ -147,7 +147,83 @@
     {
         "technicalName": "supplier",
         "label": "Supplier",
-        "id": "ABE1CF7FD0324683A900EBEFBCBE9D8A"
+        "id": "ABE1CF7FD0324683A900EBEFBCBE9D8A",
+        "mapping": [
+            {
+                "key": "Supplier Name:",
+                "mappedToKey": "suppliername"
+            },
+            {
+                "key": "Supplier ID:",
+                "mappedToKey": "supplierid"
+            },
+            {
+                "key": "Business Name:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Registration Number:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Contact Person:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Phone Number:",
+                "mappedToKey": "telephonenumber"
+            },
+            {
+                "key": "Email Address:",
+                "mappedToKey": "emailaddress"
+            },
+            {
+                "key": "Bank Name:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Account Number:",
+                "mappedToKey": "accountnumber"
+            },
+            {
+                "key": "SWIFT Code:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Street Address:",
+                "mappedToKey": "streetaddress"
+            },
+            {
+                "key": "City:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "State:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Zip Code:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "PO Box:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "City:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "State:",
+                "mappedToKey": ""
+            },
+            {
+                "key": "Zip Code:",
+                "mappedToKey": ""
+            }
+        ],
+        "keyGeneration": true,
+        "model": "prebuilt-document"
     },
     {
         "technicalName": "suppliercontract",
@@ -175,11 +251,11 @@
             },
             {
                 "key": "BillingAddress",
-                "mappedToKey": ""
+                "mappedToKey": "customeraddress"
             },
             {
                 "key": "BillingAddressRecipient",
-                "mappedToKey": ""
+                "mappedToKey": "customeraddressrecipient"
             },
             {
                 "key": "CustomerName",

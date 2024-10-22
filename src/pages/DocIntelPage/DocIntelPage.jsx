@@ -137,7 +137,7 @@ function DocIntelPage({
 
     await submitData(docId, formValues);
 
-    window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
+   window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
 
     console.log("Form submitted:", formValues);
   };
