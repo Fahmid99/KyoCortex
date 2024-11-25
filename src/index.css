@@ -29,3 +29,15 @@ html, body {
   width: 100%; 
   max-width: 1200px; 
 }
+
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pdf-content {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+}

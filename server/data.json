@@ -558,7 +558,7 @@
         "mapping": [
             {
                 "key": "Items",
-                "mappedToKey": "items"
+                "mappedToKey": ""
             },
             {
                 "key": "MerchantAddress",
@@ -566,7 +566,7 @@
             },
             {
                 "key": "MerchantName",
-                "mappedToKey": "vendorname"
+                "mappedToKey": ""
             },
             {
                 "key": "MerchantPhoneNumber",
@@ -610,5 +610,30 @@
         "technicalName": "hardwareticket",
         "label": "hardwareTicket",
         "id": "8DF3894EE97C458D951D956D26EC9DE9"
+    },
+    {
+        "technicalName": "servicelevelagreementsla",
+        "label": "Service Level Agreement (SLA)",
+        "id": "244DDB7CD7684565B391850AB4CDCBAB"
+    },
+    {
+        "technicalName": "quotes",
+        "label": "Quotes",
+        "id": "EBAEB0DA7C76432EBEF120FFDA427751"
+    },
+    {
+        "technicalName": "insurancecertificates",
+        "label": "Insurance Certificates",
+        "id": "18132CDF0108468FA0213325B8D659A1"
+    },
+    {
+        "technicalName": "iso27001",
+        "label": "ISO 27001",
+        "id": "37A3B5C234BC4B99B08D1DC782563A62"
+    },
+    {
+        "technicalName": "supplierreevalution",
+        "label": "Supplier Re-evaluation Result",
+        "id": "4239558AA3DE41A5BB8FBF4EF5CEF4BA"
     }
 ]
