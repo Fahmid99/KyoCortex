@@ -26,6 +26,7 @@ import Cookies from "js-cookie";
 import AdminConfigPage from "./pages/AdminConfigPage/AdminConfigPage";
 import EditMapping from "./pages/AdminConfigPage/components/EditMapping";
 import UploadSample from "./pages/AdminConfigPage/components/UploadSample";
+import MyerIcon from "./assets/Myer_logo.svg"
 import configService from "./services/configService";
 function App() {
   const scanTypeValues = {
@@ -96,6 +97,15 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+     <div
+        style={{
+          background: "white",
+          padding: "10px",
+     
+        }}
+      >
+        <img src={MyerIcon}></img>
+      </div>
       {isLoggedIn && !location.pathname.startsWith("/docintel") &&  !location.pathname.startsWith("/dashboardtest") && (
           <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} />
         )}

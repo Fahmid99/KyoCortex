@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
-
+import MyerIcon from "../../assets/Myer_logo.svg";
 import DocumentViewer from "../../components/AzureComponents/DocumentViewer";
 import azureDocumentService from "../../services/azureDocumentService";
 import { ToastContainer, toast } from "react-toastify";
@@ -103,7 +103,7 @@ function DocIntelPage({
       (acc, [key, { value, technicalName, kind }]) => {
         // Use technicalName instead of lowerKey
         const keyName = technicalName || key;
-    
+
         if (kind === "date") {
           acc[keyName] = stringToDate(value);
           console.log("date worked");
@@ -112,7 +112,7 @@ function DocIntelPage({
           value.forEach((item) => {
             const transformedItem = {};
             const properties = item.properties;
-    
+
             // Get the keys of the properties object
             const propertyKeys = Object.keys(properties);
             propertyKeys.forEach((propKey) => {
@@ -122,14 +122,14 @@ function DocIntelPage({
                 transformedItem[propKey] = properties[propKey].value;
               }
             });
-    
+
             itemsArray.push(transformedItem);
           });
           acc[keyName] = itemsArray;
         } else {
           acc[keyName] = value;
         }
-    
+
         return acc;
       },
       {}
@@ -137,13 +137,14 @@ function DocIntelPage({
 
     await submitData(docId, formValues);
 
-   window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
+    window.location.replace(`http://10.170.193.9/app/kyocera/object/${docId}`);
 
     console.log("Form submitted:", formValues);
   };
 
   return (
     <div>
+   
       <DocumentViewer
         base64={base64}
         documentData={documentData}
