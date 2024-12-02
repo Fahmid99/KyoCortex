@@ -14,6 +14,7 @@ import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import keimService from "../../services/keimService";
+import DCPSignInButton from "../../components/DCPSignInButton";
 
 function LoginPage({ setIsLoggedIn, setIsAdmin }) {
   const [username, setUsername] = useState("");
@@ -133,6 +134,7 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
             </Grid>
             <Grid textAlign="center">
               <MicrosoftSignInButton />
+              <DCPSignInButton setIsLoggedIn={setIsLoggedIn} />
             </Grid>
           </FormControl>
         </Grid>

@@ -13,8 +13,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/LocalHospital";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+
 const pages = [
   { name: "Dashboard", path: "/dashboard" },
   { name: "Configuration", path: "/configuration" },
@@ -22,9 +23,10 @@ const pages = [
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function Navbar({ invoices }) {
+function Navbar({ setIsLoggedIn }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,8 +39,12 @@ function Navbar({ invoices }) {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
+    if (setting === "Logout") {
+      setIsLoggedIn(false)
+      navigate("/");
+    }
   };
 
   return (
@@ -150,7 +156,9 @@ function Navbar({ invoices }) {
                   },
                 }}
                 style={({ isActive }) => ({
-                  backgroundColor: isActive ? "rgb(64, 64, 64)" : "transparent",
+                  backgroundColor: isActive
+                    ? "rgb(64, 64, 64)"
+                    : "transparent",
                   color: isActive ? "white" : "rgb(211, 211, 211)",
                 })}
               >
@@ -192,7 +200,10 @@ function Navbar({ invoices }) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleCloseUserMenu(setting)}
+                >
                   <Typography sx={{ textAlign: "center" }}>
                     {setting}
                   </Typography>
