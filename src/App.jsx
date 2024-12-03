@@ -101,7 +101,7 @@ function App() {
         style={{
           background: "white",
           padding: "10px",
-     
+          borderBottom:"1px solid #e1e1e1"
         }}
       >
         <img src={MyerIcon}></img>

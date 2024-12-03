@@ -13,9 +13,11 @@ import {
   TableRow,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-
+import SharepointIcon from "../../../assets/sharepoint_logo.svg";
 import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
+import CogIcon from "../../../assets/cog-logo.svg";
+import KeimIcon from "../../../assets/keimlogo.png";
 import { useState } from "react";
 
 function Toolbar({
@@ -32,6 +34,10 @@ function Toolbar({
   const handleButtonClick = (buttonName, regionData) => {
     setSelectedButton(buttonName);
     setRegion(regionData);
+  };
+
+  const handleSharepoint = () => {
+    window.open('https://kyoceradocumentsolution.sharepoint.com/teams/dis/Vendor%20Request%20Forms/Forms/AllItems.aspx?id=%2Fteams%2Fdis%2FVendor%20Request%20Forms&viewid=d048b34b%2Dccd8%2D4653%2D8618%2D5054dc6bf033', '_blank');
   };
 
   return (
@@ -58,7 +64,6 @@ function Toolbar({
             >
               <Button
                 size="small"
-                
                 // onClick={() => handleButtonClick("onClickIndex", null)}
                 sx={{
                   backgroundColor:
@@ -96,7 +101,7 @@ function Toolbar({
           <Stack direction="column" alignItems="center">
             <Box mt={2}>
               <TableContainer
-                sx={{ border: "1px solid #eeeeee", maxWidth:"350px"}}
+                sx={{ border: "1px solid #eeeeee", maxWidth: "350px" }}
               >
                 <Table>
                   <TableHead>
@@ -229,18 +234,70 @@ function Toolbar({
           </Typography>
           <Divider sx={{ width: "100%", my: 1 }} />
           <Box display="flex" justifyContent="center" marginTop="10px">
-            <Button
-              variant="contained"
-              size="large"
-              
+          <Button
+              variant="outlined"
+              startIcon={
+                <img
+                  src={KeimIcon}
+                  alt="Microsoft"
+                  style={{ width: 30, height: 30 }}
+                />
+              }
               sx={{
-                borderRadius: "0",
-                boxShadow: "none",
-                background: "#2196f3",
+                textTransform: "none",
+                borderColor: "#eeeeee",
+                color: "#0078D4",
+                marginBottom: "1em",
+                width: "80%",
               }}
               onClick={handleSubmit}
             >
-              Submit Data
+              Send to KEIM
+            </Button>
+          </Box>
+
+          <Box display="flex" justifyContent="center" marginTop="10px">
+            <Button
+              variant="outlined"
+              startIcon={
+                <img
+                  src={SharepointIcon}
+                  alt="Microsoft"
+                  style={{ width: 20, height: 20 }}
+                />
+              }
+              sx={{
+                textTransform: "none",
+                borderColor: "#eeeeee",
+                color: "#0078D4",
+                marginBottom: "1em",
+                width: "80%",
+              }}
+              onClick={handleSharepoint}
+            >
+             Send to SharePoint
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" marginTop="10px">
+            <Button
+              variant="outlined"
+              startIcon={
+                <img
+                  src={CogIcon}
+                  alt="Microsoft"
+                  style={{ width: 20, height: 20 }}
+                />
+              }
+              sx={{
+                textTransform: "none",
+                borderColor: "#eeeeee",
+                color: "#0078D4",
+                marginBottom: "1em",
+                width: "80%",
+              }}
+              onClick={handleSharepoint}
+            >
+             Send to custom location
             </Button>
           </Box>
         </Grid>
