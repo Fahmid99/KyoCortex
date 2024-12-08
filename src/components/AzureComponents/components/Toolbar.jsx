@@ -37,7 +37,7 @@ function Toolbar({
   };
 
   const handleSharepoint = () => {
-    window.open('https://kyoceradocumentsolution.sharepoint.com/teams/dis/Vendor%20Request%20Forms/Forms/AllItems.aspx?id=%2Fteams%2Fdis%2FVendor%20Request%20Forms&viewid=d048b34b%2Dccd8%2D4653%2D8618%2D5054dc6bf033', '_blank');
+    window.open('https://kyoceradocumentsolution.sharepoint.com/teams/dis/Shared%20Documents/Forms/AllItems.aspx?newTargetListUrl=%2Fteams%2Fdis%2FShared%20Documents&viewpath=%2Fteams%2Fdis%2FShared%20Documents%2FForms%2FAllItems%2Easpx&id=%2Fteams%2Fdis%2FShared%20Documents%2FSupplier%20Form&viewid=bc2c4aed%2Dd4b1%2D431b%2Daa40%2D02947e4d343b', '_blank');
   };
 
   return (
