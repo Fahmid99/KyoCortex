@@ -42,7 +42,7 @@ function Navbar({ invoices }) {
   };
 
   return (
-    <AppBar color="secondary">
+    <AppBar color="#f2f2f2" elevation={0}  sx={{ borderBottom: '1px solid #eeeeee' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <GraphicEqIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -60,7 +60,7 @@ function Navbar({ invoices }) {
               textDecoration: "none",
             }}
           >
-            KyoCortex
+            Kyocera Intelligent Capture
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -129,7 +129,7 @@ function Navbar({ invoices }) {
               textDecoration: "none",
             }}
           >
-            KyoCortex
+            Kyocera Intelligent Capture
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -150,8 +150,8 @@ function Navbar({ invoices }) {
                   },
                 }}
                 style={({ isActive }) => ({
-                  backgroundColor: isActive ? "rgb(64, 64, 64)" : "transparent",
-                  color: isActive ? "white" : "rgb(211, 211, 211)",
+                  backgroundColor: isActive ? "#e0e0e0" : "transparent",
+                  color: isActive ? "#212121" : "#424242",
                 })}
               >
                 {page.name}

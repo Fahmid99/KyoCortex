@@ -97,7 +97,7 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
     <Box
       display="flex"
       flexDirection="column"
-      justifyContent="center"
+      marginTop="3em"
       alignItems="center"
       height="calc(100vh - 120px)"
       sx={{
@@ -180,14 +180,12 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
                         minWidth: "120px",
                         "&:hover": {
                           backgroundColor: "rgba(21, 101, 192, 0.1)",
-                        
                         },
                       }} // Adjust the value to make the border thicker
                       onClick={() =>
                         handleEdit(type.id, type.keyGeneration, type)
                       }
                     >
-                      
                       {type.keyGeneration ? "Edit" : "Configure"}
                     </Button>
                   </TableCell>

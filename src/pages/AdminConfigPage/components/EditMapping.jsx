@@ -177,13 +177,7 @@ function EditMapping({ selectedConfig, setSelectedConfig }) {
         justifyContent="center"
         alignItems="center"
         height="calc(100vh - 100px)"
-        sx={{
-          paddingTop: {
-            xs: "56px", // smaller screens
-            sm: "70px", // medium screens
-            md: "100px", // larger screens
-          },
-        }}
+    
       >
         <ToastContainer
           position="top-right"

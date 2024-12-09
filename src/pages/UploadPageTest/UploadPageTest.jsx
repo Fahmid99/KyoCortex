@@ -128,7 +128,7 @@ function UploadPage({ setOnUploadSuccess }) {
         justifyContent: "center",
         alignItems: "center",
         height: `calc(100vh)`,
-        background: "#eceff1",
+ 
       }}
     >
       <Box
