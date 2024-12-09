@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import keimService from "../../services/keimService";
+import UploadModal from "./Components/UploadModal";
 
 function UploadPage({ setOnUploadSuccess }) {
   const [isUploaded, setIsUploaded] = useState(false);
@@ -70,8 +71,8 @@ function UploadPage({ setOnUploadSuccess }) {
     }
   }, [parentId]);
 
-  console.log(fileTypes)
-  console.log(selectedFileType)
+  console.log(fileTypes);
+  console.log(selectedFileType);
   const notify = () =>
     toast.success("Upload Successful!", {
       position: "top-right",
@@ -84,28 +85,27 @@ function UploadPage({ setOnUploadSuccess }) {
       theme: "light",
     });
 
-    const handleFileUpload = async () => {
-      if (!isUploaded) return; // Prevent upload if not confirmed
-      const formData = new FormData();
-      formData.append('file', file);
-      const currentDate = new Date().toISOString();
-      formData.append('uploadDate', currentDate);
-      formData.append('parentId', parentId);
-      formData.append('selectedFileType', selectedFileType);
-      setButtonLoading(true);
-      try {
-        await keimService.uploadNewFile(parentId, selectedFileType, formData);
-        setOnUploadSuccess(true);
-        notify();
-        navigate('/document-history');
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      } finally {
-        setButtonLoading(false);
-      }
-    };
+  const handleFileUpload = async () => {
+    if (!isUploaded) return; // Prevent upload if not confirmed
+    const formData = new FormData();
+    formData.append("file", file);
+    const currentDate = new Date().toISOString();
+    formData.append("uploadDate", currentDate);
+    formData.append("parentId", parentId);
+    formData.append("selectedFileType", selectedFileType);
+    setButtonLoading(true);
+    try {
+      await keimService.uploadNewFile(parentId, selectedFileType, formData);
+      setOnUploadSuccess(true);
+      notify();
+      navigate("/document-history");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    } finally {
+      setButtonLoading(false);
+    }
+  };
 
-    
   const handleUploadSuccess = () => {
     setIsUploaded(true);
     setOpenModal(true); // Open the modal on upload success
@@ -153,61 +153,19 @@ function UploadPage({ setOnUploadSuccess }) {
           buttonLoading={buttonLoading}
         />
       </Box>
-      <Dialog open={openModal} onClose={handleModalClose}>
-        <DialogTitle>Confirm Upload</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill in the following details before confirming the upload.
-          </DialogContentText>
-          <FormControl fullWidth margin="dense">
-            <InputLabel id="vendor-select-label">Vendor</InputLabel>
-            <Select
-              labelId="vendor-select-label"
-              label="Vendor"
-              value={select1}
-              onChange={(e) => setSelect1(e.target.value)}
-            >
-              {vendors.map((vendor) => (
-                <MenuItem key={vendor.vendorid} value={vendor.vendorname}>
-                  {vendor.vendorname}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="dense">
-            <InputLabel id="filetype-select-label">File Type</InputLabel>
-            <Select
-              labelId="filetype-select-label"
-              label="File Type"
-              value={selectedFileType}
-              onChange={(e) => setSelectedFileType(e.target.value)}
-            >
-              {fileTypes.map((fileType) => (
-                <MenuItem key={fileType.typeName} value={fileType.typeName}>
-                  {fileType.typeName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth margin="dense">
-            <TextField
-              value={textField}
-              onChange={(e) => setTextField(e.target.value)}
-              label="File Name"
-              fullWidth
-              margin="dense"
-            />
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleModalClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleModalConfirm} color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <UploadModal
+        open={openModal}
+        onClose={handleModalClose}
+        vendors={vendors}
+        fileTypes={fileTypes}
+        select1={select1}
+        setSelect1={setSelect1}
+        selectedFileType={selectedFileType}
+        setSelectedFileType={setSelectedFileType}
+        textField={textField}
+        setTextField={setTextField}
+        handleModalConfirm={handleModalConfirm}
+      />
       <ToastContainer
         position="top-right"
         autoClose={3000}
