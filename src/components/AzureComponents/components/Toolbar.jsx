@@ -17,6 +17,7 @@ import Grid from "@mui/material/Grid2";
 import HighlightAltIcon from "@mui/icons-material/HighlightAlt";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import { useState } from "react";
+import DCPSignInButton from "./DcpButton";
 
 function Toolbar({
   region,
@@ -242,6 +243,9 @@ function Toolbar({
             >
               Submit Data
             </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" marginTop="10px">
+            <DCPSignInButton/>
           </Box>
         </Grid>
       </Grid>
