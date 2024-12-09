@@ -230,7 +230,7 @@ function Toolbar({
           </Typography>
           <Divider sx={{ width: "100%", my: 1 }} />
           <Box display="flex" justifyContent="center" marginTop="10px">
-            <Button
+            {/* <Button
               variant="contained"
               size="large"
               
@@ -242,7 +242,7 @@ function Toolbar({
               onClick={handleSubmit}
             >
               Submit Data
-            </Button>
+            </Button> */}
           </Box>
           <Box display="flex" justifyContent="center" marginTop="10px">
             <DCPSignInButton/>
