@@ -118,7 +118,7 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
         align="left"
         sx={{ width: "80%" }}
       >
-        Configure all documents and folder types from KEIM
+        Configure all documents and folder types from KCP
       </Typography>
 
       <TextField
@@ -174,9 +174,9 @@ function AdminConfigPage({ configData, setConfigData, setSelectedConfig }) {
                       variant="outlined"
                       sx={{
                         borderWidth: 2,
-                        borderColor: "#1e88e5",
+                        borderColor: "#0a9bcd",
                         fontWeight: "800",
-                        color: "#1976d2",
+                        color: "#0a9bcd",
                         minWidth: "120px",
                         "&:hover": {
                           backgroundColor: "rgba(21, 101, 192, 0.1)",

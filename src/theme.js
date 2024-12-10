@@ -9,6 +9,9 @@ export const themeOptions = {
     secondary: {
       main: "#000004",
     },
+    kyoBlue: { 
+      main:"#0a9bcd"
+    }
   },
   typography: {
     fontFamily: "Manrope, Arial, sans-serif", // Set Manrope as the default font

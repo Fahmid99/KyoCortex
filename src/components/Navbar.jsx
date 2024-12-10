@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { Badge } from "@mui/material";
@@ -15,6 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/LocalHospital";
 import { NavLink } from "react-router-dom";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import { useTheme } from '@mui/material/styles';
+
 const pages = [
   { name: "Dashboard", path: "/dashboard" },
   { name: "Configuration", path: "/configuration" },
@@ -22,9 +25,11 @@ const pages = [
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function Navbar({ invoices }) {
+function Navbar({ invoices, setIsLoggedIn }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const theme = useTheme();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,8 +46,14 @@ function Navbar({ invoices }) {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    // Perform logout logic here (e.g., clearing tokens, calling an API)
+    setIsLoggedIn(false)
+    navigate("/"); // Redirect to sign-in page
+  };
+
   return (
-    <AppBar color="#f2f2f2" elevation={0}  sx={{ borderBottom: '1px solid #eeeeee' }}>
+    <AppBar color="#f2f2f2" elevation={0} sx={{ borderBottom: '1px solid #eeeeee' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <GraphicEqIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -171,7 +182,7 @@ function Navbar({ invoices }) {
                 <Avatar
                   alt="Remy Sharp"
                   src="/static/images/avatar/2.jpg"
-                  sx={{ background: "#3B6DF1" }}
+                  sx={{ background: theme.palette.kyoBlue.main }}
                 />
               </IconButton>
             </Tooltip>
@@ -192,7 +203,10 @@ function Navbar({ invoices }) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={setting === "Logout" ? handleLogout : handleCloseUserMenu}
+                >
                   <Typography sx={{ textAlign: "center" }}>
                     {setting}
                   </Typography>

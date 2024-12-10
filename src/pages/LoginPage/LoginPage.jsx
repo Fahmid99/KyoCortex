@@ -14,6 +14,8 @@ import MicrosoftSignInButton from "../../components/MicrosoftSignInButton";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import keimService from "../../services/keimService";
+import DCPSignInButton from "../../components/DCPSignInButton";
+import dcpService from "../../services/dcpService";
 
 function LoginPage({ setIsLoggedIn, setIsAdmin }) {
   const [username, setUsername] = useState("");
@@ -42,6 +44,17 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
       setIsLoggedIn(true);
     } catch (err) {
       console.error("There was an error signing in: ", err);
+    }
+  };
+
+  const handleDCPLogin = async () => {
+    try {
+      const response = await dcpService.getAuth();
+      console.log(response);
+      setIsLoggedIn(true);
+      navigate("/");
+    } catch (error) {
+      console.error("There has been a sign in error:", error);
     }
   };
 
@@ -133,6 +146,9 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
             </Grid>
             <Grid textAlign="center">
               <MicrosoftSignInButton />
+            </Grid>
+            <Grid textAlign="center">
+              <DCPSignInButton  handleDCPLogin={handleDCPLogin}/>
             </Grid>
           </FormControl>
         </Grid>

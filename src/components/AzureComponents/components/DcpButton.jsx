@@ -44,7 +44,7 @@ export default function DCPSignInButton() {
         sx={{
           textTransform: "none",
           borderColor: "#eeeeee",
-          color: "#0078D4",
+          color: "#0a9bcd",
           marginBottom: "1em",
           width: "80%",
         }}

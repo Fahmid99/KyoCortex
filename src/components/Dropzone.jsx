@@ -82,7 +82,7 @@ export default function Dropzone({ onUploadSuccess, setFileName, setFile }) {
             padding: "10px 20px",
             border: "none",
             borderRadius: "5px",
-            backgroundColor: "#1976D2",
+            backgroundColor: "#0a9bcd",
             color: "white",
             fontSize: "16px",
             cursor: "pointer",

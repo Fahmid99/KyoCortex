@@ -132,6 +132,11 @@ function DocumentViewer({
               onChange={handleChange}
               aria-label="basic tabs example"
               bold
+              sx={{
+                '& .MuiTabs-indicator': {
+                  backgroundColor: '#0a9bcd', // Custom underline color
+                },
+              }}
             >
               <Tab
                 sx={{ fontWeight: "bold" }}
@@ -142,6 +147,7 @@ function DocumentViewer({
                 sx={{ fontWeight: "bold" }}
                 label="Mapping"
                 {...a11yProps(1)}
+              
               />
               <Tab sx={{ fontWeight: "bold" }} label="JSON" {...a11yProps(2)} />
             </Tabs>
