@@ -26,6 +26,8 @@ import Cookies from "js-cookie";
 import AdminConfigPage from "./pages/AdminConfigPage/AdminConfigPage";
 import EditMapping from "./pages/AdminConfigPage/components/EditMapping";
 import UploadSample from "./pages/AdminConfigPage/components/UploadSample";
+import CallbackHandler from './components/CallbackHandler';
+import PrivateRoute from './components/PrivateRoute';
 import configService from "./services/configService";
 function App() {
   const scanTypeValues = {
@@ -96,9 +98,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-      {isLoggedIn && !location.pathname.startsWith("/docintel") &&  !location.pathname.startsWith("/dashboardtest") && (
-          <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} />
-        )}
+        {isLoggedIn &&
+          !location.pathname.startsWith("/docintel") &&
+          !location.pathname.startsWith("/dashboardtest") && (
+            <Navbar setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} />
+          )}
         {/* <AlertMessage
           onUploadSuccess={onUploadSuccess}
           setOnUploadSuccess={setOnUploadSuccess}
@@ -116,17 +120,17 @@ function App() {
           </div>
         ) : (
           <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/callback"
+              element={<CallbackHandler setIsLoggedIn={setIsLoggedIn} />}
+            />
             <Route
               path="/"
               element={
-                isLoggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <LoginPage
-                    setIsLoggedIn={setIsLoggedIn}
-                    setIsAdmin={setIsAdmin}
-                  />
-                )
+                <PrivateRoute isLoggedIn={isLoggedIn}>
+                  <Dashboard />
+                </PrivateRoute>
               }
             />
             <Route
@@ -249,7 +253,10 @@ function App() {
               path="/editMapping/:id"
               element={
                 isLoggedIn ? (
-                  <EditMapping selectedConfig={selectedConfig} setSelectedConfig={setSelectedConfig} />
+                  <EditMapping
+                    selectedConfig={selectedConfig}
+                    setSelectedConfig={setSelectedConfig}
+                  />
                 ) : (
                   <Navigate to="/" />
                 )
@@ -259,7 +266,10 @@ function App() {
               path="/generateInitialKeys/:id"
               element={
                 isLoggedIn ? (
-                  <UploadSample selectedConfig={selectedConfig} setSelectedConfig={setSelectedConfig} />
+                  <UploadSample
+                    selectedConfig={selectedConfig}
+                    setSelectedConfig={setSelectedConfig}
+                  />
                 ) : (
                   <Navigate to="/" />
                 )

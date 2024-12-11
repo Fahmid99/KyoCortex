@@ -46,14 +46,11 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
       console.error("There was an error signing in: ", err);
     }
   };
-
+  
   const handleDCPLogin = async () => {
     try {
-      const response = await dcpService.getAuth();
-      // Assuming response contains the URL of the login page
-      console.log(response)
-      window.location.href = response; // Redirect to the login page
-      console.log("done")
+      const response = await dcpService.loginWithDcp();
+      window.location.href = response;
     } catch (error) {
       console.error("There has been a sign in error:", error);
     }
