@@ -44,7 +44,7 @@ function UploadProcessCard({
         <Grid item xs={12}>
           <Grid container direction="row" alignItems="center" spacing={1}>
             <Grid item>
-              <InfoIcon style={{ fontSize: 40, color: "#1976d2" }} />
+              <InfoIcon style={{ fontSize: 40, color: "#0a9bcd" }} />
             </Grid>
             <Grid item>
               {isUploaded ? (

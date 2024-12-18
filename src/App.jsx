@@ -12,13 +12,10 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import DashboardTest from "./pages/Dashboard/DashBoardTest";
 import Navbar from "./components/Navbar";
 import "./index.css";
-import Frame from "./pages/Frame.jsx/Frame";
 import theme from "./theme"; // Import the custom theme
 import DocumentsPage from "./pages/DocumentsPage/DocumentsPage";
-import AbbySelectSkillPage from "./pages/AbbySelectSkillPage/AbbySelectSkillPage";
 import AlertMessage from "./components/AlertMessage"; // Correct import
 import DocIntelPage from "./pages/DocIntelPage/DocIntelPage";
-import AbbySignInPage from "./pages/AbbySignInPage/AbbySignInPage";
 import azureDocumentService from "./services/azureDocumentService";
 import Loader from "./components/AzureComponents/components/Loader";
 import UploadPageTest from "./pages/UploadPageTest/UploadPageTest";
@@ -26,8 +23,9 @@ import Cookies from "js-cookie";
 import AdminConfigPage from "./pages/AdminConfigPage/AdminConfigPage";
 import EditMapping from "./pages/AdminConfigPage/components/EditMapping";
 import UploadSample from "./pages/AdminConfigPage/components/UploadSample";
-import CallbackHandler from './components/CallbackHandler';
-import PrivateRoute from './components/PrivateRoute';
+import CallbackHandler from "./components/CallbackHandler";
+import PrivateRoute from "./components/PrivateRoute";
+import dcpService from "./services/dcpService";
 import configService from "./services/configService";
 function App() {
   const scanTypeValues = {
@@ -56,12 +54,37 @@ function App() {
   const [configData, setConfigData] = useState([]);
   const [selectedConfig, setSelectedConfig] = useState();
   const [docType, setDocType] = useState();
+  
   const [isLoggedIn, setIsLoggedIn] = useState(
     Cookies.get("isLoggedIn") === "true"
   );
+  const [documentClasses, setDocumentClasses] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [file, setFile] = useState();
 
   useEffect(() => {
-    Cookies.set("isLoggedIn", isLoggedIn);
+    const getDocumentClasses = async () => {
+      try {
+        const response = await dcpService.getDocumentClasses();
+        console.log(response);
+        setDocumentClasses(response.documentClasses);
+      } catch (error) {
+        console.error("Error fetching file types:", error);
+      }
+    };
+
+    const getFolders = async () => {
+      try {
+        const response = await dcpService.getFolders();
+        console.log(response);
+        setFolders(response.objects);
+      } catch (error) {
+        console.error("Error fetching file types:", error);
+      }
+    };
+
+    getDocumentClasses();
+    getFolders();
   }, [isLoggedIn]);
 
   const analyzeDocument = async () => {
@@ -92,7 +115,7 @@ function App() {
       setBase64(base64Data);
     });
   };
-
+  console.log(documentClasses);
   console.log(isAdmin);
 
   return (
@@ -137,7 +160,10 @@ function App() {
               path="/upload"
               element={
                 isLoggedIn ? (
-                  <UploadPage setOnUploadSuccess={setOnUploadSuccess} />
+                  <UploadPage
+                    setOnUploadSuccess={setOnUploadSuccess}
+                    documentClasses={documentClasses}
+                  />
                 ) : (
                   <Navigate to="/" />
                 )
@@ -147,7 +173,13 @@ function App() {
               path="/upload-test"
               element={
                 isLoggedIn ? (
-                  <UploadPageTest setOnUploadSuccess={setOnUploadSuccess} />
+                  <UploadPageTest
+                    setOnUploadSuccess={setOnUploadSuccess}
+                    documentClasses={documentClasses}
+                    folders={folders}
+                    file={file}
+                    setFile={setFile}
+                  />
                 ) : (
                   <Navigate to="/" />
                 )
@@ -180,10 +212,7 @@ function App() {
                 )
               }
             />
-            <Route
-              path="/frame"
-              element={isLoggedIn ? <Frame /> : <Navigate to="/" />}
-            />
+
             <Route
               path="/document-history"
               element={
@@ -202,16 +231,7 @@ function App() {
                 )
               }
             />
-            <Route
-              path="/selectskill/:id"
-              element={
-                isLoggedIn ? (
-                  <AbbySelectSkillPage currentDocument={currentDocument} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
+
             <Route
               path="/docintel/:id"
               element={
@@ -231,10 +251,7 @@ function App() {
                 )
               }
             />
-            <Route
-              path="/abbysignin"
-              element={isLoggedIn ? <AbbySignInPage /> : <Navigate to="/" />}
-            />
+
             <Route
               path="/configuration"
               element={

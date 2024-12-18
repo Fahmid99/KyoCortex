@@ -64,13 +64,13 @@ export default function Dropzone({ onUploadSuccess, setFileName, setFile }) {
             opacity: isDragActive ? 0.8 : 1,
           }}
         />
-        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500" }}>
+        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500", fontFamily:"manrope"}}>
           Drag your documents, or
         </p>
-        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500" }}>
+        <p style={{ fontSize: "16px", color: "#424242", fontWeight: "500" , fontFamily:"manrope" }}>
           files here to start analyzing.
         </p>
-        <p style={{ margin: "20px 0", fontSize: "16px", color: "#424242" }}>
+        <p style={{ margin: "20px 0", fontSize: "16px", color: "#424242"  , fontFamily:"manrope"}}>
           <Divider sx={{ width: "40%", margin: "auto", textAlign: "center" }}>
             OR
           </Divider>

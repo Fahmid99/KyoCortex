@@ -23,13 +23,14 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import keimService from "../../services/keimService";
 import UploadModal from "./Components/UploadModal";
+import dcpService from "../../services/dcpService";
 
-function UploadPage({ setOnUploadSuccess }) {
+function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFile }) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [showReviewButton, setShowReviewButton] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [file, setFile] = useState();
+  //const [file, setFile] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [select1, setSelect1] = useState("");
@@ -41,6 +42,7 @@ function UploadPage({ setOnUploadSuccess }) {
   const [selectedFileType, setSelectedFileType] = useState("");
   const navigate = useNavigate();
 
+  console.log(file);
   useEffect(() => {
     const getVendors = async () => {
       try {
@@ -116,9 +118,16 @@ function UploadPage({ setOnUploadSuccess }) {
     setOpenModal(false);
   };
 
-  const handleModalConfirm = () => {
+  const handleModalConfirm = async () => {
     setOpenModal(false);
     handleFileUpload();
+    try {
+      const result = await dcpService.uploadFile(file, documentClass, parentId, fields);
+      console.log('File uploaded successfully:', result);
+  } catch (error) {
+      console.error('Error uploading file:', error);
+  }
+
   };
 
   return (
@@ -128,7 +137,6 @@ function UploadPage({ setOnUploadSuccess }) {
         justifyContent: "center",
         alignItems: "center",
         height: `calc(100vh)`,
-     
       }}
     >
       <Box
@@ -153,19 +161,23 @@ function UploadPage({ setOnUploadSuccess }) {
           buttonLoading={buttonLoading}
         />
       </Box>
-      <UploadModal
-        open={openModal}
-        onClose={handleModalClose}
-        vendors={vendors}
-        fileTypes={fileTypes}
-        select1={select1}
-        setSelect1={setSelect1}
-        selectedFileType={selectedFileType}
-        setSelectedFileType={setSelectedFileType}
-        textField={textField}
-        setTextField={setTextField}
-        handleModalConfirm={handleModalConfirm}
-      />
+      {documentClasses.length > 1 && (
+        <UploadModal
+          open={openModal}
+          onClose={handleModalClose}
+          vendors={vendors}
+          fileTypes={fileTypes}
+          select1={select1}
+          setSelect1={setSelect1}
+          selectedFileType={selectedFileType}
+          setSelectedFileType={setSelectedFileType}
+          textField={textField}
+          setTextField={setTextField}
+          handleModalConfirm={handleModalConfirm}
+          documentClasses={documentClasses}
+          folders={folders}
+        />
+      )}
       <ToastContainer
         position="top-right"
         autoClose={3000}

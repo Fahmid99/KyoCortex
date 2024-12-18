@@ -22,6 +22,7 @@ const pages = [
   { name: "Dashboard", path: "/dashboard" },
   { name: "Configuration", path: "/configuration" },
   { name: "Upload", path: "/upload-test" },
+  
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

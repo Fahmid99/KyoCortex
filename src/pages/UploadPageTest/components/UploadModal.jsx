@@ -24,7 +24,8 @@ const UploadModal = ({
   selectedFileType,
   setSelectedFileType,
   handleModalConfirm,
-  filePreview,
+  documentClasses,
+  folders,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="large" fullWidth>
@@ -69,35 +70,50 @@ const UploadModal = ({
                 }}
               >
                 <InputLabel id="vendor-select-label">Document Class</InputLabel>
+
                 <Select
                   labelId="vendor-select-label"
                   label="Document Class"
                   value={select1}
                   onChange={(e) => setSelect1(e.target.value)}
                 >
-                  <MenuItem value="Administrative">Administrative</MenuItem>
-                  <MenuItem value="Bank statement">Bank statement</MenuItem>
-                  <MenuItem value="Business card">Business card</MenuItem>
-                  <MenuItem value="Contract">Contract</MenuItem>
-                  <MenuItem value="Expense report">Expense report</MenuItem>
-                  <MenuItem value="Human resources">Human resources</MenuItem>
-                  <MenuItem value="Invoice">Invoice</MenuItem>
-                  <MenuItem value="Vendor Request">Vendor Request</MenuItem>
+                  {documentClasses.map((docClass, index) => (
+                    <MenuItem key={index} value={docClass.localName}>
+                      {docClass.localName}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth margin="dense" sx={{ mt: 2 }}>
+              <FormControl
+                fullWidth
+                margin="dense"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#0a9bcd" },
+                    "&:hover fieldset": { borderColor: "#0a9bcd" },
+                    "&.Mui-focused fieldset": { borderColor: "#0a9bcd" },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#0a9bcd",
+                    "&.Mui-focused": { color: "#0a9bcd" },
+                  },
+                }}
+              >
                 <InputLabel id="filetype-select-label">
                   Choose target folder
                 </InputLabel>
                 <Select
                   labelId="filetype-select-label"
-                  label="File Type"
+                  label="Choose target folder"
                   value={selectedFileType}
                   onChange={(e) => setSelectedFileType(e.target.value)}
                 >
-                  {fileTypes.map((fileType) => (
-                    <MenuItem key={fileType.typeName} value={fileType.typeName}>
-                      {fileType.typeName}
+                  {folders.map((folder, index) => (
+                    <MenuItem
+                      key={index}
+                      value={folder.properties["system:folderTitle"].value}
+                    >
+                      {folder.properties["system:folderTitle"].value}
                     </MenuItem>
                   ))}
                 </Select>
