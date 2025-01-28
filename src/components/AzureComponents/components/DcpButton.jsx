@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import DCPIcon from "../../../assets/DCPLogo.png";
 
-export default function DCPSignInButton() {
+export default function DCPSignInButton({handleDCPSubmit}) {
   const [open, setOpen] = useState(false);
   const [folderPath, setFolderPath] = useState("");
 
@@ -48,7 +48,7 @@ export default function DCPSignInButton() {
           marginBottom: "1em",
           width: "80%",
         }}
-        onClick={openModal}
+        onClick={handleDCPSubmit}
       >
         Send to DCP
       </Button>

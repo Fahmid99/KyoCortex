@@ -42,16 +42,14 @@ const getFolders = async () => {
 const uploadFile = async (file, documentClass, parentId, fields) => {
     try {
         const formData = new FormData();
+        console.log(documentClass)
         formData.append('file', file);
         formData.append('documentClass', documentClass);
         formData.append('parentId', parentId);
         formData.append('fields', JSON.stringify(fields));
+        console.log(formData)
+        const response = await axios.post(`${API_BASE_URL}/cms/files/content`, formData, {
 
-        const response = await axios.post(`${API_BASE_URL}/files/content`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // Assuming the token is stored in localStorage
-            }
         });
 
         return response.data;

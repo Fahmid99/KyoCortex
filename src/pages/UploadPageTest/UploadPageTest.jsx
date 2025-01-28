@@ -25,12 +25,25 @@ import keimService from "../../services/keimService";
 import UploadModal from "./Components/UploadModal";
 import dcpService from "../../services/dcpService";
 
-function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFile }) {
+function UploadPage({
+  setOnUploadSuccess,
+  documentClasses,
+  folders,
+  file,
+  setFile,
+  analyzeDocument,
+  setScanType,
+  scanTypeValues,
+  folderId,
+  documentClassId,
+  setFolderId,
+  setDocumentClassId,
+  setDcpFields,
+}) {
   const [isUploaded, setIsUploaded] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [showReviewButton, setShowReviewButton] = useState(false);
   const [fileName, setFileName] = useState("");
-  //const [file, setFile] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [select1, setSelect1] = useState("");
@@ -40,6 +53,8 @@ function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFil
   const [parentId, setParentId] = useState([]);
   const [fileTypes, setFileTypes] = useState([]);
   const [selectedFileType, setSelectedFileType] = useState("");
+  const [base64File, setBase64File] = useState(""); // State to store the Base64 string
+  const [link, setLink] = useState("");
   const navigate = useNavigate();
 
   console.log(file);
@@ -73,8 +88,28 @@ function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFil
     }
   }, [parentId]);
 
+  useEffect(() => {
+    if (file) {
+      convertToBase64(file);
+    }
+  }, [file]);
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setBase64File(reader.result);
+      console.log("Base64 File:", reader.result); // Debugging
+    };
+    reader.onerror = (error) => {
+      console.error("Error converting file to Base64:", error);
+    };
+  };
+
+  console.log(base64File);
   console.log(fileTypes);
   console.log(selectedFileType);
+  setScanType(scanTypeValues["default"]);
   const notify = () =>
     toast.success("Upload Successful!", {
       position: "top-right",
@@ -86,6 +121,16 @@ function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFil
       progress: undefined,
       theme: "light",
     });
+
+  const handleClick = async () => {
+    try {
+      console.log("Analyzing document with Base64:", base64File); // Debugging
+      await analyzeDocument(base64File);
+      navigate(`/docintel/123`);
+    } catch (error) {
+      console.error("Error analyzing document:", error);
+    }
+  };
 
   const handleFileUpload = async () => {
     if (!isUploaded) return; // Prevent upload if not confirmed
@@ -119,17 +164,35 @@ function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFil
   };
 
   const handleModalConfirm = async () => {
-    setOpenModal(false);
-    handleFileUpload();
-    try {
-      const result = await dcpService.uploadFile(file, documentClass, parentId, fields);
-      console.log('File uploaded successfully:', result);
-  } catch (error) {
-      console.error('Error uploading file:', error);
-  }
+    for (let documentClass of documentClasses) {
+      if (documentClass.id === documentClassId) {
+        const fields = documentClass.fields;
+        const dcpFields = {};
 
+        for (let field of fields) {
+          dcpFields[field.id] = { value: "", name: field.localName };
+        }
+
+        setDcpFields(dcpFields);
+        break; // Exit the loop once the matching documentClass is found
+      }
+    }
+
+  
+    if (documentClassId == "tenKdaucustomer1:ldmsksptAyaewklASOT") {
+      setLink(
+        "/dashboardtest?processId=59501F91D934464FBE1D73C0CA76FD0C&activityId=6BD8443BFF2D4E7186D3C7F42A6F2668"
+      );
+    } else {
+      setLink(
+        "/dashboardtest?processId=A50C80E5E76E48D88CA12DAE21CB21E8&activityId=6F8323D1C1C143DFB389076816528A5E"
+      );
+    }
+
+    navigate(link);
   };
 
+  console.log(documentClassId);
   return (
     <div
       style={{
@@ -176,6 +239,11 @@ function UploadPage({ setOnUploadSuccess, documentClasses, folders, file, setFil
           handleModalConfirm={handleModalConfirm}
           documentClasses={documentClasses}
           folders={folders}
+          base64File={base64File}
+          setFolderId={setFolderId}
+          setDocumentClassId={setDocumentClassId}
+          folderId={folderId}
+          documentClassId={documentClassId}
         />
       )}
       <ToastContainer

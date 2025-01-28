@@ -40,6 +40,7 @@ function DocumentViewer({
   docType,
   submitData,
   handleSubmit,
+  handleDCPSubmit
 }) {
   const [formSelected, setFormSelected] = useState(false);
   const [selectedKey, setSelectedKey] = useState("");
@@ -220,6 +221,7 @@ function DocumentViewer({
             region={region}
             documentData={documentData}
             handleSubmit={handleSubmit}
+            handleDCPSubmit={handleDCPSubmit}
             selectedKey={selectedKey}
             value={value}
             selectedValue={selectedValue}

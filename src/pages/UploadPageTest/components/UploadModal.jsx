@@ -26,6 +26,12 @@ const UploadModal = ({
   handleModalConfirm,
   documentClasses,
   folders,
+  base64File,
+  setFolderId,
+  folderId,
+  setDocumentClassId,
+  documentClassId
+
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="large" fullWidth>
@@ -39,7 +45,7 @@ const UploadModal = ({
         >
           <Box sx={{ flex: 1, mr: 2, height: "100%" }}>
             <iframe
-              src={samplepdf}
+              src={base64File}
               width="100%"
               height="100%"
               title="File Preview"
@@ -74,11 +80,11 @@ const UploadModal = ({
                 <Select
                   labelId="vendor-select-label"
                   label="Document Class"
-                  value={select1}
-                  onChange={(e) => setSelect1(e.target.value)}
+                  value={documentClassId}
+                  onChange={(e) => setDocumentClassId(e.target.value)}
                 >
                   {documentClasses.map((docClass, index) => (
-                    <MenuItem key={index} value={docClass.localName}>
+                    <MenuItem key={index} value={docClass.id}>
                       {docClass.localName}
                     </MenuItem>
                   ))}
@@ -105,13 +111,13 @@ const UploadModal = ({
                 <Select
                   labelId="filetype-select-label"
                   label="Choose target folder"
-                  value={selectedFileType}
-                  onChange={(e) => setSelectedFileType(e.target.value)}
+                  value={folderId}
+                  onChange={(e) => setFolderId(e.target.value)}
                 >
                   {folders.map((folder, index) => (
                     <MenuItem
                       key={index}
-                      value={folder.properties["system:folderTitle"].value}
+                      value={folder.properties["system:objectId"].value}
                     >
                       {folder.properties["system:folderTitle"].value}
                     </MenuItem>
@@ -121,7 +127,7 @@ const UploadModal = ({
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ mt: 2, marginTop: "400px", background: "#0a9bcd" }}
+                sx={{ mt: 2, background: "#0a9bcd" }}
                 onClick={handleModalConfirm}
               >
                 Analyze Document

@@ -177,6 +177,7 @@ const AutomatedForm = ({
     setTableData(updatedTableData);
   };
 
+
   return (
     <div
       style={{

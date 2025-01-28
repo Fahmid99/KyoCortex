@@ -54,24 +54,30 @@ function App() {
   const [configData, setConfigData] = useState([]);
   const [selectedConfig, setSelectedConfig] = useState();
   const [docType, setDocType] = useState();
-  
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     Cookies.get("isLoggedIn") === "true"
   );
   const [documentClasses, setDocumentClasses] = useState([]);
   const [folders, setFolders] = useState([]);
   const [file, setFile] = useState();
-
+  const [folderId, setFolderId] = useState("");
+  const [documentClassId, setDocumentClassId] = useState("");
+  const [dcpFields, setDcpFields] = useState("");
+ 
   useEffect(() => {
     const getDocumentClasses = async () => {
       try {
         const response = await dcpService.getDocumentClasses();
+
         console.log(response);
         setDocumentClasses(response.documentClasses);
       } catch (error) {
         console.error("Error fetching file types:", error);
       }
     };
+
+    console.log(documentClasses);
 
     const getFolders = async () => {
       try {
@@ -117,7 +123,9 @@ function App() {
   };
   console.log(documentClasses);
   console.log(isAdmin);
-
+  console.log(folders);
+  console.log(dcpFields);
+  console.log(docFormFields);
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -179,6 +187,16 @@ function App() {
                     folders={folders}
                     file={file}
                     setFile={setFile}
+                    base64={base64}
+                    analyzeDocument={analyzeDocument}
+                    setScanType={setScanType}
+                    scanTypeValues={scanTypeValues}
+                    folderId={folderId}
+                    setFolderId={setFolderId}
+                    documentClassId={documentClassId}
+                    setDocumentClassId={setDocumentClassId}
+                    setDcpFields={setDcpFields}
+                    documentData={documentData}
                   />
                 ) : (
                   <Navigate to="/" />
@@ -192,63 +210,56 @@ function App() {
             <Route
               path="/dashboardtest"
               element={
-                isLoggedIn ? (
-                  <DashboardTest
-                    setCurrentDocument={setCurrentDocument}
-                    analyzeDocument={analyzeDocument}
-                    getDocumentBase64V2={getDocumentBase64V2}
-                    setScanType={setScanType}
-                    scanType={scanType}
-                    selectedDocument={selectedDocument}
-                    setSelectedDocument={setSelectedDocument}
-                    scanTypeValues={scanTypeValues}
-                    setDocId={setDocId}
-                    setDocFormFields={setDocFormFields}
-                    setProcessId={setProcessId}
-                    setDocType={setDocType}
-                  />
-                ) : (
-                  <Navigate to="/" />
-                )
+                <DashboardTest
+                  setCurrentDocument={setCurrentDocument}
+                  analyzeDocument={analyzeDocument}
+                  getDocumentBase64V2={getDocumentBase64V2}
+                  setScanType={setScanType}
+                  scanType={scanType}
+                  selectedDocument={selectedDocument}
+                  setSelectedDocument={setSelectedDocument}
+                  scanTypeValues={scanTypeValues}
+                  setDocId={setDocId}
+                  setDocFormFields={setDocFormFields}
+                  setProcessId={setProcessId}
+                  setDocType={setDocType}
+                />
               }
             />
 
             <Route
               path="/document-history"
               element={
-                isLoggedIn ? (
-                  <DocumentsPage
-                    setCurrentDocument={setCurrentDocument}
-                    analyzeDocument={analyzeDocument}
-                    getDocumentBase64={getDocumentBase64}
-                    setScanType={setScanType}
-                    scanType={scanType}
-                    selectedDocument={selectedDocument}
-                    setSelectedDocument={setSelectedDocument}
-                  />
-                ) : (
-                  <Navigate to="/" />
-                )
+                <DocumentsPage
+                  setCurrentDocument={setCurrentDocument}
+                  analyzeDocument={analyzeDocument}
+                  getDocumentBase64={getDocumentBase64}
+                  setScanType={setScanType}
+                  scanType={scanType}
+                  selectedDocument={selectedDocument}
+                  setSelectedDocument={setSelectedDocument}
+                />
               }
             />
 
             <Route
               path="/docintel/:id"
               element={
-                isLoggedIn ? (
-                  <DocIntelPage
-                    base64={base64}
-                    documentData={documentData}
-                    scanType={scanType}
-                    selectedDocument={selectedDocument}
-                    docId={docId}
-                    docFormFields={docFormFields}
-                    processId={processId}
-                    docType={docType}
-                  />
-                ) : (
-                  <Navigate to="/" />
-                )
+                <DocIntelPage
+                  base64={base64}
+                  documentData={documentData}
+                  scanType={scanType}
+                  selectedDocument={selectedDocument}
+                  docId={docId}
+                  docFormFields={docFormFields}
+                  processId={processId}
+                  docType={docType}
+                  file={file}
+                  documentClassId={documentClassId}
+                  folderId={folderId}
+                  dcpFields={dcpFields}
+                  setDcpFields={setDcpFields}
+                />
               }
             />
 

@@ -24,6 +24,7 @@ function Toolbar({
   setRegion,
   documentData,
   handleSubmit,
+  handleDCPSubmit,
   selectedKey,
   selectedValue,
   pageNumber,
@@ -245,7 +246,7 @@ function Toolbar({
             </Button> */}
           </Box>
           <Box display="flex" justifyContent="center" marginTop="10px">
-            <DCPSignInButton/>
+            <DCPSignInButton handleDCPSubmit={handleDCPSubmit}/>
           </Box>
         </Grid>
       </Grid>
